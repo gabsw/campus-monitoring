@@ -9,12 +9,12 @@ Este projeto consiste num sistema de monitorização de espaços alimentares uni
  3. Recolha de feedback de utilizadores.
 
 ## Team
-Team Manager - Alexandre Lopes
-Product Owner - Gabriela Santos
-Architect - André Amarante
-DevOps Master - Edgar Morais
+Team Manager - Alexandre Lopes \
+Product Owner - Gabriela Santos \
+Architect - André Amarante \
+DevOps Master - Edgar Morais \
 
 
 ## Resources
-[GitHub](https://github.com/gabsw/campus-monitoring)
-[Pivotal Tracker](https://www.pivotaltracker.com/n/projects/2411504)
+[GitHub](https://github.com/gabsw/campus-monitoring) \
+[Pivotal Tracker](https://www.pivotaltracker.com/n/projects/2411504) \
