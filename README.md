@@ -9,10 +9,10 @@ Este projeto consiste num sistema de monitorização de espaços alimentares uni
  3. Recolha de feedback de utilizadores.
 
 ## Team
-Team Manager - Alexandre Lopes \
-Product Owner - Gabriela Santos \
-Architect - André Amarante \
-DevOps Master - Edgar Morais 
+Team Manager - Alexandre Lopes (88969) \
+Product Owner - Gabriela Santos (51531) \
+Architect - André Amarante (89198) \
+DevOps Master - Edgar Morais (89323)
 
 
 ## Resources
