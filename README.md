@@ -14,6 +14,8 @@ Product Owner - Gabriela Santos (51531) \
 Architect - André Amarante (89198) \
 DevOps Master - Edgar Morais (89323)
 
+## Resources
+Due to layout issues, we recommend to open and test the frame.html file instead of index.html
 
 ## Resources
 [GitHub](https://github.com/gabsw/campus-monitoring) \
