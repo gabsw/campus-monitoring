@@ -18,7 +18,6 @@ CREATE TABLE campus_monitoring.[LOCAL](
 	max_hum_limit			NUMERIC (4, 1) 		NOT NULL    CHECK (max_hum_limit >= 0.0),
 	min_hum_limit			NUMERIC (4, 1) 		NOT NULL    CHECK (min_hum_limit >= 0.0),
 	max_co2_limit		       	NUMERIC (5, 1) 		    	    CHECK (max_co2_limit >= 0.0),
-	min_co2_limit		       	NUMERIC (5, 1) 		    	    CHECK (min_co2_limit >= 0.0),
 	PRIMARY KEY(name)
 );
 GO
@@ -33,7 +32,6 @@ GO
 
 CREATE TABLE campus_monitoring.WEATHER_READING(
 	temperature			NUMERIC (4, 2) 	NOT NULL,
-	pressure			NUMERIC (5, 1) 	NOT NULL,
 	humidity			NUMERIC (4, 1) 	NOT NULL    CHECK (humidity >= 0.0),
 	co2		        	NUMERIC (5, 1) 		    CHECK (co2 >= 0.0),
 	date_time     	TIMESTAMP     	NOT NULL,
