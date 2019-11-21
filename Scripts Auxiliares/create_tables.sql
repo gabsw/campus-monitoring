@@ -28,7 +28,7 @@ GO
 CREATE TABLE campus_monitoring.WEATHER_READING(
 	temperature			NUMERIC (4, 2) 	NOT NULL,
 	pressure			NUMERIC (5, 1) 	NOT NULL,
-	humidity			NUMERIC (3, 1) 	NOT NULL    CHECK (humidity >= 0.0),
+	humidity			NUMERIC (4, 1) 	NOT NULL    CHECK (humidity >= 0.0),
 	co2		        	NUMERIC (5, 1) 		    CHECK (co2 >= 0.0),
 	date_time     	TIMESTAMP     	NOT NULL,
 	sensor_id     	INT           	NOT NULL,
