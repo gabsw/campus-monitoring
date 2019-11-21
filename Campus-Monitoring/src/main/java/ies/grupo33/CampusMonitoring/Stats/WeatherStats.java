@@ -9,16 +9,18 @@ public class WeatherStats {
 	private String month;
 	private String year;
 	private double tempMax;
-	double tempMin;
-	double tempAvg;
-	double humMax;
-	double humMin;
-	double humAvg;
-	double co2Max;
-	double co2Min;
-	double co2Avg;
+	private double tempMin;
+	private double tempAvg;
+	private double humMax;
+	private double humMin;
+	private double humAvg;
+	private double co2Max;
+	private double co2Min;
+	private double co2Avg;
 	
-	public WeatherStats();
+	public WeatherStats() {
+		
+	};
 	
 	public String getDay() {
 		return day;
