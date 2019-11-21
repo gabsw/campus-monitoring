@@ -43,29 +43,26 @@ connection, channel = get_rabbit_conn_and_channel(rabbit_domain)
 
 try:
     while True:
-            temperature = random.randrange(-10, 20, 1)
-            pressure = random.randrange(500, 1500, 1)
-            humidity = random.randrange(0, 100, 1)
-            co2 = random.randrange(0, 1000, 1)
+            temperature = random.randrange(-10, 31, 1)
+            humidity = random.randrange(0, 101, 1)
+            co2 = random.randrange(0, 1001, 1)
+            sensor_id = random.randrange(1, 4, 1)
 
             date = datetime.now()
 
             weather_reading_1 = {"Temperature": temperature,
-                                 "Pressure": pressure,
                                  "Humidity": humidity,
                                  "CO2": co2,
                                  "Date": str(date),
                                  "Sensor_id": sensor_id}
 
             weather_reading_2 = {"Temperature": temperature * factor_sensor_2,
-                                 "Pressure": pressure * factor_sensor_2,
                                  "Humidity": humidity * factor_sensor_2,
                                  "CO2": co2 * factor_sensor_2,
                                  "Date": str(date),
                                  "Sensor_id": 2}
 
             weather_reading_3 = {"Temperature": temperature * factor_sensor_3,
-                                 "Pressure": pressure * factor_sensor_3,
                                  "Humidity": humidity * factor_sensor_3,
                                  "CO2": co2 * factor_sensor_3,
                                  "Date": str(date),

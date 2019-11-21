@@ -20,7 +20,7 @@ def get_db_conn():
 db_conn = get_db_conn()
 
 
-def write_to_db(temperature, pressure, humidity, co2, date, sensor_id):
+def write_to_db(temperature, humidity, co2, date, sensor_id):
     global db_conn
 
     sql = """INSERT INTO weather(temperature, pressure, humidity, co2, date_time, sensor_id)
@@ -30,7 +30,7 @@ def write_to_db(temperature, pressure, humidity, co2, date, sensor_id):
         # create a new cursor
         cur = db_conn.cursor()
         # execute the INSERT statement
-        cur.execute(sql, [temperature, pressure, humidity, co2, date, sensor_id])
+        cur.execute(sql, [temperature, humidity, co2, date, sensor_id])
         # commit the changes to the database
         db_conn.commit()
         # close communication with the database
@@ -43,7 +43,6 @@ def write_to_db(temperature, pressure, humidity, co2, date, sensor_id):
 def insert_weather_reading(weather_reading):
     """ insert a new weather reading into the weather table """
     temperature = weather_reading.get('Temperature')
-    pressure = weather_reading.get('Pressure')
     humidity = weather_reading.get('Humidity')
     co2 = weather_reading.get('CO2')
     sensor_id = weather_reading.get('Sensor_id')
@@ -52,7 +51,7 @@ def insert_weather_reading(weather_reading):
     date = datetime.strptime(date, "%Y-%m-%d %H:%M:%S.%f")
 
     global db_conn
-    while not write_to_db(temperature, pressure, humidity, co2, date, sensor_id):
+    while not write_to_db(temperature, humidity, co2, date, sensor_id):
         try:
             db_conn.close()
         except Exception:
