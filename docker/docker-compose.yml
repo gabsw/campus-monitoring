@@ -1,0 +1,90 @@
+version: '3.7'
+services:
+  
+  adapter:
+    build:
+      context: ./adapter
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      - rabbitmq
+      - db
+    environment: 
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+      DATABASE_NAME: db_campus_monitoring
+      DATABASE_USERNAME: ies_grupo33
+      DATABASE_PASSWORD: db_grupo33
+      RABBIT_HOST: rabbitmq
+      RABBIT_USERNAME: ies_grupo33
+      RABBIT_PASSWORD: rabbitmq_grupo33
+    links:
+      - rabbitmq
+      - db
+    networks: 
+      - data-stream-network
+      - postgres-network
+
+  fake-collector:
+    build:
+      context: ./fake_collector
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      - rabbitmq
+    environment:
+      RABBIT_HOST: rabbitmq
+      RABBIT_USERNAME: ies_grupo33
+      RABBIT_PASSWORD: rabbitmq_grupo33
+    links:
+      - rabbitmq
+    networks: 
+      - data-stream-network
+
+  rabbitmq:
+    image: 'bitnami/rabbitmq:latest'
+    container_name: "ies_rabbit"
+    environment:
+      RABBITMQ_USERNAME: ies_grupo33
+      RABBITMQ_PASSWORD: rabbitmq_grupo33
+      RABBITMQ_NODE_TYPE: queue-disc
+      RABBITMQ_NODE_NAME: rabbit@rabbitmq
+      RABBITMQ_ERL_COOKIE: s3cr3tc00ki3
+    ports:
+      - '4369:4369'
+      - '5672:5672'
+      - '25672:25672'
+      - '15672:15672'
+    volumes:
+      - 'rabbitmq_data:/bitnami'
+    networks:
+      - data-stream-network
+
+  db:
+    build:
+      context: ./postgresql
+      dockerfile: Dockerfile
+    container_name: "ies_postgres"
+    environment:
+      POSTGRES_USER: ies_grupo33
+      POSTGRES_PASSWORD: db_grupo33
+      POSTGRES_DB: db_campus_monitoring
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: always
+    networks:
+      - postgres-network
+
+networks:
+  data-stream-network:
+    driver: "bridge"
+  postgres-network:
+    driver: "bridge"
+
+volumes:
+  rabbitmq_data:
+    driver: local
+  postgres_data:
+    driver: local
