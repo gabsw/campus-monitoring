@@ -1,6 +1,7 @@
 package ies.grupo33.CampusMonitoring.Model;
 
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
@@ -8,35 +9,26 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "WEATHER_READING")
 public class WeatherReading {
-
-    private int sensorId;
-    private LocalDateTime dateTime;
+    @EmbeddedId
+    private WeatherReadingPK weatherReadingPK;
+    @Column(name = "temperature", nullable = false)
     private double temperature;
+    @Column(name = "humidity", nullable = false)
     private double humidity;
+    @Column(name = "co2", nullable = true)
     private double co2;
 
     public WeatherReading() {
     }
 
-    @Column(name = "sensor_id", nullable = false)
-    public long getSensorId() {
-        return sensorId;
+    public WeatherReadingPK getWeatherReadingPK() {
+        return weatherReadingPK;
     }
 
-    public void setSensorId(int sensorId) {
-        this.sensorId = sensorId;
+    public void setWeatherReadingPK(WeatherReadingPK weatherReadingPK) {
+        this.weatherReadingPK = weatherReadingPK;
     }
 
-    @Column(name = "date_time", nullable = false)
-    public LocalDateTime getDateTime() {
-        return dateTime;
-    }
-
-    public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
-    }
-
-    @Column(name = "temperature", nullable = false)
     public double getTemperature() {
         return temperature;
     }
@@ -45,7 +37,6 @@ public class WeatherReading {
         this.temperature = temperature;
     }
 
-    @Column(name = "humidity", nullable = false)
     public double getHumidity() {
         return humidity;
     }
@@ -54,7 +45,6 @@ public class WeatherReading {
         this.humidity = humidity;
     }
 
-    @Column(name = "co2", nullable = true)
     public double getCo2() {
         return co2;
     }
@@ -65,10 +55,11 @@ public class WeatherReading {
 
     @Override
     public String toString() {
-        return "WeatherReading [sensorId=" + sensorId + ", date_time=" + dateTime + ", temperature=" + temperature
-                + ", humidity=" + humidity + ", co2=" + co2 + "]";
+        return "WeatherReading{" +
+                "weatherReadingPK=" + weatherReadingPK +
+                ", temperature=" + temperature +
+                ", humidity=" + humidity +
+                ", co2=" + co2 +
+                '}';
     }
-
-
-
 }
