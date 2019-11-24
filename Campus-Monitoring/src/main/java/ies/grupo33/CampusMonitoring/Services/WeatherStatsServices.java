@@ -1,7 +1,7 @@
 package ies.grupo33.CampusMonitoring.Services;
 
 import ies.grupo33.CampusMonitoring.Repository.WeatherStatsRepository;
-import ies.grupo33.CampusMonitoring.Stats.WeatherStats;
+import ies.grupo33.CampusMonitoring.Model.WeatherStats;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +21,15 @@ public class WeatherStatsServices {
         } else if (localName == null) {
             throw new IllegalArgumentException("Local name is not defined.");
         } else {
-            return weatherStatsRepository.findByWeatherStatsPKLocalNameAndWeatherStatsPKDateBetween(localName, timeStart, timeEnd);
+            return weatherStatsRepository.findByWeatherStatsPKLocalNameAndWeatherStatsPKDateBetweenOrderByWeatherStatsPKDateAsc(localName, timeStart, timeEnd);
+        }
+    }
+
+    public List<WeatherStats> getWeatherStats(String localName) {
+        if (localName == null) {
+            throw new IllegalArgumentException("Local name is not defined.");
+        } else {
+            return weatherStatsRepository.findByWeatherStatsPKLocalNameOrderByWeatherStatsPKDateAsc(localName);
         }
     }
 }

@@ -1,4 +1,4 @@
-package ies.grupo33.CampusMonitoring.Stats;
+package ies.grupo33.CampusMonitoring.Model;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
