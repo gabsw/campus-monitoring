@@ -10,7 +10,4 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface WeatherRepository extends JpaRepository<WeatherReading, WeatherReadingPK> {
-    List<WeatherStats> computeWeatherStats(@Param("localName") String localName,
-                                           @Param("timeStart") LocalDate timeStart,
-                                           @Param("timeEnd") LocalDate timeEnd);
 }

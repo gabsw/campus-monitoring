@@ -1,6 +1,6 @@
 package ies.grupo33.CampusMonitoring.Services;
 
-import ies.grupo33.CampusMonitoring.Repository.WeatherRepository;
+import ies.grupo33.CampusMonitoring.Repository.WeatherStatsRepository;
 import ies.grupo33.CampusMonitoring.Stats.WeatherStats;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ import java.util.List;
 public class WeatherStatsServices {
 
     @Autowired
-    private WeatherRepository weatherRepository;
+    private WeatherStatsRepository weatherStatsRepository;
 
     public List<WeatherStats> getWeatherStats(String localName, LocalDate timeStart, LocalDate timeEnd) {
         if (timeStart == null || timeEnd == null) {
@@ -21,7 +21,7 @@ public class WeatherStatsServices {
         } else if (localName == null) {
             throw new IllegalArgumentException("Local name is not defined.");
         } else {
-            return weatherRepository.computeWeatherStats(localName, timeStart, timeEnd);
+            return weatherStatsRepository.findByWeatherStatsPKLocalNameAndWeatherStatsPKDateBetween(localName, timeStart, timeEnd);
         }
     }
 }

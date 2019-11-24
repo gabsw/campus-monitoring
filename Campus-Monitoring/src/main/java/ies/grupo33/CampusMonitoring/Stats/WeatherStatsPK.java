@@ -7,10 +7,13 @@ import java.time.LocalDate;
 
 @Embeddable
 public class WeatherStatsPK implements Serializable {
-    @Column(name = "localName", nullable = false)
+    @Column(name = "local_name", nullable = false)
     private String localName;
     @Column(name = "date", nullable = false)
     private LocalDate date;
+
+    public WeatherStatsPK() {
+    }
 
     public WeatherStatsPK(String localName, LocalDate date) {
         this.localName = localName;
