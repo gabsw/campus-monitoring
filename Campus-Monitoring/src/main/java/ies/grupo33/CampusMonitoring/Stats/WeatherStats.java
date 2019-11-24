@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public class WeatherStats {
 	
-	private LocalDateTime date;
+	private LocalDateTime dateTime;
 	private double tempMax;
 	private double tempMin;
 	private double tempAvg;
@@ -20,8 +20,8 @@ public class WeatherStats {
 		
 	};
 
-	public WeatherStats(LocalDateTime date, double tempMax, double tempMin, double tempAvg, double humMax, double humMin, double humAvg, double co2Max, double co2Min, double co2Avg, String localName) {
-		this.date = date;
+	public WeatherStats(LocalDateTime dateTime, double tempMax, double tempMin, double tempAvg, double humMax, double humMin, double humAvg, double co2Max, double co2Min, double co2Avg, String localName) {
+		this.dateTime = dateTime;
 		this.tempMax = tempMax;
 		this.tempMin = tempMin;
 		this.tempAvg = tempAvg;
@@ -34,12 +34,12 @@ public class WeatherStats {
 		this.localName = localName;
 	}
 
-	public LocalDateTime getDate() {
-		return date;
+	public LocalDateTime getDateTime() {
+		return dateTime;
 	}
 
-	public void setDate(LocalDateTime date) {
-		this.date = date;
+	public void setDateTime(LocalDateTime dateTime) {
+		this.dateTime = dateTime;
 	}
 
 	public double getTempMax() {
