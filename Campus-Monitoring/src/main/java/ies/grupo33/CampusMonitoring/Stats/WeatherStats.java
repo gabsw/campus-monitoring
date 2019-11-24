@@ -1,10 +1,10 @@
 package ies.grupo33.CampusMonitoring.Stats;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public class WeatherStats {
 	
-	private LocalDateTime dateTime;
+	private LocalDate date;
 	private double tempMax;
 	private double tempMin;
 	private double tempAvg;
@@ -18,10 +18,10 @@ public class WeatherStats {
 	
 	public WeatherStats() {
 		
-	};
+	}
 
-	public WeatherStats(LocalDateTime dateTime, double tempMax, double tempMin, double tempAvg, double humMax, double humMin, double humAvg, double co2Max, double co2Min, double co2Avg, String localName) {
-		this.dateTime = dateTime;
+	public WeatherStats(LocalDate date, double tempMax, double tempMin, double tempAvg, double humMax, double humMin, double humAvg, double co2Max, double co2Min, double co2Avg, String localName) {
+		this.date = date;
 		this.tempMax = tempMax;
 		this.tempMin = tempMin;
 		this.tempAvg = tempAvg;
@@ -34,12 +34,12 @@ public class WeatherStats {
 		this.localName = localName;
 	}
 
-	public LocalDateTime getDateTime() {
-		return dateTime;
+	public LocalDate getDate() {
+		return date;
 	}
 
-	public void setDateTime(LocalDateTime dateTime) {
-		this.dateTime = dateTime;
+	public void setDateTime(LocalDate dateTime) {
+		this.date = dateTime;
 	}
 
 	public double getTempMax() {
