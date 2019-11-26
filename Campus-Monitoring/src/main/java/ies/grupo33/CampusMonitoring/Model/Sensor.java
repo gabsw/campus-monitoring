@@ -25,7 +25,6 @@ public class Sensor {
 		this.id = id;
 		this.local_name = local_name;
 	}
-
 	
 	public long getId() {
 		return id;

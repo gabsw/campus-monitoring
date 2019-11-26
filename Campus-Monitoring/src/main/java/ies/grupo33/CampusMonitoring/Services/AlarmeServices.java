@@ -22,16 +22,9 @@ public class AlarmeServices {
 	
 	@SuppressWarnings("deprecation") //Por causa da função new Long(sensorId) porque o long não pode ser comparado diretamente com o null
 	public List<Alarm> getAlarms(long sensorId) {
-		if (new Long(sensorId) == null) {
-			return alarmeRepository.findAll();
-		}
-		Optional<Alarm> alarm= alarmeRepository.findBySensorId(sensorId);
 		
-		if (alarm.isPresent()) {
-			return Collections.singletonList(alarm.get());
-		} else {
-			return Collections.emptyList();
-		}
+		List<Alarm> alarm= alarmeRepository.findBySensorId(sensorId);
+		return alarm;
 	}
 	
 }

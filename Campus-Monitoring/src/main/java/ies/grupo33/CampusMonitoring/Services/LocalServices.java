@@ -20,17 +20,5 @@ public class LocalServices {
 		return localRepository.findAll();
 	}
 	
-	public List<Local> getLocals(String name){
-		if (name == null) {
-			return localRepository.findAll();
-		}
-		Optional<Local> local = localRepository.findByName(name);
-		
-		if (local.isPresent()) {
-			return Collections.singletonList(local.get());
-		} else {
-			return Collections.emptyList();
-		}
-	}
 
 }

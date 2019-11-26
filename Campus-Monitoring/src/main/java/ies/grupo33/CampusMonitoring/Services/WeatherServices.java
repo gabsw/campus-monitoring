@@ -28,55 +28,54 @@ public class WeatherServices {
 	}
 	
 	public List<WeatherReading> getWeatherReadingsByDate(LocalDateTime dateInit, LocalDateTime dateFin){
-		List<WeatherReading> list = weatherRepository.findAll();
-		for (WeatherReading w : list) {
-			if (dateInit!=null && w.getWeatherReadingPK().getDateTime().compareTo(dateInit)<0) {
-				list.remove(w);
-			}
-			else if(dateFin!=null && w.getWeatherReadingPK().getDateTime().compareTo(dateFin)>0) {
-				list.remove(w);
-			}
+		if (dateInit ==null || dateFin==null) {
+            throw new IllegalArgumentException("Date interval is not defined.");
 		}
-		list.sort(new Comparator<WeatherReading>() {
-		    @Override
-		    public int compare(WeatherReading w1, WeatherReading w2) {
-		        return w1.getWeatherReadingPK().getDateTime().compareTo(w2.getWeatherReadingPK().getDateTime());
-		     }});
+		List<WeatherReading> list = weatherRepository.findByWeatherReadingPKDateTimeOrderByWeatherReadingPKDateTimeAsc(dateInit, dateFin);
+		
 		return list;
 	}
 	
-	@SuppressWarnings("deprecation")
-	public List<WeatherReading> getWeatherReadingBySensor(long sensorId) {
-		if (new Long(sensorId) == null) {
-			return weatherRepository.findAll();
+	public List<WeatherReading> getWeatherReadingsByLocal(String local){
+		if (local ==null) {
+            throw new IllegalArgumentException("Local is not defined.");
 		}
-		List<WeatherReading> weather= weatherRepository.findBySensorId(sensorId);
+		List<WeatherReading> list = weatherRepository.findByLocalOrderByWeatherReadingPKDateTimeAsc(local);
+		
+		return list;
+	}
+	
+	
+	public List<WeatherReading> getWeatherReadingBySensor(long sensorId) {
+		
+		List<WeatherReading> weather= weatherRepository.findByWeatherReadingPKSensorIdOrderByWeatherReadingPKDateTimeAsc(sensorId);
 		
 		return weather;
 	}
 	
-	@SuppressWarnings("deprecation")
+
 	public List<WeatherReading> getWeatherReadingBySensorAndDate(long sensorId, LocalDateTime dateInit, LocalDateTime dateFin) {
 		List<WeatherReading> list;
-		if (new Long(sensorId)== null) {
-			list = weatherRepository.findAll();
+		if (dateInit ==null || dateFin==null) {
+            throw new IllegalArgumentException("Date interval is not defined.");
 		}
-		else {
-			list = weatherRepository.findBySensorId(sensorId);
+		
+		list = weatherRepository.findByWeatherReadingPKSensorIdAndWeatherReadingPKDateTimeBetweenOrderByWeatherReadingPKDateTimeAsc(sensorId, dateInit, dateFin);
+		
+		return list;		
+	}
+	
+	public List<WeatherReading> getWeatherReadingByLocalAndDate(String local, LocalDateTime dateInit, LocalDateTime dateFin) {
+		List<WeatherReading> list;
+		if (dateInit ==null || dateFin==null) {
+            throw new IllegalArgumentException("Date interval is not defined.");
 		}
-		for (WeatherReading w : list) {
-			if (dateInit!=null && w.getWeatherReadingPK().getDateTime().compareTo(dateInit)<0) {
-				list.remove(w);
-			}
-			else if(dateFin!=null && w.getWeatherReadingPK().getDateTime().compareTo(dateFin)>0) {
-				list.remove(w);
-			}
+		if (local == null) {
+            throw new IllegalArgumentException("Local is not defined.");
 		}
-		list.sort(new Comparator<WeatherReading>() {
-		    @Override
-		    public int compare(WeatherReading w1, WeatherReading w2) {
-		        return w1.getWeatherReadingPK().getDateTime().compareTo(w2.getWeatherReadingPK().getDateTime());
-		     }});
+		
+		list = weatherRepository.findByLocalAndWeatherReadingPKDateTimeBetweenOrderByWeatherReadingPKDateTimeAsc(local, dateInit, dateFin);
+		
 		return list;		
 	}
 	

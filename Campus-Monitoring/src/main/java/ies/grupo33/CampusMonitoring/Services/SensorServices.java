@@ -1,6 +1,8 @@
 package ies.grupo33.CampusMonitoring.Services;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,17 @@ public class SensorServices {
 	
 	public List<Sensor> getSensors() {
 		return sensorRepository.findAll();
+	}
+	
+	public List<Sensor> getSensor(long id) {
+		
+		Optional<Sensor> sensor= sensorRepository.findById(id);
+		
+		if (sensor.isPresent()) {
+			return Collections.singletonList(sensor.get());
+		} else {
+			return Collections.emptyList();
+		}
 	}
 
 }
