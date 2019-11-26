@@ -4,17 +4,26 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import org.springframework.data.annotation.Id;
+
 @Entity
 @Table(name = "local")
 public class Local {
 
-	
+	@Id
+	@Column(name = "name")
 	private String name;
-    private long max_temp_limit;
+	@Column(name = "max_temp_limit")
+	private long max_temp_limit;
+	@Column(name = "min_temp_limit")
     private long min_temp_limit;
+	@Column(name = "max_hum_limit")
     private long max_hum_limit;
+	@Column(name = "min_hum_limit")
     private long min_hum_limit;
+	@Column(name = "max_co2_limit")
     private long max_co2_limit;
+	@Column(name = "min_co2_limit")
     private long min_co2_limit;
     
  
@@ -32,7 +41,7 @@ public class Local {
         this.min_co2_limit = min_co2_limit;
     }
 
-    @Column(name = "name")
+    
 	public String getName() {
 		return name;
 	}
@@ -41,7 +50,7 @@ public class Local {
 		this.name = name;
 	}
 
-	@Column(name = "max_temp_limit")
+	
 	public long getMax_temp_limit() {
 		return max_temp_limit;
 	}
@@ -50,7 +59,7 @@ public class Local {
 		this.max_temp_limit = max_temp_limit;
 	}
 
-	@Column(name = "min_temp_limit")
+	
 	public long getMin_temp_limit() {
 		return min_temp_limit;
 	}
@@ -59,7 +68,7 @@ public class Local {
 		this.min_temp_limit = min_temp_limit;
 	}
 
-	@Column(name = "max_hum_limit")
+	
 	public long getMax_hum_limit() {
 		return max_hum_limit;
 	}
@@ -68,7 +77,7 @@ public class Local {
 		this.max_hum_limit = max_hum_limit;
 	}
 
-	@Column(name = "min_hum_limit")
+	
 	public long getMin_hum_limit() {
 		return min_hum_limit;
 	}
@@ -77,7 +86,7 @@ public class Local {
 		this.min_hum_limit = min_hum_limit;
 	}
 
-	@Column(name = "max_co2_limit")
+	
 	public long getMax_co2_limit() {
 		return max_co2_limit;
 	}
@@ -86,7 +95,7 @@ public class Local {
 		this.max_co2_limit = max_co2_limit;
 	}
 
-	@Column(name = "min_co2_limit")
+	
 	public long getMin_co2_limit() {
 		return min_co2_limit;
 	}

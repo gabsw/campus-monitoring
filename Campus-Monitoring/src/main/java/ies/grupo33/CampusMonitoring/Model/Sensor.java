@@ -15,7 +15,10 @@ import java.text.ParseException;
 @Table(name = "Sensor")
 public class Sensor {
 	
+	@Id
+	@Column(name = "id", nullable = false)
 	private long id;
+	@Column(name = "local_name", nullable = false)
 	private String local_name;
 	
 	public Sensor(long id, String local_name) {
@@ -23,7 +26,7 @@ public class Sensor {
 		this.local_name = local_name;
 	}
 
-	@Column(name = "id", nullable = false)
+	
 	public long getId() {
 		return id;
 	}
@@ -32,7 +35,7 @@ public class Sensor {
 		this.id = id;
 	}
 
-	@Column(name = "local_name", nullable = false)
+	
 	public String getLocal_name() {
 		return local_name;
 	}

@@ -1,47 +1,45 @@
 package ies.grupo33.CampusMonitoring.Model;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+
+import org.springframework.data.annotation.Id;
 
 @Entity
 @Table(name = "alarm")
 public class Alarm {
  
-	private long sensor_id;
-	private String date_time;
+	@EmbeddedId
+	private AlarmPK AlarmPK;
+	@Column(name = "parameter_exceeded")
     private String parameter_exceeded;
+	@Column(name = "value_exceeded")
     private double value_exceeded;
  
     public Alarm() {
   
     }
     
-    public Alarm(String date_time, String parameter_exceeded, double value_exceeded) {
-        this.date_time = date_time;
+    public Alarm(AlarmPK AlarmPK, String parameter_exceeded, double value_exceeded) {
+        this.AlarmPK = AlarmPK;
         this.parameter_exceeded = parameter_exceeded;
         this.value_exceeded = value_exceeded;
     }
     
-    @Column(name = "sensor_id")
-	public long getSensor_id() {
-		return sensor_id;
-	}
 
-	public void setSensor_id(long id) {
-		sensor_id = id;
-	}
     
-	@Column(name = "date_time")
-	public String getDate_time() {
-		return date_time;
+	public AlarmPK getAlarmPK() {
+		return AlarmPK;
 	}
 
-	public void setDate_time(String time) {
-		date_time = time;
+	public void setAlarmPK(AlarmPK alarmPK) {
+		AlarmPK = alarmPK;
 	}
 
-    @Column(name = "parameter_exceeded")
 	public String getParameter_exceeded() {
 		return parameter_exceeded;
 	}
@@ -50,7 +48,7 @@ public class Alarm {
 		parameter_exceeded = parameter;
 	}
 
-	@Column(name = "value_exceeded")
+	
 	public double getValue_exceeded() {
 		return value_exceeded;
 	}
@@ -61,7 +59,11 @@ public class Alarm {
 
 	@Override
 	public String toString() {
-		return "Alarme [Sensor_id=" + sensor_id + ", Parameter_exceeded=" + parameter_exceeded + ", Date_time="
-				+ date_time + ", Value_exceeded=" + value_exceeded + "]";
+		return "Alarm [AlarmPK=" + AlarmPK + ", parameter_exceeded=" + parameter_exceeded + ", value_exceeded="
+				+ value_exceeded + "]";
 	}
+
+	
+	
+	
 }
