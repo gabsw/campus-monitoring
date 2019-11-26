@@ -15,7 +15,7 @@ public interface WeatherRepository extends JpaRepository<WeatherReading, Weather
 	List<WeatherReading> findByWeatherReadingPKSensorIdAndWeatherReadingPKDateTimeBetweenOrderByWeatherReadingPKDateTimeAsc(
 			long sensorId, LocalDateTime dateInit, LocalDateTime dateFin);
 	
-	List<WeatherReading> findByWeatherReadingPKDateTimeOrderByWeatherReadingPKDateTimeAsc(LocalDateTime dateInit, LocalDateTime dateFin);
+	List<WeatherReading> findByWeatherReadingPKDateTimeBetweenOrderByWeatherReadingPKDateTimeAsc(LocalDateTime dateInit, LocalDateTime dateFin);
 
 	List<WeatherReading> findByLocalOrderByWeatherReadingPKDateTimeAsc(String local);
 

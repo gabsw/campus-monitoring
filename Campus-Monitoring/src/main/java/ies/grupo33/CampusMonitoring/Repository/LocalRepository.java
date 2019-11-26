@@ -7,6 +7,6 @@ import ies.grupo33.CampusMonitoring.Model.Local;
 
 public interface LocalRepository extends JpaRepository<Local, Long> {
 
-	Optional<Local> findByName(String name);
+	
 
 }

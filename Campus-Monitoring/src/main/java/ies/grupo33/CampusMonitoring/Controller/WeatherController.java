@@ -25,11 +25,6 @@ public class WeatherController {
 	@Autowired
 	WeatherServices weatherServices;
 	
-	@Autowired
-	LocalServices localServices;
-	
-	@Autowired
-	SensorServices sensorServices;
 	
 	@GetMapping("/local/{localName}")
 	public List<WeatherReading> getWeatherReading(@PathVariable String localName,
@@ -42,10 +37,7 @@ public class WeatherController {
 		return weatherServices.getWeatherReadingByLocalAndDate(localName, startDate, endDate);
 	}
 	
-	@GetMapping("/locals")
-	public List<Local> getLocals(){
-		return localServices.getAllLocals();
-	}
+	
 												  
 	
 }

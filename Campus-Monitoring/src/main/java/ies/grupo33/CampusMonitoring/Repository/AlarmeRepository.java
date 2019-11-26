@@ -9,6 +9,6 @@ import ies.grupo33.CampusMonitoring.Model.AlarmPK;
 
 public interface AlarmeRepository  extends JpaRepository<Alarm, AlarmPK>{
 
-	List<Alarm> findBySensorId(long sensorId);
+	List<Alarm> findByAlarmPKSensorId(long sensorId);
 
 }

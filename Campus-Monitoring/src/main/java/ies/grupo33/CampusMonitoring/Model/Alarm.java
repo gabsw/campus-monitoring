@@ -14,7 +14,7 @@ import org.springframework.data.annotation.Id;
 public class Alarm {
  
 	@EmbeddedId
-	private AlarmPK AlarmPK;
+	private AlarmPK alarmPK;
 	@Column(name = "parameter_exceeded")
     private String parameter_exceeded;
 	@Column(name = "value_exceeded")
@@ -25,7 +25,7 @@ public class Alarm {
     }
     
     public Alarm(AlarmPK AlarmPK, String parameter_exceeded, double value_exceeded) {
-        this.AlarmPK = AlarmPK;
+        this.alarmPK = AlarmPK;
         this.parameter_exceeded = parameter_exceeded;
         this.value_exceeded = value_exceeded;
     }
@@ -33,11 +33,11 @@ public class Alarm {
 
     
 	public AlarmPK getAlarmPK() {
-		return AlarmPK;
+		return alarmPK;
 	}
 
 	public void setAlarmPK(AlarmPK alarmPK) {
-		AlarmPK = alarmPK;
+		alarmPK = alarmPK;
 	}
 
 	public String getParameter_exceeded() {
@@ -59,7 +59,7 @@ public class Alarm {
 
 	@Override
 	public String toString() {
-		return "Alarm [AlarmPK=" + AlarmPK + ", parameter_exceeded=" + parameter_exceeded + ", value_exceeded="
+		return "Alarm [alarmPK=" + alarmPK + ", parameter_exceeded=" + parameter_exceeded + ", value_exceeded="
 				+ value_exceeded + "]";
 	}
 

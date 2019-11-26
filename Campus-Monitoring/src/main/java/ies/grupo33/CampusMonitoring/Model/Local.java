@@ -3,8 +3,8 @@ package ies.grupo33.CampusMonitoring.Model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Id;
 
-import org.springframework.data.annotation.Id;
 
 @Entity
 @Table(name = "local")

@@ -31,7 +31,7 @@ public class WeatherServices {
 		if (dateInit ==null || dateFin==null) {
             throw new IllegalArgumentException("Date interval is not defined.");
 		}
-		List<WeatherReading> list = weatherRepository.findByWeatherReadingPKDateTimeOrderByWeatherReadingPKDateTimeAsc(dateInit, dateFin);
+		List<WeatherReading> list = weatherRepository.findByWeatherReadingPKDateTimeBetweenOrderByWeatherReadingPKDateTimeAsc(dateInit, dateFin);
 		
 		return list;
 	}
