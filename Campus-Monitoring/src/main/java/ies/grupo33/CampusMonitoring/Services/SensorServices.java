@@ -21,14 +21,14 @@ public class SensorServices {
 		return sensorRepository.findAll();
 	}
 	
-	public List<Sensor> getSensor(long id) {
+	public Sensor getSensor(long id) {
 		
 		Optional<Sensor> sensor= sensorRepository.findById(id);
 		
 		if (sensor.isPresent()) {
-			return Collections.singletonList(sensor.get());
+			return sensor.get();
 		} else {
-			return Collections.emptyList();
+			return null;
 		}
 	}
 

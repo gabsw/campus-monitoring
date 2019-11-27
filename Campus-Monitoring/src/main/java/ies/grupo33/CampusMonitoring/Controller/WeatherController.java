@@ -2,6 +2,7 @@ package ies.grupo33.CampusMonitoring.Controller;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -14,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ies.grupo33.CampusMonitoring.Model.WeatherReading;
+import ies.grupo33.CampusMonitoring.Model.WeatherReadingDto;
 import ies.grupo33.CampusMonitoring.Model.WeatherReadingPK;
 import ies.grupo33.CampusMonitoring.Model.Local;
+import ies.grupo33.CampusMonitoring.Model.Sensor;
 import ies.grupo33.CampusMonitoring.Services.LocalServices;
 import ies.grupo33.CampusMonitoring.Services.SensorServices;
 import ies.grupo33.CampusMonitoring.Services.WeatherServices;
@@ -27,15 +30,51 @@ public class WeatherController {
 	@Autowired
 	WeatherServices weatherServices;
 	
+	@Autowired
+	SensorServices sensorServices;
+	
 	
 	@GetMapping("/local/{localName}")
-	public List<WeatherReading> getWeatherReading(@PathVariable String localName,
+	public List<WeatherReadingDto> getWeatherReading(@PathVariable String localName,
 			@RequestParam(name="start_date", required=false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
 			@RequestParam(name="end_date", required=false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate ) {
+		List<WeatherReading> l;
 		if (startDate==null ||endDate==null) {
-			return weatherServices.getWeatherReadingsByLocal(localName);
+			l = weatherServices.getWeatherReadingsByLocal(localName);
 		}
-		return weatherServices.getWeatherReadingByLocalAndDate(localName, startDate, endDate);
+		else {
+			l = weatherServices.getWeatherReadingByLocalAndDate(localName, startDate, endDate);
+		}
+		List<WeatherReadingDto> rl = new ArrayList<>();
+		for(WeatherReading wr:l) {
+			rl.add(new WeatherReadingDto(wr.getWeatherReadingPK().getSensorId(), wr.getWeatherReadingPK().getDateTime(), localName, wr.getTemperature(),
+					wr.getHumidity(), wr.getCo2()));
+		}
+		return rl;
+	}
+	
+	@GetMapping("/id/{id}")
+	public List<WeatherReadingDto> getWeatherReadingBySensorId(@PathVariable String id,
+			@RequestParam(name="start_date", required=false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+			@RequestParam(name="end_date", required=false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate ) {
+		long sensor_id = Long.parseLong(id);
+		List<WeatherReading> l;
+		if (startDate==null ||endDate==null) {
+			l = weatherServices.getWeatherReadingBySensor(sensor_id);
+		}
+		else {
+			l = weatherServices.getWeatherReadingBySensorAndDate(sensor_id, startDate, endDate);
+		}
+		List<WeatherReadingDto> rl = new ArrayList<>();
+		Sensor s = sensorServices.getSensor(sensor_id);
+		if(l.size()==0 && s!=null) {
+			return rl;
+		}
+		for(WeatherReading wr:l) {
+			rl.add(new WeatherReadingDto(wr.getWeatherReadingPK().getSensorId(), wr.getWeatherReadingPK().getDateTime(), s.getLocal_name(), wr.getTemperature(),
+					wr.getHumidity(), wr.getCo2()));
+		}
+		return rl;
 	}
 
 												  
