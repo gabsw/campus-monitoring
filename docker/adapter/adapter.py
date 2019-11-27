@@ -1,18 +1,24 @@
 #!/usr/bin/env python
 
-import pika
-import psycopg2
+import os
 import json
 from datetime import datetime
+import time
 
+import pika
+import psycopg2
+
+
+def get_env_var(var_name):
+    return os.environ[var_name]
 
 # Change for postgres domain
 def get_db_conn():
-    conn = psycopg2.connect(user="sysadmin",
-                            password="pynative@#29",
-                            host="127.0.0.1",
-                            port="5432",
-                            database="postgres_db")
+    conn = psycopg2.connect(user=get_env_var('DATABASE_USERNAME'),
+                            password=get_env_var('DATABASE_PASSWORD'),
+                            host=get_env_var('DATABASE_HOST'),
+                            port=get_env_var('DATABASE_PORT'),
+                            database=get_env_var('DATABASE_NAME'))
 
     return conn
 
@@ -20,17 +26,17 @@ def get_db_conn():
 db_conn = get_db_conn()
 
 
-def write_to_db(temperature, pressure, humidity, co2, date, sensor_id):
+def write_to_db(temperature, humidity, co2, date, sensor_id):
     global db_conn
 
-    sql = """INSERT INTO weather(temperature, pressure, humidity, co2, date_time, sensor_id)
-             VALUES(%s, %s, %s, %s, %s, %s);"""
+    sql = """INSERT INTO campus_monitoring.WEATHER_READING(temperature, humidity, co2, date_time, sensor_id)
+             VALUES(%s, %s, %s, %s, %s);"""
 
     try:
         # create a new cursor
         cur = db_conn.cursor()
         # execute the INSERT statement
-        cur.execute(sql, [temperature, pressure, humidity, co2, date, sensor_id])
+        cur.execute(sql, [temperature, humidity, co2, date, sensor_id])
         # commit the changes to the database
         db_conn.commit()
         # close communication with the database
@@ -43,7 +49,6 @@ def write_to_db(temperature, pressure, humidity, co2, date, sensor_id):
 def insert_weather_reading(weather_reading):
     """ insert a new weather reading into the weather table """
     temperature = weather_reading.get('Temperature')
-    pressure = weather_reading.get('Pressure')
     humidity = weather_reading.get('Humidity')
     co2 = weather_reading.get('CO2')
     sensor_id = weather_reading.get('Sensor_id')
@@ -52,12 +57,17 @@ def insert_weather_reading(weather_reading):
     date = datetime.strptime(date, "%Y-%m-%d %H:%M:%S.%f")
 
     global db_conn
-    while not write_to_db(temperature, pressure, humidity, co2, date, sensor_id):
+    while not write_to_db(temperature, humidity, co2, date, sensor_id):
+        print('Lost connection to database.')
         try:
+            print('Closing connection to database.')
             db_conn.close()
-        except Exception:
-            pass
+            print('Connection to database closed.')
+        except Exception as ex:
+            print('Exception when closing database connection: {}'.format(ex))
 
+        time.sleep(10)
+        print('Reconnecting to database.')
         db_conn = get_db_conn()
 
 
@@ -69,12 +79,17 @@ def callback(ch, method, properties, body):
 
 # https://pika.readthedocs.io/en/stable/examples/blocking_consume_recover_multiple_hosts.html
 
-rabbit_domain = 'localhost'
+rabbit_host = get_env_var('RABBIT_HOST')
+rabbit_username = get_env_var('RABBIT_USERNAME')
+rabbit_password = get_env_var('RABBIT_PASSWORD')
+
 while True:
     try:
-        connection = pika.BlockingConnection(pika.ConnectionParameters(host=rabbit_domain))
-        channel = connection.channel()
+        credentials = pika.PlainCredentials(rabbit_username, rabbit_password)
+        parameters = pika.ConnectionParameters(rabbit_host, 5672, '/', credentials)
+        connection = pika.BlockingConnection(parameters)
 
+        channel = connection.channel()
         channel.queue_declare(queue='task_queue', durable=True)  # Avoid losing messages during crashes
         channel.basic_qos(prefetch_count=1)  # Do not give more than one message to a worker at a time
         channel.basic_consume(queue='task_queue', on_message_callback=callback)
@@ -91,12 +106,14 @@ while True:
         # when the node is stopped cleanly
         #
         # break
+        time.sleep(5)
         continue
         # Do not recover on channel errors
-    except pika.exceptions.AMQPChannelError as err:
-        print("Caught a channel error: {}, stopping...".format(err))
+    except pika.exceptions.AMQPChannelError as ex:
+        print("Caught a channel error: {}, stopping.".format(ex))
         break
         # Recover on all other connection errors
     except pika.exceptions.AMQPConnectionError:
-        print("Connection was closed, retrying...")
+        print("Connection was closed, retrying.")
+        time.sleep(5)
         continue

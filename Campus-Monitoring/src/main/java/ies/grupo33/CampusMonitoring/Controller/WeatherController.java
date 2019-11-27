@@ -1,33 +1,21 @@
 package ies.grupo33.CampusMonitoring.Controller;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
-
+import ies.grupo33.CampusMonitoring.Model.WeatherReading;
+import ies.grupo33.CampusMonitoring.Services.WeatherServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import ies.grupo33.CampusMonitoring.Model.WeatherReading;
-import ies.grupo33.CampusMonitoring.Model.WeatherReadingPK;
-import ies.grupo33.CampusMonitoring.Model.Local;
-import ies.grupo33.CampusMonitoring.Services.LocalServices;
-import ies.grupo33.CampusMonitoring.Services.SensorServices;
-import ies.grupo33.CampusMonitoring.Services.WeatherServices;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("weather-reading")
 public class WeatherController {
-	
+
 	@Autowired
 	WeatherServices weatherServices;
-	
-	
+
 	@GetMapping("/local/{localName}")
 	public List<WeatherReading> getWeatherReading(@PathVariable String localName,
 			@RequestParam(name="start_date", required=false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
@@ -37,7 +25,4 @@ public class WeatherController {
 		}
 		return weatherServices.getWeatherReadingByLocalAndDate(localName, startDate, endDate);
 	}
-
-												  
-	
 }

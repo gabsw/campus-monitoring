@@ -37,7 +37,6 @@ except IOError:
 # the data.
 
 sensor.set_humidity_oversample(bme680.OS_2X)
-sensor.set_pressure_oversample(bme680.OS_4X)
 sensor.set_temperature_oversample(bme680.OS_8X)
 sensor.set_filter(bme680.FILTER_SIZE_3)
 sensor.set_gas_status(bme680.ENABLE_GAS_MEAS)
@@ -66,7 +65,6 @@ try:
         if sensor.get_sensor_data():
 
             temperature = sensor.data.temperature
-            pressure = sensor.data.pressure
             humidity = sensor.data.humidity
             date = datetime.now()
             co2 = None
@@ -75,21 +73,18 @@ try:
                 co2 = sensor.data.gas_resistance
 
             weather_reading_1 = {"Temperature": temperature,
-                                 "Pressure": pressure,
                                  "Humidity": humidity,
                                  "CO2": co2,
                                  "Date": str(date),
                                  "Sensor_id": sensor_id}
 
             weather_reading_2 = {"Temperature": temperature * factor_sensor_2,
-                                 "Pressure": pressure * factor_sensor_2,
                                  "Humidity": humidity * factor_sensor_2,
                                  "CO2": co2 * factor_sensor_2,
                                  "Date": str(date),
                                  "Sensor_id": 2}
 
             weather_reading_3 = {"Temperature": temperature * factor_sensor_3,
-                                 "Pressure": pressure * factor_sensor_3,
                                  "Humidity": humidity * factor_sensor_3,
                                  "CO2": co2 * factor_sensor_3,
                                  "Date": str(date),

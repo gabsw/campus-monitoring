@@ -30,7 +30,7 @@ public class WeatherReading {
 	public void setWeatherReadingPK(WeatherReadingPK weatherReadingPK) {
 		this.weatherReadingPK = weatherReadingPK;
 	}
-	
+
 	public String getLocalName() {
 		return localName;
 	}
