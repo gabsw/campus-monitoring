@@ -27,20 +27,12 @@ public class WeatherServices {
 		return weatherRepository.findAll();
 	}
 	
-	public List<WeatherReading> getWeatherReadingsByDate(LocalDateTime dateInit, LocalDateTime dateFin){
-		if (dateInit ==null || dateFin==null) {
-            throw new IllegalArgumentException("Date interval is not defined.");
-		}
-		List<WeatherReading> list = weatherRepository.findByWeatherReadingPKDateTimeBetweenOrderByWeatherReadingPKDateTimeAsc(dateInit, dateFin);
-		
-		return list;
-	}
 	
 	public List<WeatherReading> getWeatherReadingsByLocal(String local){
 		if (local ==null) {
             throw new IllegalArgumentException("Local is not defined.");
 		}
-		List<WeatherReading> list = weatherRepository.findByLocalOrderByWeatherReadingPKDateTimeAsc(local);
+		List<WeatherReading> list = weatherRepository.findByLocalNameOrderByWeatherReadingPKDateTimeAsc(local);
 		
 		return list;
 	}
@@ -74,7 +66,7 @@ public class WeatherServices {
             throw new IllegalArgumentException("Local is not defined.");
 		}
 		
-		list = weatherRepository.findByLocalAndWeatherReadingPKDateTimeBetweenOrderByWeatherReadingPKDateTimeAsc(local, dateInit, dateFin);
+		list = weatherRepository.findByLocalNameAndWeatherReadingPKDateTimeBetweenOrderByWeatherReadingPKDateTimeAsc(local, dateInit, dateFin);
 		
 		return list;		
 	}

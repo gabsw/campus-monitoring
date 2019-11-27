@@ -7,12 +7,12 @@ import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "WEATHER_READING")
+@Table(name = "WEATHER_READING", schema = "campus_monitoring")
 public class WeatherReading {
 	@EmbeddedId
 	private WeatherReadingPK weatherReadingPK;
-	@Column(name = "local", nullable = false)
-	private String local;
+	@Column(name = "local_name", nullable = false)
+	private String localName;
 	@Column(name = "temperature", nullable = false)
 	private double temperature;
 	@Column(name = "humidity", nullable = false)
@@ -31,12 +31,12 @@ public class WeatherReading {
 		this.weatherReadingPK = weatherReadingPK;
 	}
 	
-	public String getLocal() {
-		return local;
+	public String getLocalName() {
+		return localName;
 	}
 
-	public void setLocal(String local) {
-		this.local = local;
+	public void setLocalName(String local) {
+		this.localName = local;
 	}
 
 	public double getTemperature() {

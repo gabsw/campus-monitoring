@@ -12,7 +12,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 
 @Entity
-@Table(name = "Sensor")
+@Table(name = "SENSOR" , schema = "campus_monitoring")
 public class Sensor {
 	
 	@Id
@@ -20,6 +20,10 @@ public class Sensor {
 	private long id;
 	@Column(name = "local_name", nullable = false)
 	private String local_name;
+	
+	public Sensor() {
+	
+	}
 	
 	public Sensor(long id, String local_name) {
 		this.id = id;

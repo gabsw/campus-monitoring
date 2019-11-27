@@ -7,7 +7,7 @@ import javax.persistence.Id;
 
 
 @Entity
-@Table(name = "local")
+@Table(name = "LOCAL", schema = "campus_monitoring")
 public class Local {
 
 	@Id
@@ -23,8 +23,7 @@ public class Local {
     private long min_hum_limit;
 	@Column(name = "max_co2_limit")
     private long max_co2_limit;
-	@Column(name = "min_co2_limit")
-    private long min_co2_limit;
+	
     
  
     public Local() {
@@ -38,7 +37,6 @@ public class Local {
         this.max_hum_limit = max_hum_limit;
         this.min_hum_limit = max_hum_limit;
         this.max_co2_limit = max_co2_limit;
-        this.min_co2_limit = min_co2_limit;
     }
 
     
@@ -95,20 +93,12 @@ public class Local {
 		this.max_co2_limit = max_co2_limit;
 	}
 
-	
-	public long getMin_co2_limit() {
-		return min_co2_limit;
-	}
-
-	public void setMin_co2_limit(long min_co2_limit) {
-		this.min_co2_limit = min_co2_limit;
-	}
 
 	@Override
 	public String toString() {
 		return "Local [name=" + name + ", max_temp_limit=" + max_temp_limit + ", min_temp_limit=" + min_temp_limit
 				+ ", max_hum_limit=" + max_hum_limit + ", min_hum_limit=" + min_hum_limit + ", max_co2_limit="
-				+ max_co2_limit + ", min_co2_limit=" + min_co2_limit + "]";
+				+ max_co2_limit + "]";
 	}
     
     

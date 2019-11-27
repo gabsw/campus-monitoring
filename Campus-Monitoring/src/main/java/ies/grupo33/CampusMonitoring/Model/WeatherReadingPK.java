@@ -17,7 +17,11 @@ public class WeatherReadingPK implements Serializable {
         this.dateTime = dateTime;
     }
 
-    public int getSensorId() {
+    public WeatherReadingPK() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public int getSensorId() {
         return sensorId;
     }
 
