@@ -33,9 +33,39 @@ public class WeatherController {
 	@Autowired
 	SensorServices sensorServices;
 	
+	@GetMapping("/latest/local/{localName}")
+	public WeatherReadingDto getLatestWeatherReadingByLocal(@PathVariable String localName){
+		WeatherReading wr = weatherServices.getMostRecentWeatherReadingByLocal(localName);
+		
+		if(wr==null) {
+			return null;
+		}
+		
+		WeatherReadingDto wrdto = new WeatherReadingDto(wr.getWeatherReadingPK().getSensorId(), wr.getWeatherReadingPK().getDateTime(), localName, wr.getTemperature(),
+				wr.getHumidity(), wr.getCo2());
+		return wrdto;
+	}
+	
+	@GetMapping("/latest/id/{id}")
+	public WeatherReadingDto getLatestWeatherReadingBySensorId(@PathVariable String id){
+		
+		long sensor_id = Long.parseLong(id);
+		
+		WeatherReading wr = weatherServices.getMostRecentWeatherReadingBySensorId(sensor_id);
+		
+		if(wr==null) {
+			return null;
+		}
+		
+		Sensor s = sensorServices.getSensor(sensor_id);
+		
+		WeatherReadingDto wrdto = new WeatherReadingDto(wr.getWeatherReadingPK().getSensorId(), wr.getWeatherReadingPK().getDateTime(), s.getLocal_name(), wr.getTemperature(),
+				wr.getHumidity(), wr.getCo2());
+		return wrdto;
+	}
 	
 	@GetMapping("/local/{localName}")
-	public List<WeatherReadingDto> getWeatherReading(@PathVariable String localName,
+	public List<WeatherReadingDto> getWeatherReadingByLocal(@PathVariable String localName,
 			@RequestParam(name="start_date", required=false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
 			@RequestParam(name="end_date", required=false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate ) {
 		List<WeatherReading> l;

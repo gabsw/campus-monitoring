@@ -28,6 +28,29 @@ public class WeatherServices {
 		return weatherRepository.findAll();
 	}
 	
+	public WeatherReading getMostRecentWeatherReadingByLocal(String local){
+		if (local ==null) {
+            throw new IllegalArgumentException("Local is not defined.");
+		}
+		Optional<WeatherReading> wr = weatherRepository.findByLocalNameOrderByWeatherReadingPKDateTimeDescFirst(local);
+		
+		if (wr.isPresent()) {
+			return wr.get();
+		} else {
+			return null;
+		}
+	}
+	
+	public WeatherReading getMostRecentWeatherReadingBySensorId(long sensorId){
+		
+		Optional<WeatherReading> wr = weatherRepository.findFirstByWeatherReadingPKSensorIdOrderByWeatherReadingPKDateTimeDesc(sensorId);
+		
+		if (wr.isPresent()) {
+			return wr.get();
+		} else {
+			return null;
+		}
+	}
 	
 	public List<WeatherReading> getWeatherReadingsByLocal(String local){
 		if (local ==null) {
