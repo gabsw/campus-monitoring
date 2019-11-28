@@ -11,8 +11,6 @@ import java.time.LocalDateTime;
 public class WeatherReading {
 	@EmbeddedId
 	private WeatherReadingPK weatherReadingPK;
-	@Column(name = "local_name", nullable = false)
-	private String localName;
 	@Column(name = "temperature", nullable = false)
 	private double temperature;
 	@Column(name = "humidity", nullable = false)
@@ -29,14 +27,6 @@ public class WeatherReading {
 
 	public void setWeatherReadingPK(WeatherReadingPK weatherReadingPK) {
 		this.weatherReadingPK = weatherReadingPK;
-	}
-
-	public String getLocalName() {
-		return localName;
-	}
-
-	public void setLocalName(String local) {
-		this.localName = local;
 	}
 
 	public double getTemperature() {

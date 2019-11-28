@@ -20,7 +20,7 @@ public class SensorController {
 	SensorServices sensorServices;
 	
 	@GetMapping("/")
-	public List<Sensor> getLocals(){
+	public List<Sensor> getSensors(){
 		return sensorServices.getSensors();
 	}
 
