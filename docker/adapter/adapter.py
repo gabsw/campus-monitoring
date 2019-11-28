@@ -30,20 +30,17 @@ def write_to_db(temperature, humidity, co2, date, sensor_id):
     global db_conn
 
     sql = """INSERT INTO campus_monitoring.WEATHER_READING(temperature, humidity, co2, date_time, sensor_id)
-             VALUES(%s, %s, %s, %s, %s);"""
+             VALUES(%s, %s, %s, %s, %s)
+             ON CONFLICT (date_time, sensor_id) DO NOTHING;"""
 
-    try:
-        # create a new cursor
-        cur = db_conn.cursor()
-        # execute the INSERT statement
-        cur.execute(sql, [temperature, humidity, co2, date, sensor_id])
-        # commit the changes to the database
-        db_conn.commit()
-        # close communication with the database
-        cur.close()
-        return True
-    except (Exception, psycopg2.DatabaseError) as error:
-        return False
+    # create a new cursor
+    cur = db_conn.cursor()
+    # execute the INSERT statement
+    cur.execute(sql, [temperature, humidity, co2, date, sensor_id])
+    # commit the changes to the database
+    db_conn.commit()
+    # close communication with the database
+    cur.close()
 
 
 def insert_weather_reading(weather_reading):
@@ -56,19 +53,8 @@ def insert_weather_reading(weather_reading):
     date = weather_reading.get('Date')
     date = datetime.strptime(date, "%Y-%m-%d %H:%M:%S.%f")
 
-    global db_conn
-    while not write_to_db(temperature, humidity, co2, date, sensor_id):
-        print('Lost connection to database.')
-        try:
-            print('Closing connection to database.')
-            db_conn.close()
-            print('Connection to database closed.')
-        except Exception as ex:
-            print('Exception when closing database connection: {}'.format(ex))
-
-        time.sleep(10)
-        print('Reconnecting to database.')
-        db_conn = get_db_conn()
+    write_to_db(temperature, humidity, co2, date, sensor_id)
+    
 
 
 def callback(ch, method, properties, body):
@@ -116,4 +102,8 @@ while True:
     except pika.exceptions.AMQPConnectionError:
         print("Connection was closed, retrying.")
         time.sleep(5)
-        continue
+    except (Exception, psycopg2.DatabaseError) as error:
+        time.sleep(5)
+        print("Database error: ", error)
+        print("Rethrowing error.")
+        break

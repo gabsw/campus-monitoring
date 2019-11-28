@@ -1,5 +1,22 @@
 version: '3.3'
 services:
+  application:  
+    build:
+      context: ../Campus-Monitoring/
+      dockerfile: Dockerfile
+    ports:
+      - "80:8080"
+    restart: always
+    depends_on: 
+      - db 
+    environment: 
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/db_campus_monitoring
+      SPRING_DATASOURCE_USERNAME: ies_grupo33
+      SPRING_DATASOURCE_PASSWORD: db_grupo33
+    links:
+      - db
+    networks: 
+      - postgres-network
   
   adapter:
     build:

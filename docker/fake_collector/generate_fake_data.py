@@ -57,7 +57,7 @@ rabbit_username = get_env_var('RABBIT_USERNAME')
 rabbit_password = get_env_var('RABBIT_PASSWORD')
 
 # waiting for rabbit container to go up
-time.sleep(10)
+time.sleep(30)
 
 connection, channel = get_rabbit_conn_and_channel(rabbit_host, rabbit_username, rabbit_password)
 
@@ -101,7 +101,7 @@ try:
             send_message(channel, weather_reading_3)
 
             # Offset between data
-            time.sleep(1)
+            time.sleep(60)
 
 except KeyboardInterrupt:
     pass
