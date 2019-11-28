@@ -6,18 +6,22 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Embeddable
-public class WeatherReadingPK implements Serializable {
+public class AlarmPK implements Serializable {
     @Column(name = "sensor_id", nullable = false)
     private int sensorId;
     @Column(name = "date_time", nullable = false)
     private LocalDateTime dateTime;
+    @Column(name = "violation_parameter", nullable = false)
+    private String violation_parameter;
 
-    public WeatherReadingPK(int sensorId, LocalDateTime dateTime) {
+    public AlarmPK(int sensorId, LocalDateTime dateTime, String violation_parameter) {
         this.sensorId = sensorId;
         this.dateTime = dateTime;
+        this.violation_parameter = violation_parameter;
     }
 
-    public WeatherReadingPK() {
+    public AlarmPK() {
+
     }
 
     public int getSensorId() {
@@ -36,11 +40,11 @@ public class WeatherReadingPK implements Serializable {
         this.dateTime = dateTime;
     }
 
-    @Override
-    public String toString() {
-        return "WeatherReadingPK{" +
-                "sensorId=" + sensorId +
-                ", dateTime=" + dateTime +
-                '}';
+    public String getViolation_parameter() {
+        return violation_parameter;
+    }
+
+    public void setViolation_parameter(String violation_parameter) {
+        this.violation_parameter = violation_parameter;
     }
 }
