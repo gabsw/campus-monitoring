@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import ies.grupo33.CampusMonitoring.Model.Sensor;
 import ies.grupo33.CampusMonitoring.Model.WeatherReading;
+import ies.grupo33.CampusMonitoring.Model.WeatherReadingDto;
 import ies.grupo33.CampusMonitoring.Repository.SensorRepository;
 import ies.grupo33.CampusMonitoring.Repository.WeatherRepository;
 

@@ -8,11 +8,11 @@ import java.time.LocalDateTime;
 @Embeddable
 public class WeatherReadingPK implements Serializable {
     @Column(name = "sensor_id", nullable = false)
-    private int sensorId;
+    private long sensorId;
     @Column(name = "date_time", nullable = false)
     private LocalDateTime dateTime;
 
-    public WeatherReadingPK(int sensorId, LocalDateTime dateTime) {
+    public WeatherReadingPK(long sensorId, LocalDateTime dateTime) {
         this.sensorId = sensorId;
         this.dateTime = dateTime;
     }
@@ -21,11 +21,11 @@ public class WeatherReadingPK implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public int getSensorId() {
+	public long getSensorId() {
         return sensorId;
     }
 
-    public void setSensorId(int sensorId) {
+    public void setSensorId(long sensorId) {
         this.sensorId = sensorId;
     }
 
