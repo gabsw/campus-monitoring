@@ -12,11 +12,12 @@ public interface UniversalAlarmRepository extends JpaRepository<UniversalAlarm, 
 
     @Query("SELECT new ies.grupo33.CampusMonitoring.DTO.UniversalAlarmDTO(" +
             "ua.universalAlarmPK.sensorId, " +
-            "ua.universalAlarmPK.dateTime, " +
+            "ua.universalAlarmPK.startDateTime, " +
             "ua.universalAlarmPK.violationParameter, " +
             "ua.violationType, " +
             "ua.violationValue, " +
             "ua.status, " +
+            "ua.endDateTime, " +
             "se.localName) " +
             "FROM UniversalAlarm AS ua " +
             "INNER JOIN Sensor AS se " +
@@ -27,11 +28,12 @@ public interface UniversalAlarmRepository extends JpaRepository<UniversalAlarm, 
 
     @Query("SELECT new ies.grupo33.CampusMonitoring.DTO.UniversalAlarmDTO(" +
             "ua.universalAlarmPK.sensorId, " +
-            "ua.universalAlarmPK.dateTime, " +
+            "ua.universalAlarmPK.startDateTime, " +
             "ua.universalAlarmPK.violationParameter, " +
             "ua.violationType, " +
             "ua.violationValue, " +
             "ua.status, " +
+            "ua.endDateTime, " +
             "se.localName) " +
             "FROM UniversalAlarm AS ua " +
             "INNER JOIN Sensor AS se " +

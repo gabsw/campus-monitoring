@@ -26,4 +26,5 @@ public class UniversalAlarmServices {
 
         return universalAlarmRepository.fetchOpenUniversalAlarmDTOByLocal(localName);
     }
+
 }

@@ -1,31 +1,43 @@
 package ies.grupo33.CampusMonitoring.DTO;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+// this annotation tells Jackson to only include values that are not null when transforming this object to json
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UniversalAlarmDTO implements Serializable {
 
     // From UniversalAlarmPK object
     private long sensorId;
-    private LocalDateTime dateTime;
+    private LocalDateTime startDateTime;
     private String violationParameter;
 
     // From UniversalAlarm object
     private String violationType;
     private double violationValue;
     private boolean status;
+    private LocalDateTime endDateTime;
 
     // Adds link to localName
     private String localName;
 
-    public UniversalAlarmDTO(long sensorId, LocalDateTime dateTime, String violationParameter, String violationType,
-                             double violationValue, boolean status, String localName) {
+    public UniversalAlarmDTO(long sensorId,
+                             LocalDateTime startDateTime,
+                             String violationParameter,
+                             String violationType,
+                             double violationValue,
+                             boolean status,
+                             LocalDateTime endDateTime,
+                             String localName) {
         this.sensorId = sensorId;
-        this.dateTime = dateTime;
+        this.startDateTime = startDateTime;
         this.violationParameter = violationParameter;
         this.violationType = violationType;
         this.violationValue = violationValue;
         this.status = status;
+        this.endDateTime = endDateTime;
         this.localName = localName;
     }
 
@@ -40,12 +52,12 @@ public class UniversalAlarmDTO implements Serializable {
         this.sensorId = sensorId;
     }
 
-    public LocalDateTime getDateTime() {
-        return dateTime;
+    public LocalDateTime getStartDateTime() {
+        return startDateTime;
     }
 
-    public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
+    public void setStartDateTime(LocalDateTime startDateTime) {
+        this.startDateTime = startDateTime;
     }
 
     public String getViolationParameter() {
@@ -80,6 +92,14 @@ public class UniversalAlarmDTO implements Serializable {
         this.status = status;
     }
 
+    public LocalDateTime getEndDateTime() {
+        return endDateTime;
+    }
+
+    public void setEndDateTime(LocalDateTime endDateTime) {
+        this.endDateTime = endDateTime;
+    }
+
     public String getLocalName() {
         return localName;
     }
@@ -87,6 +107,4 @@ public class UniversalAlarmDTO implements Serializable {
     public void setLocalName(String localName) {
         this.localName = localName;
     }
-
-
 }

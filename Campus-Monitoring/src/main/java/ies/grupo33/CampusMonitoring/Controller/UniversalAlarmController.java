@@ -20,7 +20,7 @@ public class UniversalAlarmController {
         return universalAlarmServices.getUniversalAlarmDTO(localName);
 
     }
-
+    
     @GetMapping("/open/{localName}")
     public List<UniversalAlarmDTO> getOpenUniversalAlarms(@PathVariable String localName) {
 

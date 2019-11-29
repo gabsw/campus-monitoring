@@ -18,7 +18,6 @@ public class WeatherReadingPK implements Serializable {
     }
 
     public WeatherReadingPK() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public long getSensorId() {

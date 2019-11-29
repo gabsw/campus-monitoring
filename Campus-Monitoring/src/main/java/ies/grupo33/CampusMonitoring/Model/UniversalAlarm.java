@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "universal_alarm", schema = "campus_monitoring")
@@ -16,6 +17,8 @@ public class UniversalAlarm {
     private double violationValue;
     @Column(name = "status", nullable = false)
     private boolean status;
+    @Column(name = "end_date_time")
+    private LocalDateTime endDateTime;
 
     public UniversalAlarm() {
     }
@@ -44,7 +47,7 @@ public class UniversalAlarm {
         this.violationValue = violationValue;
     }
 
-    public boolean getStatus() {
+    public boolean isStatus() {
         return status;
     }
 
@@ -52,13 +55,11 @@ public class UniversalAlarm {
         this.status = status;
     }
 
-    @Override
-    public String toString() {
-        return "UniversalAlarm{" +
-                "universalAlarmPK=" + universalAlarmPK +
-                ", violationType='" + violationType + '\'' +
-                ", violationValue=" + violationValue +
-                ", status=" + status +
-                '}';
+    public LocalDateTime getEndDateTime() {
+        return endDateTime;
+    }
+
+    public void setEndDateTime(LocalDateTime endDateTime) {
+        this.endDateTime = endDateTime;
     }
 }

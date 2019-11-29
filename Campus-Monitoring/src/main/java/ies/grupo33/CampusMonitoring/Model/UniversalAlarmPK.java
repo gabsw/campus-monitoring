@@ -9,14 +9,14 @@ import java.time.LocalDateTime;
 public class UniversalAlarmPK implements Serializable {
     @Column(name = "sensor_id", nullable = false)
     private long sensorId;
-    @Column(name = "date_time", nullable = false)
-    private LocalDateTime dateTime;
+    @Column(name = "start_date_time", nullable = false)
+    private LocalDateTime startDateTime;
     @Column(name = "violation_parameter", nullable = false)
     private String violationParameter;
 
-    public UniversalAlarmPK(int sensorId, LocalDateTime dateTime, String violationParameter) {
+    public UniversalAlarmPK(int sensorId, LocalDateTime startDateTime, String violationParameter) {
         this.sensorId = sensorId;
-        this.dateTime = dateTime;
+        this.startDateTime = startDateTime;
         this.violationParameter = violationParameter;
     }
 
@@ -32,12 +32,12 @@ public class UniversalAlarmPK implements Serializable {
         this.sensorId = sensorId;
     }
 
-    public LocalDateTime getDateTime() {
-        return dateTime;
+    public LocalDateTime getStartDateTime() {
+        return startDateTime;
     }
 
-    public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
+    public void setStartDateTime(LocalDateTime startDateTime) {
+        this.startDateTime = startDateTime;
     }
 
     public String getViolationParameter() {
