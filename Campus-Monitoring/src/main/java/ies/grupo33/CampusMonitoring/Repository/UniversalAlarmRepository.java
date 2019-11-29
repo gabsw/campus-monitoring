@@ -20,7 +20,7 @@ public interface UniversalAlarmRepository extends JpaRepository<UniversalAlarm, 
             "se.localName) " +
             "FROM UniversalAlarm AS ua " +
             "INNER JOIN Sensor AS se " +
-            "ON ua.sensor_id = se.id ")
+            "ON ua.universalAlarmPK.sensorId = se.id ")
     List<UniversalAlarmDTO> fetchUniversalAlarmDTO();
 
     List<UniversalAlarm> findByStatusTrue();

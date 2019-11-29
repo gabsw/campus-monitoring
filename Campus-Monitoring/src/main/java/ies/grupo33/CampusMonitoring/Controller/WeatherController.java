@@ -1,9 +1,7 @@
 package ies.grupo33.CampusMonitoring.Controller;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ies.grupo33.CampusMonitoring.Model.WeatherReading;
 import ies.grupo33.CampusMonitoring.Model.WeatherReadingDto;
-import ies.grupo33.CampusMonitoring.Model.WeatherReadingPK;
-import ies.grupo33.CampusMonitoring.Model.Local;
 import ies.grupo33.CampusMonitoring.Model.Sensor;
-import ies.grupo33.CampusMonitoring.Services.LocalServices;
 import ies.grupo33.CampusMonitoring.Services.SensorServices;
 import ies.grupo33.CampusMonitoring.Services.WeatherServices;
 
@@ -59,7 +54,7 @@ public class WeatherController {
 		
 		Sensor s = sensorServices.getSensor(sensor_id);
 		
-		WeatherReadingDto wrdto = new WeatherReadingDto(wr.getWeatherReadingPK().getSensorId(), wr.getWeatherReadingPK().getDateTime(), s.getLocal_name(), wr.getTemperature(),
+		WeatherReadingDto wrdto = new WeatherReadingDto(wr.getWeatherReadingPK().getSensorId(), wr.getWeatherReadingPK().getDateTime(), s.getLocalName(), wr.getTemperature(),
 				wr.getHumidity(), wr.getCo2());
 		return wrdto;
 	}
@@ -101,7 +96,7 @@ public class WeatherController {
 			return rl;
 		}
 		for(WeatherReading wr:l) {
-			rl.add(new WeatherReadingDto(wr.getWeatherReadingPK().getSensorId(), wr.getWeatherReadingPK().getDateTime(), s.getLocal_name(), wr.getTemperature(),
+			rl.add(new WeatherReadingDto(wr.getWeatherReadingPK().getSensorId(), wr.getWeatherReadingPK().getDateTime(), s.getLocalName(), wr.getTemperature(),
 					wr.getHumidity(), wr.getCo2()));
 		}
 		return rl;
