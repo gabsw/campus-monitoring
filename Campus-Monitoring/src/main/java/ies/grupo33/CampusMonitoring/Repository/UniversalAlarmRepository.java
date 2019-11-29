@@ -20,8 +20,23 @@ public interface UniversalAlarmRepository extends JpaRepository<UniversalAlarm, 
             "se.localName) " +
             "FROM UniversalAlarm AS ua " +
             "INNER JOIN Sensor AS se " +
-            "ON ua.universalAlarmPK.sensorId = se.id ")
-    List<UniversalAlarmDTO> fetchUniversalAlarmDTO();
+            "ON ua.universalAlarmPK.sensorId = se.id " +
+            "WHERE se.localName = ?1")
+    List<UniversalAlarmDTO> fetchUniversalAlarmDTOByLocal(String localName);
 
-    List<UniversalAlarm> findByStatusTrue();
+
+    @Query("SELECT new ies.grupo33.CampusMonitoring.DTO.UniversalAlarmDTO(" +
+            "ua.universalAlarmPK.sensorId, " +
+            "ua.universalAlarmPK.dateTime, " +
+            "ua.universalAlarmPK.violationParameter, " +
+            "ua.violationType, " +
+            "ua.violationValue, " +
+            "ua.status, " +
+            "se.localName) " +
+            "FROM UniversalAlarm AS ua " +
+            "INNER JOIN Sensor AS se " +
+            "ON ua.universalAlarmPK.sensorId = se.id " +
+            "WHERE ua.status = TRUE " +
+            "AND se.localName = ?1")
+    List<UniversalAlarmDTO> fetchOpenUniversalAlarmDTOByLocal(String localName);
 }

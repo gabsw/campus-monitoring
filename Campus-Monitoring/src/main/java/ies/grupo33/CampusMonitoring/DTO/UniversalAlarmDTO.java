@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 public class UniversalAlarmDTO implements Serializable {
 
     // From UniversalAlarmPK object
-    private int sensorId;
+    private long sensorId;
     private LocalDateTime dateTime;
     private String violationParameter;
 
@@ -18,7 +18,7 @@ public class UniversalAlarmDTO implements Serializable {
     // Adds link to localName
     private String localName;
 
-    public UniversalAlarmDTO(int sensorId, LocalDateTime dateTime, String violationParameter, String violationType,
+    public UniversalAlarmDTO(long sensorId, LocalDateTime dateTime, String violationParameter, String violationType,
                              double violationValue, boolean status, String localName) {
         this.sensorId = sensorId;
         this.dateTime = dateTime;
@@ -32,11 +32,11 @@ public class UniversalAlarmDTO implements Serializable {
     public UniversalAlarmDTO() {
     }
 
-    public int getSensorId() {
+    public long getSensorId() {
         return sensorId;
     }
 
-    public void setSensorId(int sensorId) {
+    public void setSensorId(long sensorId) {
         this.sensorId = sensorId;
     }
 

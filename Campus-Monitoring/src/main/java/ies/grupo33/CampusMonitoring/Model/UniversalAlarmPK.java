@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Embeddable
 public class UniversalAlarmPK implements Serializable {
     @Column(name = "sensor_id", nullable = false)
-    private int sensorId;
+    private long sensorId;
     @Column(name = "date_time", nullable = false)
     private LocalDateTime dateTime;
     @Column(name = "violation_parameter", nullable = false)
@@ -24,7 +24,7 @@ public class UniversalAlarmPK implements Serializable {
 
     }
 
-    public int getSensorId() {
+    public long getSensorId() {
         return sensorId;
     }
 

@@ -1,7 +1,6 @@
 package ies.grupo33.CampusMonitoring.Services;
 
 import ies.grupo33.CampusMonitoring.DTO.UniversalAlarmDTO;
-import ies.grupo33.CampusMonitoring.Model.UniversalAlarm;
 import ies.grupo33.CampusMonitoring.Repository.UniversalAlarmRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,17 +13,17 @@ public class UniversalAlarmServices {
     @Autowired
     private UniversalAlarmRepository universalAlarmRepository;
 
-    public List<UniversalAlarmDTO> getUniversalAlarmDTO() {
+    public List<UniversalAlarmDTO> getUniversalAlarmDTO(String localName) {
 
-        return universalAlarmRepository.fetchUniversalAlarmDTO();
+        return universalAlarmRepository.fetchUniversalAlarmDTOByLocal(localName);
     }
 
 
     // Add pagination
 
     // Retrieve all open alarms
-    public List<UniversalAlarm> getOpenUniversalAlarms() {
+    public List<UniversalAlarmDTO> getOpenUniversalAlarmDTO(String localName) {
 
-        return universalAlarmRepository.findByStatusTrue();
+        return universalAlarmRepository.fetchOpenUniversalAlarmDTOByLocal(localName);
     }
 }

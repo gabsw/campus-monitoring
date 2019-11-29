@@ -1,7 +1,6 @@
 package ies.grupo33.CampusMonitoring.Controller;
 
 import ies.grupo33.CampusMonitoring.DTO.UniversalAlarmDTO;
-import ies.grupo33.CampusMonitoring.Model.UniversalAlarm;
 import ies.grupo33.CampusMonitoring.Services.UniversalAlarmServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,17 +14,17 @@ public class UniversalAlarmController {
     @Autowired
     private UniversalAlarmServices universalAlarmServices;
 
-    @GetMapping("/all")
-    public List<UniversalAlarmDTO> getUniversalAlarms() {
+    @GetMapping("/all/{localName}")
+    public List<UniversalAlarmDTO> getUniversalAlarms(@PathVariable String localName) {
 
-        return universalAlarmServices.getUniversalAlarmDTO();
+        return universalAlarmServices.getUniversalAlarmDTO(localName);
 
     }
 
-    @GetMapping("/open")
-    public List<UniversalAlarm> getOpenUniversalAlarms() {
+    @GetMapping("/open/{localName}")
+    public List<UniversalAlarmDTO> getOpenUniversalAlarms(@PathVariable String localName) {
 
-        return universalAlarmServices.getOpenUniversalAlarms();
+        return universalAlarmServices.getOpenUniversalAlarmDTO(localName);
 
     }
 }
