@@ -4,6 +4,12 @@
 
 To run, use `docker-compose up --build`. The build will force building the images.
 
+## Application Dockerfile
+
+The Dockerfile for the application is located in the root directory of the code (next to the project's pom.xml).
+
+This is due to docker-compose not allowing the Dockerfile to be outside of the build context, despite docker allowing it.
+
 ## Connecting to the database
 
 ### OPTION 1
