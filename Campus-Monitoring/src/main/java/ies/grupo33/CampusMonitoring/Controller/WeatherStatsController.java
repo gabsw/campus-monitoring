@@ -3,7 +3,6 @@ package ies.grupo33.CampusMonitoring.Controller;
 import ies.grupo33.CampusMonitoring.Representations.WeatherStatsRepresentation;
 import ies.grupo33.CampusMonitoring.Services.RepresentationAdapterService;
 import ies.grupo33.CampusMonitoring.Services.WeatherStatsServices;
-import ies.grupo33.CampusMonitoring.Model.WeatherStats;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
@@ -30,9 +29,9 @@ public class WeatherStatsController {
                                                             LocalDate endDate) {
 
         if (startDate == null || endDate == null) {
-            return representationAdapterService.convert(weatherStatsServices.getWeatherStats(localName));
+            return representationAdapterService.convertWeatherStatsRep(weatherStatsServices.getWeatherStats(localName));
         } else {
-            return representationAdapterService.convert(weatherStatsServices.getWeatherStats(localName, startDate, endDate));
+            return representationAdapterService.convertWeatherStatsRep(weatherStatsServices.getWeatherStats(localName, startDate, endDate));
         }
 
     }

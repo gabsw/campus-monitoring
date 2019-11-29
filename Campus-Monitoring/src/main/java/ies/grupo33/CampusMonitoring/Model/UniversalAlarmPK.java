@@ -6,21 +6,21 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Embeddable
-public class AlarmPK implements Serializable {
+public class UniversalAlarmPK implements Serializable {
     @Column(name = "sensor_id", nullable = false)
     private int sensorId;
     @Column(name = "date_time", nullable = false)
     private LocalDateTime dateTime;
     @Column(name = "violation_parameter", nullable = false)
-    private String violation_parameter;
+    private String violationParameter;
 
-    public AlarmPK(int sensorId, LocalDateTime dateTime, String violation_parameter) {
+    public UniversalAlarmPK(int sensorId, LocalDateTime dateTime, String violationParameter) {
         this.sensorId = sensorId;
         this.dateTime = dateTime;
-        this.violation_parameter = violation_parameter;
+        this.violationParameter = violationParameter;
     }
 
-    public AlarmPK() {
+    public UniversalAlarmPK() {
 
     }
 
@@ -40,11 +40,11 @@ public class AlarmPK implements Serializable {
         this.dateTime = dateTime;
     }
 
-    public String getViolation_parameter() {
-        return violation_parameter;
+    public String getViolationParameter() {
+        return violationParameter;
     }
 
-    public void setViolation_parameter(String violation_parameter) {
-        this.violation_parameter = violation_parameter;
+    public void setViolationParameter(String violationParameter) {
+        this.violationParameter = violationParameter;
     }
 }
