@@ -14,17 +14,17 @@ VALUES
 
 INSERT INTO campus_monitoring.USERS (username, name, email, admin)
 VALUES
-('pedro_bastos', 'Pedro Ferreira Bastos', 'pedrobastos@ua.pt', true),
-('joao_marques', 'Joao Almeida Marques', 'joaomarques@ua.pt', true),
-('maria_cardoso', 'Maria Silva Cardoso', 'mariacardoso@ua.pt', false),
-('joana_martins', 'Joana Costa Martins', 'joanamartins@ua.pt', false);
+('pedro_bastos', 'Pedro Ferreira Bastos', 'campus.monitoring.ies+pedrobastos@gmail.com', true),
+('joao_marques', 'Joao Almeida Marques', 'campus.monitoring.ies+joaomarques@gmail.com', true),
+('maria_cardoso', 'Maria Silva Cardoso', 'campus.monitoring.ies+mariacardoso@gmail.com', false),
+('joana_martins', 'Joana Costa Martins', 'campus.monitoring.ies+joanamartins@gmail.com', false);
 
 
 INSERT INTO campus_monitoring.USERS_LOCAL
 VALUES
-('pedrobastos@ua.pt', 'Refeitório de Santiago'),
-('pedrobastos@ua.pt', 'Refeitório do Castro'),
-('pedrobastos@ua.pt', 'Cafetaria da ESAN'),
-('joaomarques@ua.pt', 'IEETA'),
-('mariacardoso@ua.pt', 'Cafetaria da ESAN'),
-('joanamartins@ua.pt', 'Cafetaria da ESAN');
+('pedro_bastos', 'Refeitório de Santiago'),
+('pedro_bastos', 'Refeitório do Castro'),
+('pedro_bastos', 'Cafetaria da ESAN'),
+('joao_marques', 'IEETA'),
+('maria_cardoso', 'Cafetaria da ESAN'),
+('joana_martins', 'Cafetaria da ESAN');

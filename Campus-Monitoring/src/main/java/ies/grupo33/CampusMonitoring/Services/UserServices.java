@@ -26,18 +26,6 @@ public class UserServices {
         return userRepository.findByAdmin(isAdmin);
     }
 
-    public List<String> retrieveEmailsForAlarmNotification(String local) {
-        if (local == null) {
-            throw new IllegalArgumentException("Local is not defined.");
-        } else {
-
-            List<User> usersByLocal = getUsersByLocal(local);
-
-            return usersByLocal.stream()
-                    .map(User::getEmail)
-                    .collect(Collectors.toList());
-        }
-    }
 
     public List<User> getAdminByLocal(String local) {
 

@@ -11,10 +11,10 @@ import java.util.Collection;
 public class User implements Serializable {
 
     @Id
-    @Column(name = "email", nullable = false)
-    private String email;
     @Column(name = "username", nullable = false)
     private String username;
+    @Column(name = "email", nullable = false)
+    private String email;
     @Column(name = "name", nullable = false)
     private String name;
     @Column(name = "admin", nullable = false)
@@ -25,9 +25,9 @@ public class User implements Serializable {
     @JoinTable(
             name = "users_local",
             schema = "campus_monitoring",
-            joinColumns = @JoinColumn(name = "email", referencedColumnName = "email"),
+            joinColumns = @JoinColumn(name = "username", referencedColumnName = "username"),
             inverseJoinColumns = @JoinColumn(name = "local_name", referencedColumnName = "name"),
-            uniqueConstraints = @UniqueConstraint(columnNames = {"email", "local_name"})
+            uniqueConstraints = @UniqueConstraint(columnNames = {"username", "local_name"})
     )
     private Collection<Local> locals;
 

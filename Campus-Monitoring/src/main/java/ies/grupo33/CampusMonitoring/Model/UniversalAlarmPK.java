@@ -7,15 +7,15 @@ import java.time.LocalDateTime;
 
 @Embeddable
 public class UniversalAlarmPK implements Serializable {
-    @Column(name = "sensor_id", nullable = false)
-    private long sensorId;
+    @Column(name = "local_name", nullable = false)
+    private String localName;
     @Column(name = "start_date_time", nullable = false)
     private LocalDateTime startDateTime;
     @Column(name = "violation_parameter", nullable = false)
     private String violationParameter;
 
-    public UniversalAlarmPK(int sensorId, LocalDateTime startDateTime, String violationParameter) {
-        this.sensorId = sensorId;
+    public UniversalAlarmPK(String localName, LocalDateTime startDateTime, String violationParameter) {
+        this.localName = localName;
         this.startDateTime = startDateTime;
         this.violationParameter = violationParameter;
     }
@@ -24,12 +24,12 @@ public class UniversalAlarmPK implements Serializable {
 
     }
 
-    public long getSensorId() {
-        return sensorId;
+    public String getLocalName() {
+        return localName;
     }
 
-    public void setSensorId(int sensorId) {
-        this.sensorId = sensorId;
+    public void setLocalName(String localName) {
+        this.localName = localName;
     }
 
     public LocalDateTime getStartDateTime() {

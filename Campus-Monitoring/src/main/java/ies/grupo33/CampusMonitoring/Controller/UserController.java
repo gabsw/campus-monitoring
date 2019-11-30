@@ -17,9 +17,6 @@ public class UserController {
     @Autowired
     private UserServices userServices;
 
-
-
-
     // These controllers have been created for testing User services, they are not final
 
     @GetMapping("/local-name/{localName}")
@@ -27,10 +24,6 @@ public class UserController {
         return userServices.getUsersByLocal(localName);
     }
 
-    @GetMapping("/email-test/{localName}")
-    public List<String> getEmailByLocal(@PathVariable String localName) {
-        return userServices.retrieveEmailsForAlarmNotification(localName);
-    }
 
     @GetMapping("/local-name/{localName}/admin")
     public List<User> getAdminByLocal(@PathVariable String localName) {

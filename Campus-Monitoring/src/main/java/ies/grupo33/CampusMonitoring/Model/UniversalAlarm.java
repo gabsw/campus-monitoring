@@ -15,10 +15,12 @@ public class UniversalAlarm {
     private String violationType;
     @Column(name = "violation_value", nullable = false)
     private double violationValue;
-    @Column(name = "status", nullable = false)
-    private boolean status;
+    @Column(name = "ongoing_status", nullable = false)
+    private boolean ongoingStatus;
     @Column(name = "end_date_time")
     private LocalDateTime endDateTime;
+    @Column(name = "notification_sent", nullable = false)
+    private boolean notificationSent;
 
     public UniversalAlarm() {
     }
@@ -47,12 +49,12 @@ public class UniversalAlarm {
         this.violationValue = violationValue;
     }
 
-    public boolean isStatus() {
-        return status;
+    public boolean isOngoingStatus() {
+        return ongoingStatus;
     }
 
-    public void setStatus(boolean status) {
-        this.status = status;
+    public void setOngoingStatus(boolean ongoingStatus) {
+        this.ongoingStatus = ongoingStatus;
     }
 
     public LocalDateTime getEndDateTime() {
@@ -61,5 +63,13 @@ public class UniversalAlarm {
 
     public void setEndDateTime(LocalDateTime endDateTime) {
         this.endDateTime = endDateTime;
+    }
+
+    public boolean isNotificationSent() {
+        return notificationSent;
+    }
+
+    public void setNotificationSent(boolean notificationSent) {
+        this.notificationSent = notificationSent;
     }
 }

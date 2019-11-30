@@ -32,18 +32,30 @@ CREATE TABLE campus_monitoring.WEATHER_READING(
 );
 
 CREATE TABLE campus_monitoring.USERS(
-	username		    	VARCHAR(20) 		NOT NULL,
+	username		    	VARCHAR(30) 		NOT NULL,
 	name		    		VARCHAR(100) 		NOT NULL,
-	email		    		VARCHAR(30) 		NOT NULL,
+	email		    		VARCHAR(256) 		NOT NULL,
 	admin				BOOLEAN			NOT NULL,
-	PRIMARY KEY(email)
+	PRIMARY KEY(username)
 );
 
 CREATE TABLE campus_monitoring.USERS_LOCAL(
-	email		    		VARCHAR(30) 		NOT NULL,
+	username		    	VARCHAR(30) 		NOT NULL,
 	local_name		    	VARCHAR(100) 		NOT NULL,
-	PRIMARY KEY(email, local_name),
-	FOREIGN KEY(email) REFERENCES campus_monitoring.USERS(email),
+	PRIMARY KEY(username, local_name),
+	FOREIGN KEY(username) REFERENCES campus_monitoring.USERS(username),
 	FOREIGN KEY(local_name) REFERENCES campus_monitoring.LOCAL(name)
 );
 
+CREATE TABLE campus_monitoring.UNIVERSAL_ALARM(
+	start_date_time     	TIMESTAMP     	NOT NULL,
+	end_date_time     	TIMESTAMP,
+	local_name		VARCHAR(100) 	NOT NULL,
+	violation_type		VARCHAR(50)	NOT NULL,
+	violation_parameter	VARCHAR(50)	NOT NULL,
+	violation_value		NUMERIC (5, 1)	NOT NULL,
+	ongoing_status		BOOLEAN		NOT NULL,
+	notification_sent	BOOLEAN		NOT NULL,
+	PRIMARY KEY (start_date_time, local_name, violation_parameter),
+	FOREIGN KEY (local_name) REFERENCES campus_monitoring.LOCAL(name)
+);
