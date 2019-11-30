@@ -16,7 +16,7 @@ public class UniversalAlarmController {
     @Autowired
     private UniversalAlarmServices universalAlarmServices;
 
-    @GetMapping("/all/{localName}")
+    @GetMapping("/local-name/{localName}/all")
     public List<UniversalAlarmDTO> getUniversalAlarms(@PathVariable String localName,
                                                       @RequestParam(name = "start_date", required = false)
                                                       @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
@@ -33,7 +33,7 @@ public class UniversalAlarmController {
 
     }
 
-    @GetMapping("/open/{localName}")
+    @GetMapping("/local-name/{localName}/open")
     public List<UniversalAlarmDTO> getOpenUniversalAlarms(@PathVariable String localName,
                                                           @RequestParam(name = "start_date", required = false)
                                                           @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
@@ -49,7 +49,7 @@ public class UniversalAlarmController {
         }
     }
 
-    @GetMapping("/closed/{localName}")
+    @GetMapping("/local-name/{localName}/closed")
     public List<UniversalAlarmDTO> getClosedUniversalAlarms(@PathVariable String localName,
                                                           @RequestParam(name = "start_date", required = false)
                                                           @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
