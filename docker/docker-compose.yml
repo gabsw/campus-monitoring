@@ -42,9 +42,9 @@ services:
       - data-stream-network
       - postgres-network
 
-  fake-collector:
+  simulated-collector:
     build:
-      context: ./fake_collector
+      context: ./simulated_collector
       dockerfile: Dockerfile
     restart: always
     depends_on:

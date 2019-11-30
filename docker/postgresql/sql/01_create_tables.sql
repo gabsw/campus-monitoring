@@ -17,6 +17,7 @@ CREATE TABLE campus_monitoring.LOCAL(
 CREATE TABLE campus_monitoring.SENSOR(
 	id		        SERIAL,
 	local_name    	VARCHAR(100) 		NOT NULL,
+	hardware    	VARCHAR(500) 		NOT NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (local_name) REFERENCES campus_monitoring.LOCAL(name)
 );
@@ -58,4 +59,16 @@ CREATE TABLE campus_monitoring.UNIVERSAL_ALARM(
 	notification_sent	BOOLEAN		NOT NULL,
 	PRIMARY KEY (start_date_time, local_name, violation_parameter),
 	FOREIGN KEY (local_name) REFERENCES campus_monitoring.LOCAL(name)
+);
+
+CREATE TABLE campus_monitoring.REVIEW(
+	id			SERIAL		NOT NULL,
+	username		VARCHAR(30)	NOT NULL,
+	date_time     		TIMESTAMP	NOT NULL,
+	local_name    		VARCHAR(100) 	NOT NULL,
+	rating			INT		NOT NULL	CHECK(rating >= 1 and rating <= 5),
+	content			VARCHAR(1000)	NOT NULL,
+	PRIMARY KEY(id),
+	FOREIGN KEY(username) REFERENCES campus_monitoring.USERS(username),
+	FOREIGN KEY(local_name) REFERENCES campus_monitoring.LOCAL(name)
 );

@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Objects;
 
 @Entity
 @Table(name = "SENSOR" , schema = "campus_monitoring")
@@ -13,16 +14,19 @@ public class Sensor {
 	private long id;
 	@Column(name = "local_name", nullable = false)
 	private String localName;
+	@Column(name = "hardware", nullable = false)
+	private String hardware;
 	
 	public Sensor() {
 	
 	}
-	
-	public Sensor(long id, String localName) {
+
+	public Sensor(long id, String localName, String hardware) {
 		this.id = id;
 		this.localName = localName;
+		this.hardware = hardware;
 	}
-	
+
 	public long getId() {
 		return id;
 	}
@@ -39,8 +43,20 @@ public class Sensor {
 		this.localName = localName;
 	}
 
+	public String getHardware() {
+		return hardware;
+	}
+
+	public void setHardware(String hardware) {
+		this.hardware = hardware;
+	}
+
 	@Override
 	public String toString() {
-		return "Sensor [id=" + id + ", localName=" + localName + "]";
+		return "Sensor{" +
+				"id=" + id +
+				", localName='" + localName + '\'' +
+				", hardware='" + hardware + '\'' +
+				'}';
 	}
 }

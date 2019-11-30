@@ -5,12 +5,12 @@ VALUES
 ('Cafetaria da ESAN', 24.00, 14.00, 70, 35, 1000),
 ('IEETA', 25.00, 20.00, 60, 40, 1000);
 
-INSERT INTO campus_monitoring.SENSOR (id, local_name)
+INSERT INTO campus_monitoring.SENSOR (id, local_name, hardware)
 VALUES
-(1, 'Refeitório de Santiago'),
-(2, 'Refeitório do Castro'),
-(3, 'Cafetaria da ESAN');
-
+(1, 'Refeitório de Santiago', 'Sensor simulado'),
+(2, 'Refeitório do Castro', 'Sensor simulado'),
+(3, 'Cafetaria da ESAN', 'Sensor simulado'),
+(4, 'IEETA', 'Raspberry Pi B3 com sensor BME680');
 
 INSERT INTO campus_monitoring.USERS (username, name, email, admin)
 VALUES
