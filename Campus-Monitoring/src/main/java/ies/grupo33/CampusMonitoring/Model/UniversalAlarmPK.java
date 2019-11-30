@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Embeddable
 public class UniversalAlarmPK implements Serializable {
@@ -46,5 +47,20 @@ public class UniversalAlarmPK implements Serializable {
 
     public void setViolationParameter(String violationParameter) {
         this.violationParameter = violationParameter;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UniversalAlarmPK that = (UniversalAlarmPK) o;
+        return localName.equals(that.localName) &&
+                startDateTime.equals(that.startDateTime) &&
+                violationParameter.equals(that.violationParameter);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(localName, startDateTime, violationParameter);
     }
 }

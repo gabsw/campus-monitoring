@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.mail.MailException;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -125,5 +126,14 @@ public class UniversalAlarmServices {
         } catch (MailException ex) {
             logger.error("Failed to notify users about alarm - Subject: '{}' - Cause: '{}'", subject, ex.getMessage());
         }
+    }
+
+    @Scheduled(initialDelay = 10 * 1000, fixedDelay = 5 * 60 * 1000)
+    public void notifyUsersOfOngoingAlarms() {
+        Page<UniversalAlarm> universalAlarms =
+                universalAlarmRepository.findByOngoingStatusAndNotificationSent(true, false, Pageable.unpaged());
+
+        logger.info("Notifying users of {} ongoing alarms.", universalAlarms.getTotalElements());
+        universalAlarms.forEach(this::notifyUsers);
     }
 }

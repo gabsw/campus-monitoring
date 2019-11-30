@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Embeddable
 public class WeatherStatsPK implements Serializable {
@@ -34,6 +35,20 @@ public class WeatherStatsPK implements Serializable {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        WeatherStatsPK that = (WeatherStatsPK) o;
+        return localName.equals(that.localName) &&
+                date.equals(that.date);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(localName, date);
     }
 
     @Override

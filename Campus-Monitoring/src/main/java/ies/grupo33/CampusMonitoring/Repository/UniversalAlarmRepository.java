@@ -12,6 +12,10 @@ public interface UniversalAlarmRepository extends JpaRepository<UniversalAlarm, 
 
     Page<UniversalAlarm> findByUniversalAlarmPKLocalName(String localName, Pageable pageable);
 
+    Page<UniversalAlarm> findByOngoingStatusAndNotificationSent(boolean ongoingStatus,
+                                                                boolean notificationSent,
+                                                                Pageable pageable);
+
     Page<UniversalAlarm> findByUniversalAlarmPKLocalNameAndUniversalAlarmPKStartDateTimeBetween(String localName,
                                                                                                 LocalDate timeStart,
                                                                                                 LocalDate timeEnd,
