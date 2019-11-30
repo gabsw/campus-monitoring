@@ -3,6 +3,8 @@ package ies.grupo33.CampusMonitoring.Repository;
 import ies.grupo33.CampusMonitoring.DTO.UniversalAlarmDTO;
 import ies.grupo33.CampusMonitoring.Model.UniversalAlarm;
 import ies.grupo33.CampusMonitoring.Model.UniversalAlarmPK;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -24,7 +26,7 @@ public interface UniversalAlarmRepository extends JpaRepository<UniversalAlarm, 
             "INNER JOIN Sensor AS se " +
             "ON ua.universalAlarmPK.sensorId = se.id " +
             "WHERE se.localName = ?1")
-    List<UniversalAlarmDTO> fetchUniversalAlarmDTOByLocal(String localName);
+    Page<UniversalAlarmDTO> fetchUniversalAlarmDTOByLocal(String localName, Pageable pageable);
 
 
     @Query("SELECT new ies.grupo33.CampusMonitoring.DTO.UniversalAlarmDTO(" +
@@ -42,9 +44,10 @@ public interface UniversalAlarmRepository extends JpaRepository<UniversalAlarm, 
             "WHERE se.localName = ?1 " +
             "AND ua.universalAlarmPK.startDateTime BETWEEN " +
             "?2 AND ?3")
-    List<UniversalAlarmDTO> fetchUniversalAlarmDTOByLocalAndTimeRange(String localName,
+    Page<UniversalAlarmDTO> fetchUniversalAlarmDTOByLocalAndTimeRange(String localName,
                                                                       LocalDate timeStart,
-                                                                      LocalDate timeEnd);
+                                                                      LocalDate timeEnd,
+                                                                      Pageable pageable);
 
 
     @Query("SELECT new ies.grupo33.CampusMonitoring.DTO.UniversalAlarmDTO(" +
@@ -61,7 +64,7 @@ public interface UniversalAlarmRepository extends JpaRepository<UniversalAlarm, 
             "ON ua.universalAlarmPK.sensorId = se.id " +
             "WHERE ua.status = ?2 " +
             "AND se.localName = ?1")
-    List<UniversalAlarmDTO> fetchUniversalAlarmDTOByLocalAndStatus(String localName, Boolean status);
+    Page<UniversalAlarmDTO> fetchUniversalAlarmDTOByLocalAndStatus(String localName, Boolean status, Pageable pageable);
 
 
     @Query("SELECT new ies.grupo33.CampusMonitoring.DTO.UniversalAlarmDTO(" +
@@ -80,8 +83,9 @@ public interface UniversalAlarmRepository extends JpaRepository<UniversalAlarm, 
             "AND se.localName = ?1" +
             "AND ua.universalAlarmPK.startDateTime BETWEEN " +
             "?2 AND ?3")
-    List<UniversalAlarmDTO> fetchOpenUniversalAlarmDTOByLocalAndTimeRangeAndStatus(String localName,
+    Page<UniversalAlarmDTO> fetchOpenUniversalAlarmDTOByLocalAndTimeRangeAndStatus(String localName,
                                                                           LocalDate timeStart,
                                                                           LocalDate timeEnd,
-                                                                          Boolean status);
+                                                                          Boolean status,
+                                                                                   Pageable pageable);
 }
