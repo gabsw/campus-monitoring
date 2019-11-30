@@ -14,7 +14,7 @@ public class WeatherReading {
 	private double temperature;
 	@Column(name = "humidity", nullable = false)
 	private double humidity;
-	@Column(name = "co2", nullable = true)
+	@Column(name = "co2")
 	private double co2;
 
 	public WeatherReading() {

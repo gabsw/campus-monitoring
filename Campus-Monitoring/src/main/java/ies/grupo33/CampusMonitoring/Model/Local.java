@@ -1,13 +1,13 @@
 package ies.grupo33.CampusMonitoring.Model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
+import java.util.Collection;
 
 
 @Entity
-@Table(name = "LOCAL", schema = "campus_monitoring")
+@Table(name = "local", schema = "campus_monitoring")
 public class Local {
 
 	@Id
@@ -23,7 +23,10 @@ public class Local {
     private long min_hum_limit;
 	@Column(name = "max_co2_limit")
     private long max_co2_limit;
-	
+
+    @JsonIgnore
+	@ManyToMany(mappedBy = "locals", fetch = FetchType.LAZY)
+	private Collection<User> users;
     
  
     public Local() {
@@ -35,7 +38,7 @@ public class Local {
         this.max_temp_limit = max_temp_limit;
         this.min_temp_limit = min_temp_limit;
         this.max_hum_limit = max_hum_limit;
-        this.min_hum_limit = max_hum_limit;
+        this.min_hum_limit = min_hum_limit;
         this.max_co2_limit = max_co2_limit;
     }
 
@@ -48,7 +51,6 @@ public class Local {
 		this.name = name;
 	}
 
-	
 	public long getMax_temp_limit() {
 		return max_temp_limit;
 	}
@@ -93,13 +95,23 @@ public class Local {
 		this.max_co2_limit = max_co2_limit;
 	}
 
+	public Collection<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(Collection<User> users) {
+		this.users = users;
+	}
 
 	@Override
 	public String toString() {
-		return "Local [name=" + name + ", max_temp_limit=" + max_temp_limit + ", min_temp_limit=" + min_temp_limit
-				+ ", max_hum_limit=" + max_hum_limit + ", min_hum_limit=" + min_hum_limit + ", max_co2_limit="
-				+ max_co2_limit + "]";
+		return "Local{" +
+				"name='" + name + '\'' +
+				", max_temp_limit=" + max_temp_limit +
+				", min_temp_limit=" + min_temp_limit +
+				", max_hum_limit=" + max_hum_limit +
+				", min_hum_limit=" + min_hum_limit +
+				", max_co2_limit=" + max_co2_limit +
+				'}';
 	}
-    
-    
 }

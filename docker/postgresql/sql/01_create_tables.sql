@@ -30,3 +30,20 @@ CREATE TABLE campus_monitoring.WEATHER_READING(
 	PRIMARY KEY (date_time, sensor_id),
 	FOREIGN KEY (sensor_id) REFERENCES campus_monitoring.SENSOR(id)
 );
+
+CREATE TABLE campus_monitoring.USERS(
+	username		    	VARCHAR(20) 		NOT NULL,
+	name		    		VARCHAR(100) 		NOT NULL,
+	email		    		VARCHAR(30) 		NOT NULL,
+	admin				BOOLEAN			NOT NULL,
+	PRIMARY KEY(email)
+);
+
+CREATE TABLE campus_monitoring.USERS_LOCAL(
+	email		    		VARCHAR(30) 		NOT NULL,
+	local_name		    	VARCHAR(100) 		NOT NULL,
+	PRIMARY KEY(email, local_name),
+	FOREIGN KEY(email) REFERENCES campus_monitoring.USERS(email),
+	FOREIGN KEY(local_name) REFERENCES campus_monitoring.LOCAL(name)
+);
+
