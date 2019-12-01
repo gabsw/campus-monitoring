@@ -15,7 +15,9 @@
 	<script src="js/html5shiv.js"></script>
 	<script src="js/respond.min.js"></script>
 	<![endif]-->
-	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<!-- <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script> -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="js/preencher_historico.js"></script>
 </head>
 <body>
 	<nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
@@ -194,7 +196,14 @@
 						</ul>
 						<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
 					<div class="panel-body">
-						<div id="calendar"></div>
+						<div style="height: available">
+							<div class="input-group date" data-provide="datepicker">
+								<input type="text" class="form-control">
+								<div class="input-group-addon">
+									<span class="glyphicon glyphicon-th"></span>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div><!--/.col-->
@@ -206,8 +215,8 @@
 		<div class="row">
 			<div class="col-md-12">
 				<div class="panel panel-default chat">
-					<div class="panel-heading">
-						Registos (Novembro, 2019)
+					<div class="panel-heading" >
+						<div id="nomeEspacoTabela" class="pull-left">Registos (Novembro, 2019)</div>
 						<ul class="pull-right panel-settings panel-button-tab-right">
 							<li class="dropdown"><a class="pull-right dropdown-toggle" data-toggle="dropdown" href="#">
 								<em class="fa fa-cogs"></em>
@@ -224,7 +233,7 @@
 							</li>
 						</ul>
 						<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
-					<div class="panel-body" > <!-- style="height: 400px" -->
+					<div class="panel-body"style="height: 500px" > <!-- style="height: 400px" -->
 						<div>
 							<table class="table">
 								<thead class="thead-dark">
@@ -392,15 +401,14 @@
 
 
 
-	
-	<script src="js/jquery-1.11.1.min.js"></script>
+
+	<!--<script src="js/jquery-1.11.1.min.js"></script>-->
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/chart.min.js"></script>
 	<script src="js/chart-data.js"></script>
 	<script src="js/easypiechart.js"></script>
 	<script src="js/easypiechart-data.js"></script>
 	<script src="js/bootstrap-datepicker.js"></script>
-	<script src="js/preencher_historico.js"></script>
 	<script src="js/custom.js"></script>
 	<script>
 		window.onload = function () {

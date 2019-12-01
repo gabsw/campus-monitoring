@@ -2,71 +2,24 @@ console.log("INICIO");
 
 var locais_url = 'http://localhost:8080/local/';
 
-function createCORSRequest(method, url) {
-    var xhr = new XMLHttpRequest();
-    if ("withCredentials" in xhr) {
-        // XHR for Chrome/Firefox/Opera/Safari.
-        xhr.open(method, url, true);
-    } else if (typeof XDomainRequest != "undefined") {
-        // XDomainRequest for IE.
-        xhr = new XDomainRequest();
-        xhr.open(method, url);
-    } else {
-        // CORS not supported.
-        xhr = null;
-    }
-    return xhr;
-}
-
-// Helper method to parse the title tag from the response.
-function getTitle(text) {
-    return text.match('<title>(.*)?</title>')[1];
-}
-
-// Make the actual CORS request.
-function makeCorsRequest() {
-    // This is a sample server that supports CORS.
-    var url = 'http://html5rocks-cors.s3-website-us-east-1.amazonaws.com/index.html';
-
-    var xhr = createCORSRequest('GET', url);
-    if (!xhr) {
-        alert('CORS not supported');
-        return;
-    }
-
-    // Response handlers.
-    xhr.onload = function() {
-        var text = xhr.responseText;
-        var title = getTitle(text);
-        alert('Response from CORS request to ' + url + ': ' + title);
-    };
-
-    xhr.onerror = function() {
-        alert('Woops, there was an error making the request.');
-    };
-
-    xhr.send();
-}
-
-//var url = 'http://api.alice.com/cors';
-var xhr = createCORSRequest('GET', locais_url);
-xhr.send();
-
-//makeCorsRequest();
 
 
-/*
 
-$.getJSON('http://localhost:8080/local/', function(data) {
+function getMethod(){
+    var f = 4;
 
-    console.log("ENTREI");
 
-    var tabela = "";
-    for (var i = 0; i < data.length; i++) {
+    if (f === 1) {
+        $.getJSON('http://127.0.0.1:8080/local/', function(data) {
 
-        var elemento = data[i];
-        // style="display:none;"
-        var linha = `<tr id="${i+1}" >
+            console.log("ENTREI");
+
+            var tabela = "";
+            for (var i = 0; i < data.length; i++) {
+
+                var elemento = data[i];
+                // style="display:none;"
+                var linha = `<tr id="${i+1}" >
                         <th scope="row">${elemento.name}</th>
                         <td>${elemento.max_temp_limit}</td>
                         <td>${elemento.min_temp_limit}</td>
@@ -79,25 +32,24 @@ $.getJSON('http://localhost:8080/local/', function(data) {
                         <td>${elemento.min_hum_limit}</td>
                     </tr>`
 
-        //console.log("Linha ->" + linha);
-        tabela = tabela.concat(linha);
+                //console.log("Linha ->" + linha);
+                tabela = tabela.concat(linha);
+            }
+
+
+            $("#corpoTabela").html(tabela);
+        });
     }
 
+    else if (f === 2){
+        $.getJSON('http://jsonplaceholder.typicode.com/users', function(data) {
 
-    $("#corpoTabela").html(tabela);
-});
-*/
+            var tabela = "";
+            for (var i = 0; i < data.length; i++) {
 
-
-/*
-$.getJSON('http://jsonplaceholder.typicode.com/users', function(data) {
-
-    var tabela = "";
-    for (var i = 0; i < data.length; i++) {
-
-        var elemento = data[i];
-        // style="display:none;"
-        var linha = `<tr id="${i+1}" >
+                var elemento = data[i];
+                // style="display:none;"
+                var linha = `<tr id="${i+1}" >
                         <th scope="row">${elemento.id}</th>
                         <td>${elemento.name}</td>
                         <td>${elemento.username}</td>
@@ -110,41 +62,151 @@ $.getJSON('http://jsonplaceholder.typicode.com/users', function(data) {
                         <td>${elemento.company['name']}</td>
                     </tr>`
 
-        //console.log("Linha ->" + linha);
-        tabela = tabela.concat(linha);
+                //console.log("Linha ->" + linha);
+                tabela = tabela.concat(linha);
+            }
+
+
+            $("#corpoTabela").html(tabela);
+        });
+    }
+    else if(f==3) {
+        $.ajax({
+            url: "http://jsonplaceholder.typicode.com/users"
+        }).then(function(data) {
+            var tabela = "";
+            for (var i = 0; i < data.length; i++) {
+
+                var elemento = data[i];
+                // style="display:none;"
+                var linha = `<tr id="${i+1}" >
+                        <th scope="row">${elemento.id}</th>
+                        <td>${elemento.name}</td>
+                        <td>${elemento.username}</td>
+                        <td>${elemento.email}</td>
+                        <td>${elemento.address['street']}</td>
+                        <td>${elemento.address['zipcode']}</td>
+                        <td>${elemento.address['city']}</td>
+                        <td>${elemento.phone}</td>
+                        <td>${elemento.website}</td>
+                        <td>${elemento.company['name']}</td>
+                    </tr>`
+
+                //console.log("Linha ->" + linha);
+                tabela = tabela.concat(linha);
+            }
+
+
+            $("#corpoTabela").html(tabela);
+        });
     }
 
+    else if(f===4){
+        $.ajax({
+            url: "http://localhost:8080/local/"
 
-    $("#corpoTabela").html(tabela);
-});
+        }).then(function(data) {
+            console.log("ENTREI");
 
-*/
+            var tabela = "";
+            for (var i = 0; i < data.length; i++) {
+
+                var elemento = data[i];
+                // style="display:none;"
+                var linha = `<tr id="${i+1}" >
+                        <th scope="row">${elemento.name}</th>
+                        <td>${elemento.max_temp_limit}</td>
+                        <td>${elemento.min_temp_limit}</td>
+                        <td>${elemento.max_hum_limit}</td>
+                        <td>${elemento.min_hum_limit}</td>
+                        <td>${elemento.max_temp_limit}</td>
+                        <td>${elemento.max_temp_limit}</td>
+                        <td>${elemento.min_hum_limit}</td>
+                        <td>${elemento.max_temp_limit}</td>
+                        <td>${elemento.min_hum_limit}</td>
+                    </tr>`
+
+                //console.log("Linha ->" + linha);
+                tabela = tabela.concat(linha);
+            }
+
+
+            $("#corpoTabela").html(tabela);
+        });
+    }
+}
+
+
+
+
+
+
+function showDadosCantina(espaco){
+    var titulo = espaco + " | " + "Novembro, " + " 2019";
+    $("#nomeEspacoTabela").text(titulo);
+
+    console.log("espaco arg -> ", espaco);
+    var espacoEncoded = encodeURIComponent(espaco);
+    //console.log("espaco encoded -> ", espacoEncoded);
+    var uri = "http://localhost:8080/weather-stats/"+espacoEncoded;
+    console.log("uri -> ", uri)
+
+
+    $.ajax({
+        url: uri
+
+    }).then(function(data) {
+        console.log("ENTREI no alterar espaco");
+
+        var tabela = "";
+        for (var i = 0; i < data.length; i++) {
+
+
+            var elemento = data[i];
+            console.log("doc -> ", elemento);
+            // style="display:none;"
+            var linha = `<tr id="${i+1}" >
+                        <th scope="row">${elemento.date}</th>
+                        <td>${elemento.tempMax}</td>
+                        <td>${elemento.tempMin}</td>
+                        <td>${elemento.tempAvg}</td>
+                        <td>${elemento.humMax}</td>
+                        <td>${elemento.humMin}</td>
+                        <td>${elemento.humAvg}</td>
+                        <td>${elemento.co2Max}</td>
+                        <td>${elemento.co2Min}</td>
+                        <td>${elemento.co2Avg}</td>
+                    </tr>`
+
+            //console.log("Linha ->" + linha);
+            tabela = tabela.concat(linha);
+        }
+
+
+        $("#corpoTabela").html(tabela);
+    });
+}
+
 
 
 $(document).ready(function(){
+    getMethod();
     var espacoSelected = $( "#selectEspaco option:selected" ).text();
     console.log("Espaço inicial -> " + espacoSelected);
     var currentDate = $( "#calendar" ).datepicker( "getDate" );
     console.log("currentDate -> " + currentDate);
 
+    // mostrar os dados do espaco inicialmente selecionado
+    showDadosCantina(espacoSelected);
+
 
     $("#selectEspaco").change(function(){
         espacoSelected = $(this).children("option:selected").text();
         console.log("Selecionaste -> " + espacoSelected);
+        showDadosCantina(espacoSelected);
     });
 
-    $("#calendar").change(function(){
-        var data = $(this).getDate();
-        console.log("Selecionaste data -> " + data);
-    });
 
-    $("#calendar").datepicker({
-        onSelect: function(dateText, inst) {
-            var dateAsString = dateText; //the first parameter of this function
-            var dateAsObject = $(this).datepicker( 'getDate' ); //the getDate method
-            console.log("Data selecionada -> " + dateAsString);
-        }
-    });
 });
 
 
