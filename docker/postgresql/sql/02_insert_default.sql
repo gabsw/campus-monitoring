@@ -12,12 +12,12 @@ VALUES
 (3, 'Cafetaria da ESAN', 'Sensor simulado'),
 (4, 'IEETA', 'Raspberry Pi B3 com sensor BME680');
 
-INSERT INTO campus_monitoring.USERS (username, name, email, admin)
+INSERT INTO campus_monitoring.USERS (username, name, passwd, email, admin)
 VALUES
-('pedro_bastos', 'Pedro Ferreira Bastos', 'campus.monitoring.ies+pedrobastos@gmail.com', true),
-('joao_marques', 'Joao Almeida Marques', 'campus.monitoring.ies+joaomarques@gmail.com', true),
-('maria_cardoso', 'Maria Silva Cardoso', 'campus.monitoring.ies+mariacardoso@gmail.com', false),
-('joana_martins', 'Joana Costa Martins', 'campus.monitoring.ies+joanamartins@gmail.com', false);
+('pedro_bastos', 'Pedro Ferreira Bastos', 'password1', 'campus.monitoring.ies+pedrobastos@gmail.com', true),
+('joao_marques', 'Joao Almeida Marques', 'password2', 'campus.monitoring.ies+joaomarques@gmail.com', true),
+('maria_cardoso', 'Maria Silva Cardoso', 'password3', 'campus.monitoring.ies+mariacardoso@gmail.com', false),
+('joana_martins', 'Joana Costa Martins', 'password4', 'campus.monitoring.ies+joanamartins@gmail.com', false);
 
 
 INSERT INTO campus_monitoring.USERS_LOCAL

@@ -34,6 +34,11 @@ public class UserController {
     public List<User> getRegularUsersByLocal(@PathVariable String localName) {
         return userServices.getRegularUsersByLocal(localName);
     }
+    
+    @GetMapping("/authentication/{username}/{password}")
+    public User authenticateUser(@PathVariable String username, @PathVariable String password) {
+    	return userServices.loginUser(username, password);
+    }
 
 
 

@@ -36,6 +36,7 @@ CREATE TABLE campus_monitoring.USERS(
 	username		    	VARCHAR(30) 		NOT NULL,
 	name		    		VARCHAR(100) 		NOT NULL,
 	email		    		VARCHAR(256) 		NOT NULL,
+	passwd				VARCHAR(30)		NOT NULL,
 	admin				BOOLEAN			NOT NULL,
 	PRIMARY KEY(username)
 );
