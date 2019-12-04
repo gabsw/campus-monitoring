@@ -103,7 +103,7 @@ try:
                 send_message(channel, weather_reading)
 
                 # Offset between data
-                time.sleep(1)
+                time.sleep(60)
         except Exception as ex:
             print(ex)
             time.sleep(300)
