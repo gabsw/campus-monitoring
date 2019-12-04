@@ -47,7 +47,7 @@ def filter_reading(temperature, humidity, co2):
         return True
     if humidity > 100 or humidity < 0:
         return True
-    if co2 < 0 or co2 > 9000:
+    if co2 is not None and (co2 < 0 or co2 > 9000):
         return True
     return False
 
