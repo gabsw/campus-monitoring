@@ -197,10 +197,10 @@
 						<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
 					<div class="panel-body">
 						<div style="height: available">
-							<div class="input-group date" data-provide="datepicker">
-								<input type="text" class="form-control">
+							<div class="input-group date" data-provide="datepicker" id="calendario">
+								<input type="text" class="form-control" id="inputCalendario">
 								<div class="input-group-addon">
-									<span class="glyphicon glyphicon-th"></span>
+									<span class="fa fa-calendar"></span>
 								</div>
 							</div>
 						</div>
@@ -218,18 +218,10 @@
 					<div class="panel-heading" >
 						<div id="nomeEspacoTabela" class="pull-left">Registos (Novembro, 2019)</div>
 						<ul class="pull-right panel-settings panel-button-tab-right">
-							<li class="dropdown"><a class="pull-right dropdown-toggle" data-toggle="dropdown" href="#">
-								<em class="fa fa-cogs"></em>
+							<li class="panel-button-tab-right"><a class="pull-right"  href="#" onclick="verMesTodo()">
+								<em class="fa fa-eye"></em>
 							</a>
-								<ul class="dropdown-menu dropdown-menu-right">
-									<li>
-										<ul class="dropdown-settings">
-											<li><a href="#">
-												<em class="fa fa-cog"></em> Settings 1
-											</a></li>
-										</ul>
-									</li>
-								</ul>
+
 							</li>
 						</ul>
 						<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
