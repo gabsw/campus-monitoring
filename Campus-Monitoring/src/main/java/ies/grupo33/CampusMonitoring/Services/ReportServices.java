@@ -33,6 +33,15 @@ public class ReportServices {
         report.setAverageAlarmsPerDay(reportRepository.averageAlarmsPerDay(localName, startDate, endDate));
         report.setNumberOngoingAlarms(reportRepository.countOngoingAlarms(localName, startDate, endDate));
 
+        // Arbitrary choices
+        if (report.getAverageAlarmsPerDay() < 0.5) {
+            report.setPerformance("Boa");
+        } else if (report.getAverageAlarmsPerDay() > 3) {
+            report.setPerformance("Má");
+        } else {
+            report.setPerformance("Média");
+        }
+
         return report;
     }
 

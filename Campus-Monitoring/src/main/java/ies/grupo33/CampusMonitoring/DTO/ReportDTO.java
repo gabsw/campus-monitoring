@@ -19,6 +19,7 @@ public class ReportDTO implements Serializable {
     private int totalMaxHumAlarms;
     private int totalMinHumAlarms;
     private int totalMaxCo2Alarms;
+    private String performance;
 
     public ReportDTO() {
 
@@ -118,6 +119,14 @@ public class ReportDTO implements Serializable {
         this.totalMaxCo2Alarms = totalMaxCo2Alarms;
     }
 
+    public String getPerformance() {
+        return performance;
+    }
+
+    public void setPerformance(String performance) {
+        this.performance = performance;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -147,6 +156,7 @@ public class ReportDTO implements Serializable {
                 ", totalMaxHumAlarms=" + totalMaxHumAlarms +
                 ", totalMinHumAlarms=" + totalMinHumAlarms +
                 ", totalMaxCo2Alarms=" + totalMaxCo2Alarms +
+                ", performance='" + performance + '\'' +
                 '}';
     }
 }
