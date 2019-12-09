@@ -8,7 +8,7 @@ VALUES
 INSERT INTO campus_monitoring.SENSOR (id, local_name, hardware)
 VALUES
 (1, 'Refeitório de Santiago', 'Sensor simulado'),
-(2, 'Refeitório do Castro', 'Sensor simulado'),
+(2, 'Refeitório do Crasto', 'Sensor simulado'),
 (3, 'Cafetaria da ESAN', 'Sensor simulado'),
 (4, 'IEETA', 'Raspberry Pi B3 com sensor BME680');
 
@@ -23,7 +23,7 @@ VALUES
 INSERT INTO campus_monitoring.USERS_LOCAL
 VALUES
 ('pedro_bastos', 'Refeitório de Santiago'),
-('pedro_bastos', 'Refeitório do Castro'),
+('pedro_bastos', 'Refeitório do Crasto'),
 ('pedro_bastos', 'Cafetaria da ESAN'),
 ('joao_marques', 'IEETA'),
 ('maria_cardoso', 'Cafetaria da ESAN'),
