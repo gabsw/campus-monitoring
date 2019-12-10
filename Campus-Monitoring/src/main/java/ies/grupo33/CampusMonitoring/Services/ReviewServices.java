@@ -100,4 +100,13 @@ public class ReviewServices {
         reviewRepository.delete(reviewToDelete);
     }
 
+    public Review getReviewById(Long id) throws ReviewNotFoundException {
+
+        Optional<Review> review = reviewRepository.findById(id);
+        if (!review.isPresent()) {
+            throw new ReviewNotFoundException("Review not found for given id " + id);
+        }
+
+        return review.get();
+    }
 }

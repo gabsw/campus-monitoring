@@ -19,8 +19,6 @@ public class ReviewController {
     @Autowired
     private ReviewServices reviewServices;
 
-    @Autowired
-    private ReviewRepository reviewRepository;
 
     @GetMapping("/local-name/{localName}")
     public Page<Review> getReviewByLocal(@PathVariable String localName,
@@ -32,6 +30,11 @@ public class ReviewController {
     public Page<Review> getReviewByUser(@PathVariable String username,
                                          Pageable pageable) {
         return reviewServices.getReviewByUser(username, pageable);
+    }
+
+    @GetMapping("/id/{id}")
+    public Review getReviewById(@PathVariable Long id) throws ReviewNotFoundException {
+        return reviewServices.getReviewById(id);
     }
 
 
