@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import ies.grupo33.CampusMonitoring.Model.Sensor;
@@ -24,8 +26,8 @@ public class WeatherServices {
 	
 	
 	
-	public List<WeatherReading> getWeatherReadings(){
-		return weatherRepository.findAll();
+	public Page<WeatherReading> getWeatherReadings(Pageable pageable){
+		return weatherRepository.findAll(pageable);
 	}
 	
 	public WeatherReading getMostRecentWeatherReadingByLocal(String local){
@@ -62,21 +64,21 @@ public class WeatherServices {
 	}
 	
 	
-	public List<WeatherReading> getWeatherReadingBySensor(long sensorId) {
+	public Page<WeatherReading> getWeatherReadingBySensor(long sensorId, Pageable pageable) {
 		
-		List<WeatherReading> weather= weatherRepository.findByWeatherReadingPKSensorIdOrderByWeatherReadingPKDateTimeAsc(sensorId);
+		Page<WeatherReading> weather= weatherRepository.findByWeatherReadingPKSensorIdOrderByWeatherReadingPKDateTimeAsc(sensorId, pageable);
 		
 		return weather;
 	}
 	
 
-	public List<WeatherReading> getWeatherReadingBySensorAndDate(long sensorId, LocalDateTime dateInit, LocalDateTime dateFin) {
-		List<WeatherReading> list;
+	public Page<WeatherReading> getWeatherReadingBySensorAndDate(long sensorId, LocalDateTime dateInit, LocalDateTime dateFin, Pageable pageable) {
+		Page<WeatherReading> list;
 		if (dateInit ==null || dateFin==null) {
             throw new IllegalArgumentException("Date interval is not defined.");
 		}
 		
-		list = weatherRepository.findByWeatherReadingPKSensorIdAndWeatherReadingPKDateTimeBetweenOrderByWeatherReadingPKDateTimeAsc(sensorId, dateInit, dateFin);
+		list = weatherRepository.findByWeatherReadingPKSensorIdAndWeatherReadingPKDateTimeBetweenOrderByWeatherReadingPKDateTimeAsc(sensorId, dateInit, dateFin, pageable);
 		
 		return list;		
 	}
@@ -93,6 +95,18 @@ public class WeatherServices {
 		list = weatherRepository.findByLocalNameAndWeatherReadingPKDateTimeBetweenOrderByWeatherReadingPKDateTimeAsc(local, dateInit, dateFin);
 		
 		return list;		
+	}
+	
+	
+	public List<WeatherReading> getWeatherReadingByLocalLimit(String local, String limit) {
+		if (local == null) {
+            throw new IllegalArgumentException("Local is not defined.");
+		}
+		int limite = Integer.parseInt(limit);
+		List<WeatherReading> list = weatherRepository.findByLocalNameLimit(local, limite);
+		
+		return list;
+		
 	}
 	
 	
