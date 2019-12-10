@@ -17,6 +17,8 @@
 	<![endif]-->
 	<!-- <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script> -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="js/classes.js"></script>
+	<script src="js/globals.js"></script>
 	<script src="js/preencher_historico.js"></script>
 </head>
 <body>
@@ -90,7 +92,7 @@
 				<img src="pictures/admin-profile.png" class="img-responsive" alt="">
 			</div>
 			<div class="profile-usertitle">
-				<div class="profile-usertitle-name">Jorge Ribeiro</div>
+				<div class="profile-usertitle-name" id="nomeUser">Jorge Ribeiro</div>
 				<div class="profile-usertitle-status"><span class="indicator label-success"></span>Online</div>
 			</div>
 			<div class="clear"></div>
@@ -102,10 +104,10 @@
 			</div>
 		</form>
 		<ul class="nav menu">
-			<li class="parent "><a data-toggle="collapse" href="#sub-item-1">
+			<li class="parent "><a data-toggle="collapse" href="#espacosDropdown">
 				<em class="fa fa-cutlery">&nbsp;</em> Espaços alimentares <span data-toggle="collapse" href="#sub-item-1" class="icon pull-right"><em class="fa fa-plus"></em></span>
 			</a>
-				<ul class="children collapse" id="sub-item-1">
+				<ul class="children collapse" id="espacosDropdown">
 					<li><a class="" href="board_santiago_admin.html">
 						<span class="fa fa-dashboard">&nbsp;</span> Refeitório de Santiago
 					</a></li>
@@ -124,7 +126,7 @@
 				</ul>
 			</li>
 			<li class=""><a href="#"><em class="fa fa-user">&nbsp;</em> Perfil</a></li>
-			<li class="active"><a href="#"><em class="fa fa-history">&nbsp;</em> Histórico de Registos</a></li>
+			<li class="active" id="paginaHistorico"><a href="#"><em class="fa fa-history">&nbsp;</em> Histórico de Registos</a></li>
 			<li><a href="#"><em class="fa fa-bell">&nbsp;</em> Os meus alertas</a></li>
 			<li><a href="login.html"><em class="fa fa-power-off">&nbsp;</em> Sair</a></li>
 			<li><a href="charts.html"><em class="fa fa-calendar">&nbsp;</em> Charts</a></li>
@@ -154,7 +156,7 @@
 
 			<div class="col-md-4">
 				<div class="login-panel panel panel-default">
-					<div class="panel-heading">Espaços alimentares</div>
+					<div class="panel-heading">Espaços </div>
 					<div class="panel-body">
 						<form role="form">
 							<fieldset>

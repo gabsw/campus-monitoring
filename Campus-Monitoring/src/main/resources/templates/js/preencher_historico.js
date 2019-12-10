@@ -141,9 +141,9 @@ function getMethod(){
 }
 
 
-function sleep(ms) {
+/*function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
-}
+}*/
 
 
 function getLastDayOfMonth(data) {
@@ -243,11 +243,12 @@ function showDadosCantina(espaco, data){
 
 
     var uri = hostURL + "/weather-stats/"+espacoEncoded+"?start_date="+startDate+"&end_date="+endDate;
-    console.log("uri -> ", uri)
+    console.log("uri -> ", uri);
 
 
     $.ajax({
-        url: uri
+        url: uri,
+        async: false
 
     }).then(function(data) {
         console.log("ENTREI no alterar espaco");
@@ -333,7 +334,8 @@ function showDadosByData(espaco, data){
 
 
     $.ajax({
-        url: uri
+        url: uri,
+        async: false
 
     }).then(function(data) {
         console.log("ENTREI no showByData");
@@ -409,8 +411,40 @@ function verMesTodo(){
 }
 
 
+function listarEspacosUser(){
+
+    var espacosSelect = "";
+
+    console.log("userAtual name -> ", userAtual.name);
+    console.log("userAtual espacos -> ", userAtual.espacos);
+
+
+
+    for (var i = 0; i < userAtual.espacos.length; i++){
+
+        var espaco = userAtual.espacos[i];
+
+        var opcaoEspaco = `<option value="${espaco.name}">${espaco.name}</option>`
+
+        espacosSelect = espacosSelect.concat(opcaoEspaco);
+
+    }
+
+
+    $("#selectEspaco").html(espacosSelect);
+
+}
+
 $(document).ready(function(){
-    getMethod();
+    showUserMenu();
+    showUserProfileNamePhoto();
+    listarEspacosUser();
+
+    // alterar o aspeto e links dos espacos no menu de dropdown
+    resetLiActive();
+    setHref("board_geral.html");
+
+
     var espacoSelected = $( "#selectEspaco option:selected" ).text();
     console.log("Espaço inicial -> " + espacoSelected);
 
@@ -425,10 +459,11 @@ $(document).ready(function(){
     anoAtual = decomporData(new Date())[3];
 
 
+
     console.log("mesAtual (inicial) -> " + mesAtual);
     console.log("anoAtual (inicial) -> " + anoAtual);
 
-    $("#selectEspaco").change(async function(){
+    $("#selectEspaco").change( function(){
         espacoSelected = $(this).children("option:selected").text();
         // atualizar datas
         dataAtual = dataInicial;
@@ -437,15 +472,12 @@ $(document).ready(function(){
         console.log("Selecionaste -> " + espacoSelected);
         $('#inputCalendario').val(""); // reset do valor visível do calendário
         showDadosCantina(espacoSelected, dataInicial);
-        await sleep(1500);
-        // TODO: reset do calendário
+        //await sleep(1500);
     });
 
 
 
-
-
-    $('#calendario').on('changeDate', async function(event) {
+    $('#calendario').on('changeDate', function(event) {
         console.log("nova Data -> " + event.format());
         var data = new Date(event.format());
 
@@ -471,7 +503,7 @@ $(document).ready(function(){
         if((mesAtual!==novoMes) || (anoAtual!==novoAno)){
             console.log("ENTREI NO IF");
             showDadosByData(espacoSelected, data);
-            await sleep(1500);
+            //await sleep(1500);
             console.log("novo dadosMes -> ", dadosMes);
             mesAtual = novoMes;
             anoAtual = novoAno;

@@ -11,6 +11,9 @@
 	<script src="js/html5shiv.js"></script>
 	<script src="js/respond.min.js"></script>
 	<![endif]-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="js/classes.js"></script>
+	<script src="js/login.js"></script>
 </head>
 <body>
 	<div class="row">
@@ -18,28 +21,37 @@
 			<div class="login-panel panel panel-default">
 				<div class="panel-heading">Entrar</div>
 				<div class="panel-body">
-					<form role="form">
+					<form role="form" id="loginForm" action="board_geral.html" method="post"> <!-- action="board_geral.html" -->
 						<fieldset>
 							<div class="form-group">
-								<input class="form-control" placeholder="E-mail (utilizador universal)" name="email" type="email" autofocus="">
+								<label for="usernameInput">Nome de utilizador</label>
+								<input id = "usernameInput" class="form-control" placeholder="Nome de utilizador" name="user" type="text" autofocus="" required>
+								<div id="alertaUsername" class="alert alert-danger" role="alert" style="display: none">
+									Nome de utilizador não existente.
+								</div>
 							</div>
 							<div class="form-group">
-								<input class="form-control" placeholder="Palavra-passe" name="password" type="password" value="">
+								<label for="passwordInput">Palavra-passe</label>
+								<input id = "passwordInput" class="form-control" placeholder="Palavra-passe" name="password" type="password" value="" required>
+								<div id="alertaPassword" class="alert alert-danger" role="alert" style="display: none">
+									Palavra-passe incorreta.
+								</div>
 							</div>
 							<div class="checkbox">
 								<label>
 									<input name="remember" type="checkbox" value="Lembrar">Lembrar-me
 								</label>
 							</div>
-							<a href="local_select.html" class="btn btn-primary">Entrar</a></fieldset>
+							<button class="btn btn-primary" type="submit">Entrar</button>
+							<a href="board_geral.html" class="btn btn-primary" type="submit">Entrar (teste)</a></fieldset>
 					</form>
 				</div>
 			</div>
 		</div><!-- /.col-->
-	</div><!-- /.row -->	
-	
+	</div><!-- /.row -->
 
-<script src="js/jquery-1.11.1.min.js"></script>
+
+	<!--<script src="js/jquery-1.11.1.min.js"></script>-->
 	<script src="js/bootstrap.min.js"></script>
 </body>
 </html>

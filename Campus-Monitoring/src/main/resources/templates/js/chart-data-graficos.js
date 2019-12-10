@@ -1,31 +1,55 @@
 var randomScalingFactor = function(){ return Math.round(Math.random()*1000)};
 	
-	var lineChartData = {
-		labels : ["January","February","March","April","May","June","July"],
+	var lineChartDataTemp = {
+		labels : ["January","February","March","April","May","June","July", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"],
 		datasets : [
 			{
-				label: "My First dataset (cinza)",
-				fillColor : "rgba(220,220,220,0.2)",
-				strokeColor : "rgba(220,220,220,1)",
-				pointColor : "rgba(220,220,220,1)",
+				label: "Temperatura",
+				fillColor : "rgba(249, 36, 63, 0.2)",
+				strokeColor : "rgba(249, 36, 63, 1)",
+				pointColor : "rgba(249, 36, 63, 1)",
 				pointStrokeColor : "#fff",
 				pointHighlightFill : "#fff",
-				pointHighlightStroke : "rgba(220,220,220,1)",
-				data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
-			},
-			{
-				label: "My Second dataset (azul)",
-				fillColor : "rgba(48, 164, 255, 0.2)",
-				strokeColor : "rgba(48, 164, 255, 1)",
-				pointColor : "rgba(48, 164, 255, 1)",
-				pointStrokeColor : "#fff",
-				pointHighlightFill : "#fff",
-				pointHighlightStroke : "rgba(48, 164, 255, 1)",
+				pointHighlightStroke : "rgba(249, 36, 63, 1)",
 				data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
 			}
 		]
 
 	}
+
+var lineChartDataHum = {
+	labels : ["January","February","March","April","May","June","July", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"],
+	datasets : [
+		{
+			label: "Temperatura",
+			fillColor : "rgba(48, 165, 255, 0.2)",
+			strokeColor : "rgba(48, 165, 255, 1)",
+			pointColor : "rgba(48, 165, 255, 1)",
+			pointStrokeColor : "#fff",
+			pointHighlightFill : "#fff",
+			pointHighlightStroke : "rgba(48, 165, 255, 1)",
+			data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
+		}
+	]
+
+}
+
+var lineChartDataCO2 = {
+	labels : ["January","February","March","April","May","June","July", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"],
+	datasets : [
+		{
+			label: "Temperatura",
+			fillColor : "rgba(255, 181, 62, 0.2)",
+			strokeColor : "rgba(255, 181, 62, 1)",
+			pointColor : "rgba(255, 181, 62, 1)",
+			pointStrokeColor : "#fff",
+			pointHighlightFill : "#fff",
+			pointHighlightStroke : "rgba(255, 181, 62, 1)",
+			data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
+		}
+	]
+
+}
 		
 	var barChartData = {
 		labels : ["January","February","March","April","May","June","July"],
