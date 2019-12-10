@@ -1,5 +1,6 @@
 package ies.grupo33.CampusMonitoring.Services;
 
+import ies.grupo33.CampusMonitoring.Exception.MismatchedReviewException;
 import ies.grupo33.CampusMonitoring.Exception.ReviewNotFoundException;
 import ies.grupo33.CampusMonitoring.Exception.UserCannotReviewException;
 import ies.grupo33.CampusMonitoring.Model.Review;
@@ -38,7 +39,14 @@ public class ReviewServices {
         }
     }
 
-    public void addReview(Review review) throws UserCannotReviewException {
+    public void addReviewToLocal(String localName, Review review) throws UserCannotReviewException, MismatchedReviewException {
+        if (review.getId() != null) {
+            throw new IllegalArgumentException("Cannot add a review that already has an id.");
+        }
+
+        if (!localName.equals(review.getLocalName())) {
+            throw new MismatchedReviewException("The review is not for the specified local.");
+        }
 
         if (checkIfUserIsAtLocal(review.getLocalName(), review.getUsername())) {
             reviewRepository.save(review);
@@ -59,7 +67,6 @@ public class ReviewServices {
     }
 
     public void updateReview(Long reviewId, Review newReview) throws ReviewNotFoundException, UserCannotReviewException {
-
         Optional<Review> oldReviewOpt = reviewRepository.findById(reviewId);
 
         if (!oldReviewOpt.isPresent()) {
@@ -84,7 +91,6 @@ public class ReviewServices {
     }
 
     public void deleteReview(Long reviewId) throws ReviewNotFoundException, UserCannotReviewException {
-
         Optional<Review> review = reviewRepository.findById(reviewId);
 
         if (!review.isPresent()) {

@@ -13,7 +13,7 @@ public class Review implements Serializable {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private long id;
+    private Long id;
     @Column(name = "username", nullable = false)
     @NotBlank(message = "Username cannot be null or whitespace")
     private String username;
@@ -38,7 +38,7 @@ public class Review implements Serializable {
     public Review() {
     }
 
-    public Review(long id, String username, LocalDateTime dateTime, String localName, int rating, String content) {
+    public Review(Long id, String username, LocalDateTime dateTime, String localName, int rating, String content) {
         this.id = id;
         this.username = username;
         this.dateTime = dateTime;
@@ -47,11 +47,11 @@ public class Review implements Serializable {
         this.content = content;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -112,11 +112,13 @@ public class Review implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Review review = (Review) o;
-        return id == review.id;
+        return username.equals(review.username) &&
+                dateTime.equals(review.dateTime) &&
+                localName.equals(review.localName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(username, dateTime, localName);
     }
 }
