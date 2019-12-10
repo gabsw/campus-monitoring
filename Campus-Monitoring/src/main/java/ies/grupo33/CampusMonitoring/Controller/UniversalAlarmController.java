@@ -16,11 +16,6 @@ public class UniversalAlarmController {
     @Autowired
     private UniversalAlarmServices universalAlarmServices;
 
-    @GetMapping("/test")
-    public void sendEmail() {
-        Page<UniversalAlarm> universalAlarm = universalAlarmServices.getOpenUniversalAlarm("Cafetaria da ESAN", Pageable.unpaged());
-        universalAlarmServices.notifyUsers(universalAlarm.getContent().get(0));
-    }
 
     @GetMapping("/local-name/{localName}/all")
     public Page<UniversalAlarm> getUniversalAlarms(@PathVariable String localName,
