@@ -59,7 +59,8 @@ min_humidity, max_humidity = 0, 100
 min_co2, max_co2 = 0, 1200
 
 try:
-    while True:
+    stop = False
+    while not stop:
             for sensor in sensors:
                 temperature = sensor['Temperature']
                 humidity = sensor['Humidity']
@@ -73,6 +74,7 @@ try:
 
                 # just let the script die if there is no connection, it will just be restarted
                 if not connection.is_open:
+                    stop = True
                     print('Connection is closed. Terminating collector.')
                     break
 
