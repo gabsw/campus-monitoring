@@ -1,0 +1,82 @@
+{
+	"variables": [],
+	"info": {
+		"name": "IES-Review Endpoints",
+		"_postman_id": "83c0d4d5-3b73-3555-850f-c966d3d74a9c",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "get user reviews",
+			"request": {
+				"url": "http://localhost:8080/review/username/maria_cardoso",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "get reviews by review id",
+			"request": {
+				"url": "http://localhost:8080/review/1",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 1,\n    \"username\": \"joana_martins\",\n    \"dateTime\": \"2019-12-12T09:15:35.292716\",\n    \"localName\": \"Cafetaria da ESAN\",\n    \"rating\": 4,\n    \"content\": \"Bastante agradavel, não tenho atualmente queixas a fazer do espaço.\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "get reviews by review id",
+			"request": {
+				"url": "http://localhost:8080/review/1",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 1,\n    \"username\": \"joana_martins\",\n    \"dateTime\": \"2019-12-12T09:15:35.292716\",\n    \"localName\": \"Cafetaria da ESAN\",\n    \"rating\": 4,\n    \"content\": \"Bastante agradavel, não tenho atualmente queixas a fazer do espaço.\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "delete reviews by review id",
+			"request": {
+				"url": "http://localhost:8080/review/1",
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 1,\n    \"username\": \"joana_martins\",\n    \"dateTime\": \"2019-12-12T09:15:35.292716\",\n    \"localName\": \"Cafetaria da ESAN\",\n    \"rating\": 4,\n    \"content\": \"Bastante agradavel, não tenho atualmente queixas a fazer do espaço.\"\n}"
+				},
+				"description": "ATTENTION: The service for this request is still not fully operational. It relies on the Login Feature being operational, so the backend receives the session information of the User that is trying to delete a review and verify if the user matches the reviewer."
+			},
+			"response": []
+		}
+	]
+}
