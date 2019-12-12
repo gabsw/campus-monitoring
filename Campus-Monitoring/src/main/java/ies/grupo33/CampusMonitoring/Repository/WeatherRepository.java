@@ -1,7 +1,7 @@
 package ies.grupo33.CampusMonitoring.Repository;
 
+import ies.grupo33.CampusMonitoring.DTO.WeatherReadingDto;
 import ies.grupo33.CampusMonitoring.Model.WeatherReading;
-import ies.grupo33.CampusMonitoring.Model.WeatherReadingDto;
 import ies.grupo33.CampusMonitoring.Model.WeatherReadingPK;
 
 import java.time.LocalDateTime;

@@ -1,10 +1,13 @@
 package ies.grupo33.CampusMonitoring.Services;
 
+import ies.grupo33.CampusMonitoring.DTO.UserDto;
+import ies.grupo33.CampusMonitoring.Model.Local;
 import ies.grupo33.CampusMonitoring.Model.User;
 import ies.grupo33.CampusMonitoring.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -27,7 +30,7 @@ public class UserServices {
         }
     }
     
-    public User loginUser(String username, String password) {
+    public UserDto loginUser(String username, String password) {
     	if (username == null || password == null) {
     		return null;
             //throw new IllegalArgumentException("User (password or username) is not defined.");
@@ -35,8 +38,11 @@ public class UserServices {
     	Optional<User> opt_user= userRepository.findById(username);
     	if (!opt_user.isPresent())
     		return null;
-    	if (opt_user.get().getPassword().equals(password))
-    		return opt_user.get();
+    	if (opt_user.get().getPassword().equals(password)){
+    		User u = opt_user.get();
+    		UserDto udto = new UserDto(username, u.getEmail(), u.getName(), u.getLocals(), u.isAdmin());
+    		return udto;
+    		}
     	return null;
     }
 

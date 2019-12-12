@@ -1,5 +1,6 @@
 package ies.grupo33.CampusMonitoring.Controller;
 
+import ies.grupo33.CampusMonitoring.DTO.UserDto;
 import ies.grupo33.CampusMonitoring.Model.User;
 import ies.grupo33.CampusMonitoring.Services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class UserController {
     }
     
     @GetMapping("/authentication/{username}/{password}")
-    public User authenticateUser(@PathVariable String username, @PathVariable String password) {
+    public UserDto authenticateUser(@PathVariable String username, @PathVariable String password) {
     	return userServices.loginUser(username, password);
     }
 

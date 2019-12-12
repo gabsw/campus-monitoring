@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ies.grupo33.CampusMonitoring.Model.WeatherReading;
-import ies.grupo33.CampusMonitoring.Model.WeatherReadingDto;
+import ies.grupo33.CampusMonitoring.DTO.WeatherReadingDto;
 import ies.grupo33.CampusMonitoring.Model.Sensor;
 import ies.grupo33.CampusMonitoring.Services.SensorServices;
 import ies.grupo33.CampusMonitoring.Services.WeatherServices;
