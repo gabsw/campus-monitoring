@@ -32,15 +32,13 @@ public class WeatherController {
 	
 	@GetMapping("/latest/local-name/{localName}")
 	public WeatherReadingDto getLatestWeatherReadingByLocal(@PathVariable String localName, Pageable pageable){
-		WeatherReading wr = weatherServices.getMostRecentWeatherReadingByLocal(localName);
+		WeatherReadingDto wr = weatherServices.getMostRecentWeatherReadingByLocal(localName);
 		
 		if(wr==null) {
 			return null;
 		}
-		
-		WeatherReadingDto wrdto = new WeatherReadingDto(wr.getWeatherReadingPK().getSensorId(), wr.getWeatherReadingPK().getDateTime(), localName, wr.getTemperature(),
-				wr.getHumidity(), wr.getCo2());
-		return wrdto;
+
+		return wr;
 	}
 	
 	@GetMapping("/latest/id/{id}")
@@ -48,50 +46,37 @@ public class WeatherController {
 		
 		long sensor_id = Long.parseLong(id);
 		
-		WeatherReading wr = weatherServices.getMostRecentWeatherReadingBySensorId(sensor_id);
+		WeatherReadingDto wr = weatherServices.getMostRecentWeatherReadingBySensorId(sensor_id);
 		
 		if(wr==null) {
 			return null;
 		}
 		
-		Sensor s = sensorServices.getSensor(sensor_id);
-		
-		WeatherReadingDto wrdto = new WeatherReadingDto(wr.getWeatherReadingPK().getSensorId(), wr.getWeatherReadingPK().getDateTime(), s.getLocalName(), wr.getTemperature(),
-				wr.getHumidity(), wr.getCo2());
-		return wrdto;
+		return wr;
 	}
 	
 	@GetMapping("/local-name/{localName}")
 	public List<WeatherReadingDto> getWeatherReadingByLocal(@PathVariable String localName,
 			@RequestParam(name="start_date", required=false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
 			@RequestParam(name="end_date", required=false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate ) {
-		List<WeatherReading> l;
+		List<WeatherReadingDto> l;
 		if (startDate==null ||endDate==null) {
 			l = weatherServices.getWeatherReadingsByLocal(localName);
 		}
 		else {
 			l = weatherServices.getWeatherReadingByLocalAndDate(localName, startDate, endDate);
 		}
-		List<WeatherReadingDto> rl = new ArrayList<>();
-		for(WeatherReading wr:l) {
-			rl.add(new WeatherReadingDto(wr.getWeatherReadingPK().getSensorId(), wr.getWeatherReadingPK().getDateTime(), localName, wr.getTemperature(),
-					wr.getHumidity(), wr.getCo2()));
-		}
-		return rl;
+		return l;
 	}
 	
 	@GetMapping("/limit/local-name/{localName}")
 	public List<WeatherReadingDto> getWeatherReadingByLocalLimit(@PathVariable String localName,
 														@RequestParam(name="limit", required=true) String limit){
-		List<WeatherReading> l;
+		List<WeatherReadingDto> l;
 		
 		l = weatherServices.getWeatherReadingByLocalLimit(localName, limit);
-		List<WeatherReadingDto> rl = new ArrayList<>();
-		for(WeatherReading wr:l) {
-			rl.add(new WeatherReadingDto(wr.getWeatherReadingPK().getSensorId(), wr.getWeatherReadingPK().getDateTime(), localName, wr.getTemperature(),
-					wr.getHumidity(), wr.getCo2()));
-		}
-		return rl;
+		
+		return l;
 	}
 	
 	
@@ -101,23 +86,15 @@ public class WeatherController {
 			@RequestParam(name="end_date", required=false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate,
 			Pageable pageable) {
 		long sensor_id = Long.parseLong(id);
-		Page<WeatherReading> l;
+		List<WeatherReadingDto> l;
 		if (startDate==null ||endDate==null) {
 			l = weatherServices.getWeatherReadingBySensor(sensor_id, pageable);
 		}
 		else {
 			l = weatherServices.getWeatherReadingBySensorAndDate(sensor_id, startDate, endDate, pageable);
 		}
-		List<WeatherReadingDto> rl = new ArrayList<>();
-		Sensor s = sensorServices.getSensor(sensor_id);
-		if(l.getSize()==0 && s!=null) {
-			return rl;
-		}
-		for(WeatherReading wr:l) {
-			rl.add(new WeatherReadingDto(wr.getWeatherReadingPK().getSensorId(), wr.getWeatherReadingPK().getDateTime(), s.getLocalName(), wr.getTemperature(),
-					wr.getHumidity(), wr.getCo2()));
-		}
-		return rl;
+		return l;
+		
 	}
 
 												  
