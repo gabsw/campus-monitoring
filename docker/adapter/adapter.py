@@ -42,6 +42,14 @@ def write_to_db(temperature, humidity, co2, date, sensor_id):
     # close communication with the database
     cur.close()
 
+def filter_reading(temperature, humidity, co2):
+    if temperature < -100 or temperature > 100:
+        return True
+    if humidity > 100 or humidity < 0:
+        return True
+    if co2 is not None and (co2 < 0 or co2 > 9000):
+        return True
+    return False
 
 def insert_weather_reading(weather_reading):
     """ insert a new weather reading into the weather table """
@@ -49,6 +57,10 @@ def insert_weather_reading(weather_reading):
     humidity = weather_reading.get('Humidity')
     co2 = weather_reading.get('CO2')
     sensor_id = weather_reading.get('Sensor_id')
+
+    if filter_reading(temperature, humidity, co2):
+        print("Filtering out sensor reading:", weather_reading)
+        return
 
     date = weather_reading.get('Date')
     date = datetime.strptime(date, "%Y-%m-%d %H:%M:%S.%f")

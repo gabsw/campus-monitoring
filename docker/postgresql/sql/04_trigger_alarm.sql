@@ -88,7 +88,7 @@ BEGIN
 	END IF;
 		
 	IF (NEW.humidity < min_hum AND (status_min_hum_sensor IS NULL OR status_min_hum_sensor = FALSE)) THEN
-		INSERT INTO campus_monitoring.UNIVERSAL_ALARM(start_date_time, end_date_time, local_name,violation_type, violation_parameter, violation_value, status, notification_sent)
+		INSERT INTO campus_monitoring.UNIVERSAL_ALARM(start_date_time, end_date_time, local_name,violation_type, violation_parameter, violation_value, ongoing_status, notification_sent)
        	VALUES(NEW.date_time, NULL, sensor_local_name, 'min', 'humidade', NEW.humidity, TRUE, FALSE);
 	END IF;
 		

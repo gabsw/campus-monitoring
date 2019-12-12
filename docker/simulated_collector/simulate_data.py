@@ -42,15 +42,8 @@ def send_message(channel_, message, queue='task_queue'):
 def get_env_var(var_name):
     return os.environ[var_name]
 
-
-# This will be the real sensor
-# sensor_id = 1
-
-# Fake data that is 25% higher
-factor_sensor_2 = 1.25
-
-# Fake data that is 25% lower
-factor_sensor_3 = 0.75
+sensor_ids_str = get_env_var('SENSOR_IDS')
+sensors = [{'Sensor_id': int(x), 'Temperature': 20.0, 'Humidity': 50.0, 'CO2': 600.0} for x in sensor_ids_str.split(',')]
 
 rabbit_host = get_env_var('RABBIT_HOST')
 rabbit_username = get_env_var('RABBIT_USERNAME')
@@ -61,47 +54,33 @@ time.sleep(30)
 
 connection, channel = get_rabbit_conn_and_channel(rabbit_host, rabbit_username, rabbit_password)
 
-min_temp, max_temp, temperature = -10, 30, 20
-min_humidity, max_humidity, humidity = 0, 100, 50
-min_co2, max_co2, co2 = 0, 1200, 500
+min_temp, max_temp = -10, 30
+min_humidity, max_humidity = 0, 100
+min_co2, max_co2 = 0, 1200
 
 try:
-    while True:
-            temperature = random_jitter(temperature, min_temp, max_temp, step=0.05)
-            humidity = random_jitter(humidity, min_humidity, max_humidity)
-            co2 = random_jitter(co2, min_co2, max_co2)
+    stop = False
+    while not stop:
+            for sensor in sensors:
+                temperature = sensor['Temperature']
+                humidity = sensor['Humidity']
+                co2 = sensor['CO2']
 
-            date = datetime.now()
+                sensor['Temperature'] = random_jitter(temperature, min_temp, max_temp, step=0.05)
+                sensor['Humidity'] = random_jitter(humidity, min_humidity, max_humidity)
+                sensor['CO2'] = random_jitter(co2, min_co2, max_co2, step=1.0)
+                sensor['Date'] = str(datetime.now())
 
-            weather_reading_1 = {"Temperature": temperature,
-                                 "Humidity": humidity,
-                                 "CO2": co2,
-                                 "Date": str(date),
-                                 "Sensor_id": 1}
 
-            weather_reading_2 = {"Temperature": temperature * factor_sensor_2,
-                                 "Humidity": humidity * factor_sensor_2,
-                                 "CO2": co2 * factor_sensor_2,
-                                 "Date": str(date),
-                                 "Sensor_id": 2}
+                # just let the script die if there is no connection, it will just be restarted
+                if not connection.is_open:
+                    stop = True
+                    print('Connection is closed. Terminating collector.')
+                    break
 
-            weather_reading_3 = {"Temperature": temperature * factor_sensor_3,
-                                 "Humidity": humidity * factor_sensor_3,
-                                 "CO2": co2 * factor_sensor_3,
-                                 "Date": str(date),
-                                 "Sensor_id": 3}
-
-            # just let the script die if there is no connection, it will just be restarted
-            if not connection.is_open:
-                print('Connection is closed. Terminating collector.')
-                break
-
-            send_message(channel, weather_reading_1)
-            send_message(channel, weather_reading_2)
-            send_message(channel, weather_reading_3)
+                send_message(channel, sensor)
 
             # Offset between data
             time.sleep(60)
-
 except KeyboardInterrupt:
     pass
