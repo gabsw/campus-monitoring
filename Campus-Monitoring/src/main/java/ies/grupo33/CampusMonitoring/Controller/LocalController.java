@@ -1,15 +1,14 @@
 package ies.grupo33.CampusMonitoring.Controller;
 
 import ies.grupo33.CampusMonitoring.DTO.ReportDTO;
+import ies.grupo33.CampusMonitoring.DTO.WeatherReadingDto;
 import ies.grupo33.CampusMonitoring.Exception.MismatchedReviewException;
 import ies.grupo33.CampusMonitoring.Exception.UserCannotReviewException;
 import ies.grupo33.CampusMonitoring.Model.Local;
 import ies.grupo33.CampusMonitoring.Model.Review;
-import ies.grupo33.CampusMonitoring.Model.UniversalAlarm;
-import ies.grupo33.CampusMonitoring.Services.LocalServices;
-import ies.grupo33.CampusMonitoring.Services.ReportServices;
-import ies.grupo33.CampusMonitoring.Services.ReviewServices;
-import ies.grupo33.CampusMonitoring.Services.UniversalAlarmServices;
+import ies.grupo33.CampusMonitoring.Representations.UniversalAlarmsRepresentation;
+
+import ies.grupo33.CampusMonitoring.Services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,9 +17,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 
-
+@CrossOrigin
 @RestController
 @RequestMapping("local")
 public class LocalController {
@@ -32,6 +33,10 @@ public class LocalController {
     private ReportServices reportServices;
     @Autowired
     private UniversalAlarmServices universalAlarmServices;
+    @Autowired
+    private WeatherServices weatherServices;
+    @Autowired
+    private RepresentationAdapterService representationAdapterService;
 
     @GetMapping("/")
     public List<Local> getLocals() {
@@ -63,25 +68,25 @@ public class LocalController {
 
     // end points for alarms
     @GetMapping("/{localName}/alarms/all")
-    public Page<UniversalAlarm> getUniversalAlarms(@PathVariable String localName,
-                                                   @RequestParam(name = "start_date", required = false)
+    public Page<UniversalAlarmsRepresentation> getUniversalAlarms(@PathVariable String localName,
+                                                                  @RequestParam(name = "start_date", required = false)
                                                    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
                                                            LocalDate startDate,
-                                                   @RequestParam(name = "end_date", required = false)
+                                                                  @RequestParam(name = "end_date", required = false)
                                                    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
                                                            LocalDate endDate,
-                                                   Pageable pageable) {
+                                                                  Pageable pageable) {
 
         if (startDate == null || endDate == null) {
-            return universalAlarmServices.getUniversalAlarm(localName, pageable);
+            return universalAlarmServices.getUniversalAlarm(localName, pageable).map(UniversalAlarmsRepresentation::new);
         } else {
-            return universalAlarmServices.getUniversalAlarm(localName, startDate, endDate, pageable);
+            return universalAlarmServices.getUniversalAlarm(localName, startDate, endDate, pageable).map(UniversalAlarmsRepresentation::new);
         }
 
     }
 
     @GetMapping("/{localName}/alarms/ongoing")
-    public Page<UniversalAlarm> getOpenUniversalAlarms(@PathVariable String localName,
+    public Page<UniversalAlarmsRepresentation> getOpenUniversalAlarms(@PathVariable String localName,
                                                        @RequestParam(name = "start_date", required = false)
                                                        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
                                                                LocalDate startDate,
@@ -91,14 +96,14 @@ public class LocalController {
                                                        Pageable pageable) {
 
         if (startDate == null || endDate == null) {
-            return universalAlarmServices.getOpenUniversalAlarm(localName, pageable);
+            return universalAlarmServices.getOpenUniversalAlarm(localName, pageable).map(UniversalAlarmsRepresentation::new);
         } else {
-            return universalAlarmServices.getOpenUniversalAlarm(localName, startDate, endDate, pageable);
+            return universalAlarmServices.getOpenUniversalAlarm(localName, startDate, endDate, pageable).map(UniversalAlarmsRepresentation::new);
         }
     }
 
     @GetMapping("/{localName}/alarms/closed")
-    public Page<UniversalAlarm> getClosedUniversalAlarms(@PathVariable String localName,
+    public Page<UniversalAlarmsRepresentation> getClosedUniversalAlarms(@PathVariable String localName,
                                                          @RequestParam(name = "start_date", required = false)
                                                          @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
                                                                  LocalDate startDate,
@@ -108,9 +113,34 @@ public class LocalController {
                                                          Pageable pageable) {
 
         if (startDate == null || endDate == null) {
-            return universalAlarmServices.getClosedUniversalAlarm(localName, pageable);
+            return universalAlarmServices.getClosedUniversalAlarm(localName, pageable).map(UniversalAlarmsRepresentation::new);
         } else {
-            return universalAlarmServices.getClosedUniversalAlarm(localName, startDate, endDate, pageable);
+            return universalAlarmServices.getClosedUniversalAlarm(localName, startDate, endDate, pageable).map(UniversalAlarmsRepresentation::new);
+        }
+    }
+
+    // end points for weather readings
+    @GetMapping("/{localName}/weather-readings/latest")
+    public List<WeatherReadingDto> getLatestWeatherReadingByLocal(@PathVariable String localName, @RequestParam(name="limit", required=false) Integer limit){
+
+        if (limit == null) {
+            return Collections.singletonList(weatherServices.getMostRecentWeatherReadingByLocal(localName));
+        }
+
+        return weatherServices.getWeatherReadingByLocalLimit(localName, limit);
+
+    }
+
+    @GetMapping("/{localName}/weather-readings")
+    public List<WeatherReadingDto> getWeatherReadingByLocal(@PathVariable String localName,
+                                                            @RequestParam(name="start_date", required=false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+                                                            @RequestParam(name="end_date", required=false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
+        List<WeatherReadingDto> l;
+        if (startDate==null ||endDate==null) {
+            return weatherServices.getWeatherReadingsByLocal(localName);
+        }
+        else {
+            return weatherServices.getWeatherReadingByLocalAndDate(localName, startDate, endDate);
         }
     }
 }

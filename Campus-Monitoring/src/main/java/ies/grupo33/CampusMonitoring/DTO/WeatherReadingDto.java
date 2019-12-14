@@ -1,4 +1,4 @@
-package ies.grupo33.CampusMonitoring.Model;
+package ies.grupo33.CampusMonitoring.DTO;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
