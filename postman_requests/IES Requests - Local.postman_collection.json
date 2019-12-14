@@ -19,6 +19,50 @@
 			"response": []
 		},
 		{
+			"name": "get latest weather reading",
+			"request": {
+				"url": "http://localhost:8080/local/Cafetaria da ESAN/reviews",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "get all weather readings",
+			"request": {
+				"url": "http://localhost:8080/local/Cafetaria da ESAN/reviews",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "get weather readings by dates",
+			"request": {
+				"url": "http://localhost:8080/local/Cafetaria da ESAN/reviews",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "get 10 latest weather readings",
+			"request": {
+				"url": "http://localhost:8080/local/Cafetaria da ESAN/reviews",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
 			"name": "get local report",
 			"request": {
 				"url": {
