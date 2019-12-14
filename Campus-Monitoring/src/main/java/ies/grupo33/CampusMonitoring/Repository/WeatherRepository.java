@@ -36,7 +36,7 @@ public interface WeatherRepository extends JpaRepository<WeatherReading, Weather
 			nativeQuery = true)
 	Optional<WeatherReading> findByLocalNameOrderByWeatherReadingPKDateTimeDescFirst(String local);
 
-	@Query(value = "Select temperature, humidity, co2, date_time, sensor_id from campus_monitoring.WEATHER_READING join campus_monitoring.SENSOR on campus_monitoring.WEATHER_READING.sensor_id=campus_monitoring.SENSOR.id where local_name=?1 order by date_time asc limit ?2 ",
+	@Query(value = "Select temperature, humidity, co2, date_time, sensor_id from campus_monitoring.WEATHER_READING join campus_monitoring.SENSOR on campus_monitoring.WEATHER_READING.sensor_id=campus_monitoring.SENSOR.id where local_name=?1 order by date_time desc limit ?2 ",
 			nativeQuery = true)
 	List<WeatherReading> findByLocalNameLimit(String local,int limit);
 
