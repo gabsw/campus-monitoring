@@ -3,49 +3,46 @@ package ies.grupo33.CampusMonitoring.Services;
 import ies.grupo33.CampusMonitoring.DTO.UserDto;
 import ies.grupo33.CampusMonitoring.Exception.LoginFailedException;
 import ies.grupo33.CampusMonitoring.Exception.UserNotFoundException;
-import ies.grupo33.CampusMonitoring.Model.Local;
 import ies.grupo33.CampusMonitoring.Model.User;
 import ies.grupo33.CampusMonitoring.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class UserServices {
 
     @Autowired
     private UserRepository userRepository;
-    
+
     public User getUsersByUsername(String username) throws UserNotFoundException {
-    	if (username == null) {
+        if (username == null) {
             throw new IllegalArgumentException("Username is not defined.");
         } else {
-            Optional<User> opt_user= userRepository.findById(username);
+            Optional<User> opt_user = userRepository.findById(username);
             if (!opt_user.isPresent()) {
-            	throw new UserNotFoundException("User not found "+username);
+                throw new UserNotFoundException("User not found " + username);
             }
             return opt_user.get();
         }
     }
-    
-    public UserDto loginUser(String username, String password) throws LoginFailedException{
-    	if (username == null || password == null) {
-    		//return null;
+
+    public UserDto loginUser(String username, String password) throws LoginFailedException, UserNotFoundException {
+        if (username == null || password == null) {
             throw new IllegalArgumentException("User (password or username) is not defined.");
         }
-    	Optional<User> opt_user= userRepository.findById(username);
-    	if (!opt_user.isPresent())
-    		return null;
-    	if (opt_user.get().getPassword().equals(password)){
-    		User u = opt_user.get();
-    		UserDto udto = new UserDto(username, u.getEmail(), u.getName(), u.getLocals(), u.isAdmin());
-    		return udto;
-    		}
-    	throw new LoginFailedException("Login failed.");
+        Optional<User> opt_user = userRepository.findById(username);
+        if (!opt_user.isPresent())
+            throw new UserNotFoundException("User not found " + username);
+        if (!opt_user.get().getPassword().equals(password)) {
+            throw new LoginFailedException("Login failed.");
+        }
+
+        User u = opt_user.get();
+        
+        return new UserDto(username, u.getEmail(), u.getName(), u.getLocals(), u.isAdmin());
     }
 
     public List<User> getUsersByLocal(String local) {
