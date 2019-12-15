@@ -2,6 +2,7 @@ package ies.grupo33.CampusMonitoring.Controller;
 
 import ies.grupo33.CampusMonitoring.DTO.ReportDTO;
 import ies.grupo33.CampusMonitoring.DTO.WeatherReadingDto;
+import ies.grupo33.CampusMonitoring.Exception.LocalNotFoundException;
 import ies.grupo33.CampusMonitoring.Exception.MismatchedReviewException;
 import ies.grupo33.CampusMonitoring.Exception.UserCannotReviewException;
 import ies.grupo33.CampusMonitoring.Model.Local;
@@ -121,7 +122,7 @@ public class LocalController {
 
     // end points for weather readings
     @GetMapping("/{localName}/weather-readings/latest")
-    public List<WeatherReadingDto> getLatestWeatherReadingByLocal(@PathVariable String localName, @RequestParam(name="limit", required=false) Integer limit){
+    public List<WeatherReadingDto> getLatestWeatherReadingByLocal(@PathVariable String localName, @RequestParam(name="limit", required=false) Integer limit) throws LocalNotFoundException{
 
         if (limit == null) {
             return Collections.singletonList(weatherServices.getMostRecentWeatherReadingByLocal(localName));
@@ -134,7 +135,7 @@ public class LocalController {
     @GetMapping("/{localName}/weather-readings")
     public List<WeatherReadingDto> getWeatherReadingByLocal(@PathVariable String localName,
                                                             @RequestParam(name="start_date", required=false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
-                                                            @RequestParam(name="end_date", required=false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
+                                                            @RequestParam(name="end_date", required=false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) throws LocalNotFoundException {
         List<WeatherReadingDto> l;
         if (startDate==null ||endDate==null) {
             return weatherServices.getWeatherReadingsByLocal(localName);

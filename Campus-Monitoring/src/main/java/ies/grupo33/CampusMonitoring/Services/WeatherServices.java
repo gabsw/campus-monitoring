@@ -13,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import ies.grupo33.CampusMonitoring.DTO.WeatherReadingDto;
+import ies.grupo33.CampusMonitoring.Exception.LocalNotFoundException;
+import ies.grupo33.CampusMonitoring.Exception.SensorNotFoundException;
 import ies.grupo33.CampusMonitoring.Model.Sensor;
 import ies.grupo33.CampusMonitoring.Model.WeatherReading;
 
@@ -36,7 +38,7 @@ public class WeatherServices {
 	}
 	
 
-	public WeatherReadingDto getMostRecentWeatherReadingByLocal(String local){
+	public WeatherReadingDto getMostRecentWeatherReadingByLocal(String local) throws LocalNotFoundException{
 		if (local ==null) {
 			throw new IllegalArgumentException("Local is not defined.");
 		}
@@ -48,12 +50,12 @@ public class WeatherServices {
 					weatherReading.getHumidity(), weatherReading.getCo2());
 			return wrdto;
 		} else {
-			return null;
+			throw new LocalNotFoundException("Local not found "+local);
 		}
 	}
 
 
-	public WeatherReadingDto getMostRecentWeatherReadingBySensorId(Long sensorId){
+	public WeatherReadingDto getMostRecentWeatherReadingBySensorId(Long sensorId) throws SensorNotFoundException{
 
 		Optional<WeatherReading> wr = weatherRepository.findFirstByWeatherReadingPKSensorIdOrderByWeatherReadingPKDateTimeDesc(sensorId);
 
@@ -65,12 +67,12 @@ public class WeatherServices {
 					weatherReading.getHumidity(), weatherReading.getCo2());
 			return wrdto;
 		} else {
-			return null;
+			throw new SensorNotFoundException("Sensor not found "+sensorId);
 		}
 	}
 
 
-	public List<WeatherReadingDto> getWeatherReadingsByLocal(String local){
+	public List<WeatherReadingDto> getWeatherReadingsByLocal(String local) throws LocalNotFoundException{
 		if (local ==null) {
 			throw new IllegalArgumentException("Local is not defined.");
 		}
@@ -82,12 +84,11 @@ public class WeatherServices {
 					wr.getHumidity(), wr.getCo2()));
 		}
 		return rl;
-
 		
 	}
 	
 	
-	public List<WeatherReadingDto> getWeatherReadingBySensor(long sensorId, Pageable pageable) {
+	public List<WeatherReadingDto> getWeatherReadingBySensor(long sensorId, Pageable pageable) throws SensorNotFoundException {
 		
 		Page<WeatherReading> l= weatherRepository.findByWeatherReadingPKSensorIdOrderByWeatherReadingPKDateTimeAsc(sensorId, pageable);
 		
@@ -103,7 +104,7 @@ public class WeatherServices {
 		return rl;
 	}
 
-	public List<WeatherReadingDto> getWeatherReadingBySensorAndDate(long sensorId, LocalDateTime dateInit, LocalDateTime dateFin, Pageable pageable) {
+	public List<WeatherReadingDto> getWeatherReadingBySensorAndDate(long sensorId, LocalDateTime dateInit, LocalDateTime dateFin, Pageable pageable) throws SensorNotFoundException {
 		Page<WeatherReading> l;
 
 		if (dateInit ==null || dateFin==null) {

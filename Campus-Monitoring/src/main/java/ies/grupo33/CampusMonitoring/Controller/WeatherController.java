@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ies.grupo33.CampusMonitoring.Model.WeatherReading;
 import ies.grupo33.CampusMonitoring.DTO.WeatherReadingDto;
+import ies.grupo33.CampusMonitoring.Exception.LocalNotFoundException;
+import ies.grupo33.CampusMonitoring.Exception.SensorNotFoundException;
 import ies.grupo33.CampusMonitoring.Model.Sensor;
 import ies.grupo33.CampusMonitoring.Services.SensorServices;
 import ies.grupo33.CampusMonitoring.Services.WeatherServices;
@@ -31,7 +33,7 @@ public class WeatherController {
 	SensorServices sensorServices;
 	
 	@GetMapping("/latest/local-name/{localName}")
-	public WeatherReadingDto getLatestWeatherReadingByLocal(@PathVariable String localName, Pageable pageable){
+	public WeatherReadingDto getLatestWeatherReadingByLocal(@PathVariable String localName, Pageable pageable) throws LocalNotFoundException{
 		WeatherReadingDto wr = weatherServices.getMostRecentWeatherReadingByLocal(localName);
 		
 		if(wr==null) {
@@ -42,7 +44,7 @@ public class WeatherController {
 	}
 	
 	@GetMapping("/latest/id/{id}")
-	public WeatherReadingDto getLatestWeatherReadingBySensorId(@PathVariable String id, Pageable pageable){
+	public WeatherReadingDto getLatestWeatherReadingBySensorId(@PathVariable String id, Pageable pageable) throws SensorNotFoundException{
 		
 		long sensor_id = Long.parseLong(id);
 		
@@ -58,7 +60,7 @@ public class WeatherController {
 	@GetMapping("/local-name/{localName}")
 	public List<WeatherReadingDto> getWeatherReadingByLocal(@PathVariable String localName,
 			@RequestParam(name="start_date", required=false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
-			@RequestParam(name="end_date", required=false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate ) {
+			@RequestParam(name="end_date", required=false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate ) throws LocalNotFoundException {
 		List<WeatherReadingDto> l;
 		if (startDate==null ||endDate==null) {
 			l = weatherServices.getWeatherReadingsByLocal(localName);
@@ -84,7 +86,7 @@ public class WeatherController {
 	public List<WeatherReadingDto> getWeatherReadingBySensorId(@PathVariable String id,
 			@RequestParam(name="start_date", required=false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
 			@RequestParam(name="end_date", required=false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate,
-			Pageable pageable) {
+			Pageable pageable) throws SensorNotFoundException {
 		long sensor_id = Long.parseLong(id);
 		List<WeatherReadingDto> l;
 		if (startDate==null ||endDate==null) {
