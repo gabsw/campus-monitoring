@@ -34,15 +34,16 @@ public interface WeatherRepository extends JpaRepository<WeatherReading, Weather
 	@Query(value = "Select temperature, humidity, co2, date_time, sensor_id from campus_monitoring.WEATHER_READING join campus_monitoring.SENSOR on campus_monitoring.WEATHER_READING.sensor_id=campus_monitoring.SENSOR.id where local_name=?1 and date_time>=?2 and date_time<=?3 order by date_time asc;",
 			nativeQuery = true)
 	List<WeatherReading> findByLocalNameAndWeatherReadingPKDateTimeBetweenOrderByWeatherReadingPKDateTimeAsc(String local,
-			LocalDateTime dateInit, LocalDateTime dateFin);
-	
-	@Query(value = "Select temperature, humidity, co2, date_time, sensor_id from campus_monitoring.WEATHER_READING join campus_monitoring.SENSOR on campus_monitoring.WEATHER_READING.sensor_id=campus_monitoring.SENSOR.id where local_name=?1 order by date_time desc limit 1;", 
-			  nativeQuery = true)
+																											 LocalDateTime dateInit, LocalDateTime dateFin);
+
+	@Query(value = "Select temperature, humidity, co2, date_time, sensor_id from campus_monitoring.WEATHER_READING join campus_monitoring.SENSOR on campus_monitoring.WEATHER_READING.sensor_id=campus_monitoring.SENSOR.id where local_name=?1 order by date_time desc limit 1;",
+			nativeQuery = true)
 	Optional<WeatherReading> findByLocalNameOrderByWeatherReadingPKDateTimeDescFirst(String local);
+
 	
 	@Query(value = "Select temperature, humidity, co2, date_time, sensor_id from campus_monitoring.WEATHER_READING join campus_monitoring.SENSOR on campus_monitoring.WEATHER_READING.sensor_id=campus_monitoring.SENSOR.id where local_name=?1 order by date_time asc limit ?2 ",
 			nativeQuery = true)
 	List<WeatherReading> findByLocalNameLimit(String local,int limit);
-	
+
 
 }

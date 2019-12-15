@@ -23,7 +23,7 @@ The scripts found in `Sensor` are not the latest ones running on RaspberryPi and
 ## Missing
 
 1. Login feature (Predicted Finish Date: 17/12/2019)
-2. Frontend is still not integrated with the application. (Predicted Finish Date: 19/12/2019)
+2. Frontend is still not integrated with the application. (Predicted Finish Date: 18/12/2019)
 
 
 ## Example requests

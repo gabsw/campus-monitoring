@@ -49,8 +49,6 @@ public class UniversalAlarmServices {
     }
 
 
-    // Add pagination
-
     // Retrieve all open alarms
     public Page<UniversalAlarm> getOpenUniversalAlarm(String localName, Pageable pageable) {
         if (localName == null) {
