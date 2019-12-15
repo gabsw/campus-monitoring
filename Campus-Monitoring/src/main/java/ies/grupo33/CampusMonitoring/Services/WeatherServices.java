@@ -2,8 +2,6 @@ package ies.grupo33.CampusMonitoring.Services;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,7 +16,6 @@ import ies.grupo33.CampusMonitoring.Exception.SensorNotFoundException;
 import ies.grupo33.CampusMonitoring.Model.Sensor;
 import ies.grupo33.CampusMonitoring.Model.WeatherReading;
 
-import ies.grupo33.CampusMonitoring.Repository.SensorRepository;
 import ies.grupo33.CampusMonitoring.Repository.WeatherRepository;
 
 @Service

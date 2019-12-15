@@ -136,7 +136,6 @@ public class LocalController {
     public List<WeatherReadingDto> getWeatherReadingByLocal(@PathVariable String localName,
                                                             @RequestParam(name="start_date", required=false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
                                                             @RequestParam(name="end_date", required=false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) throws LocalNotFoundException {
-        List<WeatherReadingDto> l;
         if (startDate==null ||endDate==null) {
             return weatherServices.getWeatherReadingsByLocal(localName);
         }
