@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ies.grupo33.CampusMonitoring.DTO.UserDto;
 import ies.grupo33.CampusMonitoring.Exception.LoginFailedException;
+import ies.grupo33.CampusMonitoring.Exception.LoginRequiredException;
+import ies.grupo33.CampusMonitoring.Exception.UserNotFoundException;
 import ies.grupo33.CampusMonitoring.Services.UserServices;
 
 @RestController
@@ -23,7 +25,7 @@ public class SpringBootJDBCSessionController {
     private UserServices userServices;
 	
 	@GetMapping("/login/{username}/{password}")
-    public UserDto login(@PathVariable String username, @PathVariable String password,HttpServletRequest request) throws LoginFailedException{
+    public UserDto login(@PathVariable String username, @PathVariable String password,HttpServletRequest request) throws LoginFailedException, UserNotFoundException{
 		UserDto u = userServices.loginUser(username, password);
 		if (u == null) {
 			throw new LoginFailedException("Login failed.");
@@ -31,23 +33,21 @@ public class SpringBootJDBCSessionController {
 		String user = (String) request.getSession().getAttribute("username");
         if(user==null){
             user = username;
-            request.getSession().setAttribute("username",user);
-            //HttpSession s = request.getSession();
-            //s.setAttribute("username",user);
-            //s.setAttribute("name",u.getName());
-            //s.setAttribute("email",u.getEmail());
-            //s.setAttribute("admin",u.isAdmin());
-            //s.setAttribute("locals",u.getLocals());            
+            request.getSession().setAttribute("username",user);         
         }
-        //Map<String,String> us =new HashMap<>();
-        //us.put("username",user);
         
-        //return us;
         return u;
 	}
 	
 	
-	
-	
+	@GetMapping("/user-info")
+	public UserDto getUserInfo(HttpServletRequest request) throws LoginFailedException, UserNotFoundException, LoginRequiredException{
+		String user = (String) request.getSession().getAttribute("username");
+		if (user == null) {
+			throw new LoginRequiredException("Login Required for this request.");
+		}
+		UserDto u = userServices.getUserDtoByUsername(user);
+		return u;
+	}
 
 }

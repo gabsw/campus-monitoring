@@ -28,6 +28,19 @@ public class UserServices {
             return opt_user.get();
         }
     }
+    
+    public UserDto getUserDtoByUsername(String username) throws UserNotFoundException {
+    	if (username == null) {
+            throw new IllegalArgumentException("Username is not defined.");
+        } else {
+            Optional<User> opt_user = userRepository.findById(username);
+            if (!opt_user.isPresent()) {
+                throw new UserNotFoundException("User not found " + username);
+            }
+            User u = opt_user.get();
+            return new UserDto(username, u.getEmail(), u.getName(), u.getLocals(), u.isAdmin());
+        }
+    }
 
     public UserDto loginUser(String username, String password) throws LoginFailedException, UserNotFoundException {
         if (username == null || password == null) {
