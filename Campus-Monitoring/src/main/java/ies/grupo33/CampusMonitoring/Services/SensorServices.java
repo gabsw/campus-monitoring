@@ -21,7 +21,7 @@ public class SensorServices {
 		return sensorRepository.findAll();
 	}
 	
-	public Sensor getSensor(long id) throws SensorNotFoundException{
+	public Sensor getSensor(Long id) throws SensorNotFoundException{
 		
 		Optional<Sensor> sensor= sensorRepository.findById(id);
 		

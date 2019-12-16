@@ -67,9 +67,10 @@ public class WeatherServices {
 
 		Optional<WeatherReading> wr = weatherRepository.findFirstByWeatherReadingPKSensorIdOrderByWeatherReadingPKDateTimeDesc(sensorId);
 
+		Sensor s = sensorServices.getSensor(sensorId);
+
 		if (wr.isPresent()) {
 			WeatherReading weatherReading = wr.get();
-			Sensor s = sensorServices.getSensor(sensorId);
 
 			return new WeatherReadingDto(weatherReading.getWeatherReadingPK().getSensorId(), weatherReading.getWeatherReadingPK().getDateTime(), s.getLocalName(), weatherReading.getTemperature(),
 					weatherReading.getHumidity(), weatherReading.getCo2());
@@ -99,7 +100,7 @@ public class WeatherServices {
 	}
 	
 	
-	public List<WeatherReadingDto> getWeatherReadingBySensor(long sensorId, Pageable pageable) throws SensorNotFoundException {
+	public List<WeatherReadingDto> getWeatherReadingBySensor(Long sensorId, Pageable pageable) throws SensorNotFoundException {
 		
 		Page<WeatherReading> l= weatherRepository.findByWeatherReadingPKSensorIdOrderByWeatherReadingPKDateTimeAsc(sensorId, pageable);
 		
