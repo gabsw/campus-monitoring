@@ -38,7 +38,7 @@ public class Review implements Serializable {
     public Review() {
     }
 
-    public Review(Long id, String username, LocalDateTime dateTime, String localName, int rating, String content) {
+    public Review(Long id, String username, LocalDateTime dateTime, String localName, Integer rating, String content) {
         this.id = id;
         this.username = username;
         this.dateTime = dateTime;
@@ -79,11 +79,11 @@ public class Review implements Serializable {
         this.localName = localName;
     }
 
-    public int getRating() {
+    public Integer getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(Integer rating) {
         this.rating = rating;
     }
 
