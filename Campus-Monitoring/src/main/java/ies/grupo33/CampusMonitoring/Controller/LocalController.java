@@ -5,6 +5,7 @@ import ies.grupo33.CampusMonitoring.DTO.WeatherReadingDto;
 import ies.grupo33.CampusMonitoring.Exception.LocalNotFoundException;
 import ies.grupo33.CampusMonitoring.Exception.MismatchedReviewException;
 import ies.grupo33.CampusMonitoring.Exception.UserCannotReviewException;
+import ies.grupo33.CampusMonitoring.Exception.WeatherReadingNotFoundException;
 import ies.grupo33.CampusMonitoring.Model.Local;
 import ies.grupo33.CampusMonitoring.Model.Review;
 import ies.grupo33.CampusMonitoring.Representations.UniversalAlarmsRepresentation;
@@ -122,7 +123,8 @@ public class LocalController {
 
     // end points for weather readings
     @GetMapping("/{localName}/weather-readings/latest")
-    public List<WeatherReadingDto> getLatestWeatherReadingByLocal(@PathVariable String localName, @RequestParam(name="limit", required=false) Integer limit) throws LocalNotFoundException{
+    public List<WeatherReadingDto> getLatestWeatherReadingByLocal(@PathVariable String localName, @RequestParam(name="limit", required=false) Integer limit)
+            throws LocalNotFoundException, WeatherReadingNotFoundException {
 
         if (limit == null) {
             return Collections.singletonList(weatherServices.getMostRecentWeatherReadingByLocal(localName));

@@ -5,6 +5,7 @@ import java.util.List;
 
 import ies.grupo33.CampusMonitoring.DTO.WeatherReadingDto;
 import ies.grupo33.CampusMonitoring.Exception.SensorNotFoundException;
+import ies.grupo33.CampusMonitoring.Exception.WeatherReadingNotFoundException;
 import ies.grupo33.CampusMonitoring.Services.WeatherServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -30,7 +31,8 @@ public class SensorController {
 	}
 
 	@GetMapping("/id/{id}/weather-readings/latest")
-	public WeatherReadingDto getLatestWeatherReadingBySensorId(@PathVariable Long id) throws SensorNotFoundException{
+	public WeatherReadingDto getLatestWeatherReadingBySensorId(@PathVariable Long id)
+			throws SensorNotFoundException, WeatherReadingNotFoundException {
 		return weatherServices.getMostRecentWeatherReadingBySensorId(id);
 	}
 
