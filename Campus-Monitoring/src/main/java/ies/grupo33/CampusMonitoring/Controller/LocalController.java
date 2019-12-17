@@ -133,26 +133,27 @@ public class LocalController {
 
     // end points for weather readings
     @GetMapping("/{localName}/weather-readings/latest")
-    public List<WeatherReadingDto> getLatestWeatherReadingByLocal(@PathVariable String localName, @RequestParam(name="limit", required=false) Integer limit)
-            throws LocalNotFoundException, WeatherReadingNotFoundException {
+    public List<WeatherReadingDto> getLatestWeatherReadingByLocal(@PathVariable String localName, @RequestParam(name="limit", required=false) Integer limit, HttpServletRequest request)
+            throws ForbiddenUserException, LocalNotFoundException, UserNotFoundException, LoginRequiredException, WeatherReadingNotFoundException {
 
         if (limit == null) {
-            return Collections.singletonList(weatherServices.getMostRecentWeatherReadingByLocal(localName));
+            return Collections.singletonList(weatherServices.getMostRecentWeatherReadingByLocal(localName, request.getSession()));
         }
 
-        return weatherServices.getWeatherReadingByLocalLimit(localName, limit);
+        return weatherServices.getWeatherReadingByLocalLimit(localName, limit, request.getSession());
 
     }
 
     @GetMapping("/{localName}/weather-readings")
     public List<WeatherReadingDto> getWeatherReadingByLocal(@PathVariable String localName,
                                                             @RequestParam(name="start_date", required=false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
-                                                            @RequestParam(name="end_date", required=false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) throws LocalNotFoundException {
+                                                            @RequestParam(name="end_date", required=false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate, HttpServletRequest request)
+            throws ForbiddenUserException, LocalNotFoundException, UserNotFoundException, LoginRequiredException {
         if (startDate==null ||endDate==null) {
-            return weatherServices.getWeatherReadingsByLocal(localName);
+            return weatherServices.getWeatherReadingsByLocal(localName, request.getSession());
         }
         else {
-            return weatherServices.getWeatherReadingByLocalAndDate(localName, startDate, endDate);
+            return weatherServices.getWeatherReadingByLocalAndDate(localName, startDate, endDate, request.getSession());
         }
     }
 }
