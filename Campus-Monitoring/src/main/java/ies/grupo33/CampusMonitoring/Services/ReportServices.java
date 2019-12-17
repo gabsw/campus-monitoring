@@ -3,20 +3,20 @@ package ies.grupo33.CampusMonitoring.Services;
 import ies.grupo33.CampusMonitoring.DTO.ReportDTO;
 import ies.grupo33.CampusMonitoring.Exception.ForbiddenUserException;
 import ies.grupo33.CampusMonitoring.Exception.LocalNotFoundException;
-import ies.grupo33.CampusMonitoring.Exception.LoginRequiredException;
 import ies.grupo33.CampusMonitoring.Exception.UserNotFoundException;
 import ies.grupo33.CampusMonitoring.Model.User;
 import ies.grupo33.CampusMonitoring.Repository.ReportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
 
+@Transactional
 @Service
 public class ReportServices {
     @Autowired
@@ -25,10 +25,10 @@ public class ReportServices {
     @Autowired
     private UserServices userServices;
 
-    public ReportDTO buildReport(String localName, LocalDate startDate, LocalDate endDate, HttpSession session)
-            throws ForbiddenUserException, LocalNotFoundException, UserNotFoundException, LoginRequiredException {
+    public ReportDTO buildReport(String localName, LocalDate startDate, LocalDate endDate, String username)
+            throws ForbiddenUserException, LocalNotFoundException, UserNotFoundException {
 
-        User currentUser = userServices.findUserBySession(session);
+        User currentUser = userServices.findUserByUsername(username);
 
         userServices.checkIfUserIsAtLocal(currentUser.getUsername(), localName);
 
@@ -60,7 +60,7 @@ public class ReportServices {
         }
 
         return report;
-        
+
     }
 
     private List<Violation> generateViolations(ReportDTO reportDTO) {

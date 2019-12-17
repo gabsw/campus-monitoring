@@ -16,12 +16,13 @@ import org.springframework.mail.MailException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Transactional
 @Service
 public class UniversalAlarmServices {
     private static Logger logger = LoggerFactory.getLogger(UniversalAlarmServices.class);
@@ -35,12 +36,12 @@ public class UniversalAlarmServices {
     @Autowired
     private NotificationServices notificationServices;
 
-    public Page<UniversalAlarm> getUniversalAlarm(String localName, Pageable pageable, HttpSession session)
+    public Page<UniversalAlarm> getUniversalAlarm(String localName, Pageable pageable, String username)
             throws ForbiddenUserException, LocalNotFoundException, UserNotFoundException, LoginRequiredException {
         if (localName == null) {
             throw new IllegalArgumentException("Local name is not defined.");
         } else {
-            User currentUser = userServices.findUserBySession(session);
+            User currentUser = userServices.findUserByUsername(username);
 
             userServices.checkIfUserIsAtLocal(currentUser.getUsername(), localName);
 
@@ -49,14 +50,14 @@ public class UniversalAlarmServices {
     }
 
     public Page<UniversalAlarm> getUniversalAlarm(String localName, LocalDate timeStart, LocalDate timeEnd,
-                                                  Pageable pageable, HttpSession session)
+                                                  Pageable pageable, String username)
             throws ForbiddenUserException, LocalNotFoundException, UserNotFoundException, LoginRequiredException {
         if (timeStart == null || timeEnd == null) {
             throw new IllegalArgumentException("Time range is not defined.");
         } else if (localName == null) {
             throw new IllegalArgumentException("Local name is not defined.");
         } else {
-            User currentUser = userServices.findUserBySession(session);
+            User currentUser = userServices.findUserByUsername(username);
 
             userServices.checkIfUserIsAtLocal(currentUser.getUsername(), localName);
 
@@ -66,12 +67,12 @@ public class UniversalAlarmServices {
 
 
     // Retrieve all ongoing alarms
-    public Page<UniversalAlarm> getOpenUniversalAlarm(String localName, Pageable pageable, HttpSession session)
+    public Page<UniversalAlarm> getOpenUniversalAlarm(String localName, Pageable pageable, String username)
             throws ForbiddenUserException, LocalNotFoundException, UserNotFoundException, LoginRequiredException {
         if (localName == null) {
             throw new IllegalArgumentException("Local name is not defined.");
         } else {
-            User currentUser = userServices.findUserBySession(session);
+            User currentUser = userServices.findUserByUsername(username);
 
             userServices.checkIfUserIsAtLocal(currentUser.getUsername(), localName);
 
@@ -80,14 +81,14 @@ public class UniversalAlarmServices {
     }
 
     public Page<UniversalAlarm> getOpenUniversalAlarm(String localName, LocalDate timeStart, LocalDate timeEnd,
-                                                      Pageable pageable, HttpSession session)
+                                                      Pageable pageable, String username)
             throws ForbiddenUserException, LocalNotFoundException, UserNotFoundException, LoginRequiredException {
         if (timeStart == null || timeEnd == null) {
             throw new IllegalArgumentException("Time range is not defined.");
         } else if (localName == null) {
             throw new IllegalArgumentException("Local name is not defined.");
         } else {
-            User currentUser = userServices.findUserBySession(session);
+            User currentUser = userServices.findUserByUsername(username);
 
             userServices.checkIfUserIsAtLocal(currentUser.getUsername(), localName);
 
@@ -98,13 +99,13 @@ public class UniversalAlarmServices {
     }
 
     // Retrieve all closed alarms
-    public Page<UniversalAlarm> getClosedUniversalAlarm(String localName, Pageable pageable, HttpSession session)
+    public Page<UniversalAlarm> getClosedUniversalAlarm(String localName, Pageable pageable, String username)
             throws ForbiddenUserException, LocalNotFoundException, UserNotFoundException, LoginRequiredException {
         if (localName == null) {
             throw new IllegalArgumentException("Local name is not defined.");
         } else {
 
-            User currentUser = userServices.findUserBySession(session);
+            User currentUser = userServices.findUserByUsername(username);
 
             userServices.checkIfUserIsAtLocal(currentUser.getUsername(), localName);
 
@@ -113,14 +114,14 @@ public class UniversalAlarmServices {
     }
 
     public Page<UniversalAlarm> getClosedUniversalAlarm(String localName, LocalDate timeStart,
-                                                        LocalDate timeEnd, Pageable pageable, HttpSession session)
+                                                        LocalDate timeEnd, Pageable pageable, String username)
             throws ForbiddenUserException, LocalNotFoundException, UserNotFoundException, LoginRequiredException {
         if (timeStart == null || timeEnd == null) {
             throw new IllegalArgumentException("Time range is not defined.");
         } else if (localName == null) {
             throw new IllegalArgumentException("Local name is not defined.");
         } else {
-            User currentUser = userServices.findUserBySession(session);
+            User currentUser = userServices.findUserByUsername(username);
 
             userServices.checkIfUserIsAtLocal(currentUser.getUsername(), localName);
 
