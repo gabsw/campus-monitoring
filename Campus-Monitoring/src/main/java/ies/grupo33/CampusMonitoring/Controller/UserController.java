@@ -9,9 +9,11 @@ import ies.grupo33.CampusMonitoring.Services.LocalServices;
 import ies.grupo33.CampusMonitoring.Services.UserServices;
 import ies.grupo33.CampusMonitoring.security.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Base64;
 import java.util.List;
 
 @CrossOrigin
@@ -25,8 +27,23 @@ public class UserController {
     @Autowired
     private LocalServices localServices;
 
-    @GetMapping("/authentication/{username}/{password}")
-    public UserDto authenticateUser(@PathVariable String username, @PathVariable String password) throws LoginFailedException, UserNotFoundException {
+    @GetMapping("/authentication/")
+    public UserDto authenticateUser(HttpServletRequest request) throws LoginFailedException, UserNotFoundException {
+        if (!request.getAuthType().equals(request.BASIC_AUTH)) {
+            throw new LoginFailedException("Unsupported authorization header type.");
+        }
+
+        String auth = request.getHeader(HttpHeaders.AUTHORIZATION);
+        String token = auth.trim().split(" ")[1];
+        String[] decodedTokenParts = new String(Base64.getDecoder().decode(token)).split(":");
+
+        if (decodedTokenParts.length != 2) {
+            throw new LoginFailedException("Bad authorization header");
+        }
+
+        String username = decodedTokenParts[0];
+        String password = decodedTokenParts[1];
+
         return userServices.loginUser(username, password);
     }
 
