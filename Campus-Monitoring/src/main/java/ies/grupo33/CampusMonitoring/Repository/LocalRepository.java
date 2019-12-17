@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface LocalRepository extends JpaRepository<Local, String> {
 
-	List<Local> findByUsername(String username);
+	List<Local> findByUsers(String username);
 
 }

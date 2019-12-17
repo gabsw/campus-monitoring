@@ -2,9 +2,12 @@ package ies.grupo33.CampusMonitoring.Controller;
 
 import ies.grupo33.CampusMonitoring.DTO.ReportDTO;
 import ies.grupo33.CampusMonitoring.DTO.WeatherReadingDto;
+import ies.grupo33.CampusMonitoring.Exception.ForbiddenUserException;
 import ies.grupo33.CampusMonitoring.Exception.LocalNotFoundException;
+import ies.grupo33.CampusMonitoring.Exception.LoginRequiredException;
 import ies.grupo33.CampusMonitoring.Exception.MismatchedReviewException;
 import ies.grupo33.CampusMonitoring.Exception.UserCannotReviewException;
+import ies.grupo33.CampusMonitoring.Exception.UserNotFoundException;
 import ies.grupo33.CampusMonitoring.Exception.WeatherReadingNotFoundException;
 import ies.grupo33.CampusMonitoring.Model.Local;
 import ies.grupo33.CampusMonitoring.Model.Review;
@@ -66,7 +69,7 @@ public class LocalController {
                                        LocalDate startDate,
                                @RequestParam(name = "end_date")
                                @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-                                       LocalDate endDate,HttpServletRequest request) {
+                                       LocalDate endDate,HttpServletRequest request) throws ForbiddenUserException, LocalNotFoundException, UserNotFoundException, LoginRequiredException {
         return reportServices.buildReport(localName, startDate, endDate, request.getSession());
     }
 

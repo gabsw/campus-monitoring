@@ -3,6 +3,7 @@ package ies.grupo33.CampusMonitoring.Services;
 import ies.grupo33.CampusMonitoring.DTO.ReportDTO;
 import ies.grupo33.CampusMonitoring.Exception.ForbiddenUserException;
 import ies.grupo33.CampusMonitoring.Exception.LocalNotFoundException;
+import ies.grupo33.CampusMonitoring.Exception.LoginRequiredException;
 import ies.grupo33.CampusMonitoring.Exception.UserNotFoundException;
 import ies.grupo33.CampusMonitoring.Model.User;
 import ies.grupo33.CampusMonitoring.Repository.ReportRepository;
@@ -25,7 +26,7 @@ public class ReportServices {
     private UserServices userServices;
 
     public ReportDTO buildReport(String localName, LocalDate startDate, LocalDate endDate, HttpSession session)
-            throws ForbiddenUserException, LocalNotFoundException, UserNotFoundException {
+            throws ForbiddenUserException, LocalNotFoundException, UserNotFoundException, LoginRequiredException {
 
         User currentUser = userServices.findUserBySession(session);
 

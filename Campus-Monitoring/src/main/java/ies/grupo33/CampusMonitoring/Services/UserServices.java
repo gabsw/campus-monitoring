@@ -3,6 +3,7 @@ package ies.grupo33.CampusMonitoring.Services;
 import ies.grupo33.CampusMonitoring.DTO.UserDto;
 import ies.grupo33.CampusMonitoring.Exception.LocalNotFoundException;
 import ies.grupo33.CampusMonitoring.Exception.LoginFailedException;
+import ies.grupo33.CampusMonitoring.Exception.LoginRequiredException;
 import ies.grupo33.CampusMonitoring.Exception.UserNotFoundException;
 import ies.grupo33.CampusMonitoring.Exception.ForbiddenUserException;
 import ies.grupo33.CampusMonitoring.Model.User;
@@ -133,9 +134,13 @@ public class UserServices {
         return true;
     }
 
-    public User findUserBySession(HttpSession session) throws UserNotFoundException {
+    public User findUserBySession(HttpSession session) throws UserNotFoundException, LoginRequiredException {
 
         String username = (String) session.getAttribute("username");
+        
+        if (username==null) {
+        	throw new LoginRequiredException("Login required.");
+        }
 
         Optional<User> opt_user = userRepository.findById(username);
         if (!opt_user.isPresent())

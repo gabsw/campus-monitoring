@@ -34,7 +34,7 @@ public class LocalServices {
             throw new UserNotFoundException("User not found " + username);
         }
 
-        return localRepository.findByUsername(username);
+        return localRepository.findByUsers(username);
 
     }
 
