@@ -46,8 +46,8 @@ public class LocalController {
     private RepresentationAdapterService representationAdapterService;
 
     @GetMapping("/")
-    public List<Local> getLocals() {
-        return localServices.getAllLocals();
+    public List<Local> getLocals(HttpServletRequest request) throws UserNotFoundException, LoginRequiredException, ForbiddenUserException {
+        return localServices.getAllLocals(request.getSession());
     }
 
     // end points dealing with reviews
@@ -82,7 +82,8 @@ public class LocalController {
                                                                   @RequestParam(name = "end_date", required = false)
                                                    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
                                                            LocalDate endDate,
-                                                                  Pageable pageable) {
+                                                                  Pageable pageable
+                                                                  ) {
 
         if (startDate == null || endDate == null) {
             return universalAlarmServices.getUniversalAlarm(localName, pageable).map(UniversalAlarmsRepresentation::new);
@@ -128,26 +129,27 @@ public class LocalController {
 
     // end points for weather readings
     @GetMapping("/{localName}/weather-readings/latest")
-    public List<WeatherReadingDto> getLatestWeatherReadingByLocal(@PathVariable String localName, @RequestParam(name="limit", required=false) Integer limit)
-            throws LocalNotFoundException, WeatherReadingNotFoundException {
+    public List<WeatherReadingDto> getLatestWeatherReadingByLocal(@PathVariable String localName, @RequestParam(name="limit", required=false) Integer limit, HttpServletRequest request)
+            throws LocalNotFoundException, WeatherReadingNotFoundException, UserNotFoundException, LoginRequiredException, ForbiddenUserException {
 
         if (limit == null) {
-            return Collections.singletonList(weatherServices.getMostRecentWeatherReadingByLocal(localName));
+            return Collections.singletonList(weatherServices.getMostRecentWeatherReadingByLocal(localName, request.getSession()));
         }
 
-        return weatherServices.getWeatherReadingByLocalLimit(localName, limit);
+        return weatherServices.getWeatherReadingByLocalLimit(localName, limit, request.getSession());
 
     }
 
     @GetMapping("/{localName}/weather-readings")
     public List<WeatherReadingDto> getWeatherReadingByLocal(@PathVariable String localName,
                                                             @RequestParam(name="start_date", required=false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
-                                                            @RequestParam(name="end_date", required=false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) throws LocalNotFoundException {
+                                                            @RequestParam(name="end_date", required=false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate,
+                                                            HttpServletRequest request) throws LocalNotFoundException, UserNotFoundException, LoginRequiredException, ForbiddenUserException {
         if (startDate==null ||endDate==null) {
-            return weatherServices.getWeatherReadingsByLocal(localName);
+            return weatherServices.getWeatherReadingsByLocal(localName,request.getSession());
         }
         else {
-            return weatherServices.getWeatherReadingByLocalAndDate(localName, startDate, endDate);
+            return weatherServices.getWeatherReadingByLocalAndDate(localName, startDate, endDate, request.getSession());
         }
     }
 }

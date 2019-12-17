@@ -2,6 +2,7 @@ package ies.grupo33.CampusMonitoring.Controller;
 
 import ies.grupo33.CampusMonitoring.DTO.UserDto;
 import ies.grupo33.CampusMonitoring.Exception.LoginFailedException;
+import ies.grupo33.CampusMonitoring.Exception.LoginRequiredException;
 import ies.grupo33.CampusMonitoring.Exception.UserNotFoundException;
 import ies.grupo33.CampusMonitoring.Model.Local;
 import ies.grupo33.CampusMonitoring.Model.User;
@@ -11,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 @CrossOrigin
 @RestController
@@ -29,8 +32,8 @@ public class UserController {
     }
 
     @GetMapping("/username/{username}/locals")
-    public List<Local> getLocalsByUser(@PathVariable String username) throws UserNotFoundException {
-        return localServices.getLocalsByUser(username);
+    public List<Local> getLocalsByUser(@PathVariable String username, HttpServletRequest request) throws UserNotFoundException, LoginRequiredException {
+        return localServices.getLocalsByUser(request.getSession());
     }
 
     // TODO: Add controller for sensor getSensorsByUser
