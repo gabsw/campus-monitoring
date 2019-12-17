@@ -1,7 +1,6 @@
 package ies.grupo33.CampusMonitoring.Controller;
 
-import ies.grupo33.CampusMonitoring.Exception.ReviewNotFoundException;
-import ies.grupo33.CampusMonitoring.Exception.UserCannotReviewException;
+import ies.grupo33.CampusMonitoring.Exception.*;
 import ies.grupo33.CampusMonitoring.Model.Review;
 import ies.grupo33.CampusMonitoring.Services.ReviewServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @CrossOrigin
@@ -20,25 +20,28 @@ public class ReviewController {
 
     @GetMapping("/username/{username}")
     public Page<Review> getReviewByUser(@PathVariable String username,
-                                        Pageable pageable) {
-        return reviewServices.getReviewByUser(username, pageable);
+                                        Pageable pageable, HttpServletRequest request)
+            throws ForbiddenUserException, UserNotFoundException, LoginRequiredException {
+        return reviewServices.getReviewByUser(username, pageable, request.getSession());
     }
 
     @GetMapping("/{id}")
-    public Review getReviewById(@PathVariable Long id) throws ReviewNotFoundException {
-        return reviewServices.getReviewById(id);
+    public Review getReviewById(@PathVariable Long id, HttpServletRequest request)
+            throws UserNotFoundException, LoginRequiredException, ReviewNotFoundException {
+        return reviewServices.getReviewById(id, request.getSession());
     }
 
-    // TODO: needs sessions information
     @DeleteMapping("/{id}")
-    public void deleteReview(@PathVariable(value = "id") Long reviewId)
-            throws UserCannotReviewException, ReviewNotFoundException {
-        reviewServices.deleteReview(reviewId);
+    public void deleteReview(@PathVariable(value = "id") Long reviewId, HttpServletRequest request)
+            throws  UserNotFoundException, LoginRequiredException, ReviewNotFoundException,
+            ForbiddenUserException, LocalNotFoundException {
+        reviewServices.deleteReview(reviewId, request.getSession());
     }
 
     @PutMapping("/{id}")
-    public void updateReview(@PathVariable(value = "id") Long reviewId, @Valid @RequestBody Review review)
-            throws UserCannotReviewException, ReviewNotFoundException {
-        reviewServices.updateReview(reviewId, review);
+    public void updateReview(@PathVariable(value = "id") Long reviewId, @Valid @RequestBody Review review, HttpServletRequest request)
+            throws ReviewNotFoundException, UserCannotReviewException, ForbiddenUserException, LocalNotFoundException,
+            UserNotFoundException, LoginRequiredException {
+        reviewServices.updateReview(reviewId, review, request.getSession());
     }
 }

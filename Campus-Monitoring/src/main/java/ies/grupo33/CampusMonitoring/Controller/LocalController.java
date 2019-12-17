@@ -52,14 +52,16 @@ public class LocalController {
 
     // end points dealing with reviews
     @GetMapping("/{localName}/reviews")
-    public Page<Review> getLocalReviews(@PathVariable String localName, Pageable pageable) {
-        return reviewServices.getReviewByLocal(localName, pageable);
+    public Page<Review> getLocalReviews(@PathVariable String localName, Pageable pageable, HttpServletRequest request)
+            throws ForbiddenUserException, LocalNotFoundException, UserNotFoundException, LoginRequiredException {
+        return reviewServices.getReviewByLocal(localName, pageable, request.getSession());
     }
 
     @PostMapping("/{localName}/reviews")
-    public void addReviewToLocal(@PathVariable String localName, @Valid @RequestBody Review review)
-            throws UserCannotReviewException, MismatchedReviewException {
-        reviewServices.addReviewToLocal(localName, review);
+    public void addReviewToLocal(@PathVariable String localName, @Valid @RequestBody Review review, HttpServletRequest request)
+            throws ForbiddenUserException, LocalNotFoundException, UserNotFoundException, LoginRequiredException,
+            MismatchedReviewException {
+        reviewServices.addReviewToLocal(localName, review, request.getSession());
     }
 
     // end points for reports
