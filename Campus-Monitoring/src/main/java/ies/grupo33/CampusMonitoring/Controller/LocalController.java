@@ -69,7 +69,7 @@ public class LocalController {
                                        LocalDate startDate,
                                @RequestParam(name = "end_date")
                                @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-                                       LocalDate endDate,HttpServletRequest request) throws ForbiddenUserException, LocalNotFoundException, UserNotFoundException, LoginRequiredException {
+                                       LocalDate endDate, HttpServletRequest request) throws ForbiddenUserException, LocalNotFoundException, UserNotFoundException, LoginRequiredException {
         return reportServices.buildReport(localName, startDate, endDate, request.getSession());
     }
 
