@@ -140,13 +140,17 @@ public class WeatherServices {
 	}
 	
 
-	public List<WeatherReadingDto> getWeatherReadingByLocalAndDate(String local, LocalDateTime dateInit, LocalDateTime dateFin) {
+	public List<WeatherReadingDto> getWeatherReadingByLocalAndDate(String local, LocalDateTime dateInit, LocalDateTime dateFin) throws LocalNotFoundException{
 		List<WeatherReading> l;
 		if (dateInit ==null || dateFin==null) {
 			throw new IllegalArgumentException("Date interval is not defined.");
 		}
 		if (local == null) {
 			throw new IllegalArgumentException("Local is not defined.");
+		}
+
+		if (!localRepository.findById(local).isPresent()) {
+			throw new LocalNotFoundException("Local not found " + local);
 		}
 
 		l = weatherRepository.findByLocalNameAndWeatherReadingPKDateTimeBetweenOrderByWeatherReadingPKDateTimeAsc(local, dateInit, dateFin);
@@ -160,9 +164,13 @@ public class WeatherServices {
 	}
 
 
-	public List<WeatherReadingDto> getWeatherReadingByLocalLimit(String local, int limit) {
+	public List<WeatherReadingDto> getWeatherReadingByLocalLimit(String local, int limit) throws LocalNotFoundException {
 		if (local == null) {
 			throw new IllegalArgumentException("Local is not defined.");
+		}
+
+		if (!localRepository.findById(local).isPresent()) {
+			throw new LocalNotFoundException("Local not found " + local);
 		}
 
 		List<WeatherReading> l = weatherRepository.findByLocalNameLimit(local, limit);
