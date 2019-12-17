@@ -32,7 +32,8 @@ public class WeatherServices {
 	
 	@Autowired
 	private SensorServices sensorServices;
-	
+
+	// TODO: Adds LocalNotFound to all the methods
 	
 	
 	public Page<WeatherReading> getWeatherReadings(Pageable pageable){
