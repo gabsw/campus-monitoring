@@ -57,7 +57,8 @@ public class LocalController {
     }
 
     @PostMapping("/{localName}/reviews")
-    public void addReviewToLocal(@PathVariable String localName, @Valid @RequestBody Review review) throws UserCannotReviewException, MismatchedReviewException {
+    public void addReviewToLocal(@PathVariable String localName, @Valid @RequestBody Review review)
+            throws UserCannotReviewException, MismatchedReviewException {
         reviewServices.addReviewToLocal(localName, review);
     }
 
@@ -69,7 +70,8 @@ public class LocalController {
                                        LocalDate startDate,
                                @RequestParam(name = "end_date")
                                @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-                                       LocalDate endDate, HttpServletRequest request) throws ForbiddenUserException, LocalNotFoundException, UserNotFoundException, LoginRequiredException {
+                                       LocalDate endDate, HttpServletRequest request)
+            throws ForbiddenUserException, LocalNotFoundException, UserNotFoundException, LoginRequiredException {
         return reportServices.buildReport(localName, startDate, endDate, request.getSession());
     }
 
@@ -82,12 +84,13 @@ public class LocalController {
                                                                   @RequestParam(name = "end_date", required = false)
                                                    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
                                                            LocalDate endDate,
-                                                                  Pageable pageable) {
+                                                                  Pageable pageable, HttpServletRequest request)
+            throws ForbiddenUserException, LocalNotFoundException, UserNotFoundException, LoginRequiredException {
 
         if (startDate == null || endDate == null) {
-            return universalAlarmServices.getUniversalAlarm(localName, pageable).map(UniversalAlarmsRepresentation::new);
+            return universalAlarmServices.getUniversalAlarm(localName, pageable, request.getSession()).map(UniversalAlarmsRepresentation::new);
         } else {
-            return universalAlarmServices.getUniversalAlarm(localName, startDate, endDate, pageable).map(UniversalAlarmsRepresentation::new);
+            return universalAlarmServices.getUniversalAlarm(localName, startDate, endDate, pageable, request.getSession()).map(UniversalAlarmsRepresentation::new);
         }
 
     }
@@ -100,12 +103,13 @@ public class LocalController {
                                                        @RequestParam(name = "end_date", required = false)
                                                        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
                                                                LocalDate endDate,
-                                                       Pageable pageable) {
+                                                       Pageable pageable, HttpServletRequest request)
+            throws ForbiddenUserException, LocalNotFoundException, UserNotFoundException, LoginRequiredException {
 
         if (startDate == null || endDate == null) {
-            return universalAlarmServices.getOpenUniversalAlarm(localName, pageable).map(UniversalAlarmsRepresentation::new);
+            return universalAlarmServices.getOpenUniversalAlarm(localName, pageable, request.getSession()).map(UniversalAlarmsRepresentation::new);
         } else {
-            return universalAlarmServices.getOpenUniversalAlarm(localName, startDate, endDate, pageable).map(UniversalAlarmsRepresentation::new);
+            return universalAlarmServices.getOpenUniversalAlarm(localName, startDate, endDate, pageable, request.getSession()).map(UniversalAlarmsRepresentation::new);
         }
     }
 
@@ -117,12 +121,13 @@ public class LocalController {
                                                          @RequestParam(name = "end_date", required = false)
                                                          @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
                                                                  LocalDate endDate,
-                                                         Pageable pageable) {
+                                                         Pageable pageable, HttpServletRequest request)
+            throws ForbiddenUserException, LocalNotFoundException, UserNotFoundException, LoginRequiredException {
 
         if (startDate == null || endDate == null) {
-            return universalAlarmServices.getClosedUniversalAlarm(localName, pageable).map(UniversalAlarmsRepresentation::new);
+            return universalAlarmServices.getClosedUniversalAlarm(localName, pageable, request.getSession()).map(UniversalAlarmsRepresentation::new);
         } else {
-            return universalAlarmServices.getClosedUniversalAlarm(localName, startDate, endDate, pageable).map(UniversalAlarmsRepresentation::new);
+            return universalAlarmServices.getClosedUniversalAlarm(localName, startDate, endDate, pageable, request.getSession()).map(UniversalAlarmsRepresentation::new);
         }
     }
 
