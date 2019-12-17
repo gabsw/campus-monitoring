@@ -134,6 +134,19 @@ public class UserServices {
         return true;
     }
 
+    public boolean checkIfUserIsRegular(User user) throws ForbiddenUserException {
+
+        if (user.getUsername() == null) {
+            throw new IllegalArgumentException("Username is not defined.");
+        }
+
+        if (user.isAdmin()) {
+            throw new ForbiddenUserException("Admin are not allowed to review.");
+        }
+
+        return true;
+    }
+
     public User findUserBySession(HttpSession session) throws UserNotFoundException, LoginRequiredException {
 
         String username = (String) session.getAttribute("username");
