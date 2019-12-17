@@ -51,9 +51,9 @@ sensor.select_gas_heater_profile(0)
 # with their own temperature and duration.
 
 # This will be the real sensor
-sensor_id = get_env_var('SENSOR_ID')
+sensor_id = 7
 
-relay_url = get_env_var('RELAY_URL')
+relay_url = 'http://192.168.1.87:5000/sensor'
 
 factor = 2.0  # Smaller numbers adjust temp down, vice versa
 smooth_size = 10  # Dampens jitter due to rapid CPU temp changes

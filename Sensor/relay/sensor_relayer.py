@@ -48,6 +48,8 @@ def sensor():
     message = request.json
     send_message(channel, message)
 
+    return ('', 200)
+
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0')
