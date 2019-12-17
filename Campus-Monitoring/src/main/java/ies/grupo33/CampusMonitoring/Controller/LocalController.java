@@ -17,6 +17,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -64,8 +66,8 @@ public class LocalController {
                                        LocalDate startDate,
                                @RequestParam(name = "end_date")
                                @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-                                       LocalDate endDate) {
-        return reportServices.buildReport(localName, startDate, endDate);
+                                       LocalDate endDate,HttpServletRequest request) {
+        return reportServices.buildReport(localName, startDate, endDate, request.getSession());
     }
 
     // end points for alarms

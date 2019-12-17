@@ -10,7 +10,7 @@ public class UserDto implements Serializable {
 	private String username;
 	private String email;
 	private String name;
-	private Collection<Local> locals;
+	private Collection<Local> locals; // TODO: Adds sensors
 	private boolean admin;
 	
 	
