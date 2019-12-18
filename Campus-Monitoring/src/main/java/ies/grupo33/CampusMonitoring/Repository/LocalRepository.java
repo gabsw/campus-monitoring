@@ -1,11 +1,12 @@
 package ies.grupo33.CampusMonitoring.Repository;
 
-import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import ies.grupo33.CampusMonitoring.Model.Local;
+import org.springframework.stereotype.Repository;
 
-public interface LocalRepository extends JpaRepository<Local, Long> {
+@Repository
+public interface LocalRepository extends JpaRepository<Local, String> {
 
 	
 

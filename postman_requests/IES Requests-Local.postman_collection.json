@@ -1,0 +1,206 @@
+{
+	"variables": [],
+	"info": {
+		"name": "IES-Local Endpoints",
+		"_postman_id": "397a04bc-3c03-fbf4-813f-1268b7529370",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "get local reviews",
+			"request": {
+				"url": "http://localhost:8080/local/Cafetaria da ESAN/reviews",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "get latest weather reading",
+			"request": {
+				"url": "http://localhost:8080/local/IEETA/weather-readings/latest",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "get all weather readings",
+			"request": {
+				"url": "http://localhost:8080/local/IEETA/weather-readings",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "get weather readings by dates",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/local/IEETA/weather-readings?start_date=2019-12-05T17:04:16.495931&end_date=2019-12-30T17:04:16.495931",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"local",
+						"IEETA",
+						"weather-readings"
+					],
+					"query": [
+						{
+							"key": "start_date",
+							"value": "2019-12-05T17:04:16.495931",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "end_date",
+							"value": "2019-12-30T17:04:16.495931",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "get 10 latest weather readings",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/local/IEETA/weather-readings/latest?limit=10",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"local",
+						"IEETA",
+						"weather-readings",
+						"latest"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "10",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "get local report",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/local/Cafetaria da ESAN/report?start_date=2019-12-07&end_date=2019-12-10",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"local",
+						"Cafetaria da ESAN",
+						"report"
+					],
+					"query": [
+						{
+							"key": "start_date",
+							"value": "2019-12-07",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "end_date",
+							"value": "2019-12-10",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "get all alarms for local",
+			"request": {
+				"url": "http://localhost:8080/local/IEETA/alarms/all",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "get open alarms for local",
+			"request": {
+				"url": "http://localhost:8080/local/IEETA/alarms/ongoing",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "get closed alarms for local",
+			"request": {
+				"url": "http://localhost:8080/local/IEETA/alarms/closed",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "add review to local",
+			"request": {
+				"url": "http://localhost:8080/local/Cafetaria da ESAN/reviews",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\": \"joao\",\n\t\"localName\": \"Cafetaria da ESAN\",\n\t\"dateTime\": \"2019-12-11T12:20:30\",\n\t\"rating\": 3,\n\t\"content\": \"Mediano.\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

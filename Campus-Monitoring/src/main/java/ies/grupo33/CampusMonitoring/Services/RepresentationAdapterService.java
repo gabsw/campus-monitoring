@@ -13,5 +13,4 @@ public class RepresentationAdapterService {
     public List<WeatherStatsRepresentation> convertWeatherStatsRep(List<WeatherStats> weatherStats) {
         return weatherStats.stream().map(WeatherStatsRepresentation::new).collect(Collectors.toList());
     }
-
 }

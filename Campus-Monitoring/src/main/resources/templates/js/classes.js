@@ -46,10 +46,13 @@ class Utilizador {
         this._name = name;
         this._email = email;
         this._admin = admin;
-
+        this._password = "password";
     }
 
 
+    get password() {
+        return this._password;
+    }
 
     equals(other){
         return this.username() === other.username();

@@ -19,6 +19,9 @@ public class User implements Serializable {
     private String name;
     @Column(name = "admin", nullable = false)
     private boolean admin;
+    @JsonIgnore
+    @Column(name = "passwd", nullable = false)
+    private String password;
 
     @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
@@ -82,7 +85,15 @@ public class User implements Serializable {
         this.locals = locals;
     }
 
-    @Override
+    public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	@Override
     public String toString() {
         return "User{" +
                 "email='" + email + '\'' +

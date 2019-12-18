@@ -49,8 +49,6 @@ public class UniversalAlarmServices {
     }
 
 
-    // Add pagination
-
     // Retrieve all open alarms
     public Page<UniversalAlarm> getOpenUniversalAlarm(String localName, Pageable pageable) {
         if (localName == null) {
@@ -131,7 +129,7 @@ public class UniversalAlarmServices {
     @Scheduled(initialDelay = 10 * 1000, fixedDelay = 5 * 60 * 1000)
     public void notifyUsersOfOngoingAlarms() {
         Page<UniversalAlarm> universalAlarms =
-                universalAlarmRepository.findByOngoingStatusAndNotificationSent(true, false, Pageable.unpaged());
+                universalAlarmRepository.findByNotificationSent(false, Pageable.unpaged());
 
         logger.info("Notifying users of {} ongoing alarms.", universalAlarms.getTotalElements());
         universalAlarms.forEach(this::notifyUsers);

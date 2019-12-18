@@ -1,5 +1,6 @@
-// valores de teste
-// TODO: ir buscar dados ao utilizador do login
+var hostURL = 'http://deti-engsoft-12.ua.pt';
+//var hostURL = 'http://localhost:8080';
+var hostURLLocal = 'http://localhost:8080';
 
 /*var userAtual = new Utilizador("pedro_bastos",
     "Pedro Ferreira Bastos",
@@ -13,24 +14,8 @@
 var userLogged = JSON.parse(window.localStorage.getItem("userLogged"));
 
 
-console.log("RECEBI " + window.localStorage.getItem("userLogged"));
-
 var userAtual = setupUserLogged();
 var espacoAtual = setupEspacoAtual();
-
-
-console.log("ESPACO ATUAL DO LS " + window.localStorage.getItem("espacoAtual"));
-//alert("userAtual globals -> " + userAtual._name);
-
-//var refSantiago = new Espaco('Refeitório de Santiago', 25.00, 15.00, 60, 40, 1000);
-//var refCrasto = new Espaco('Refeitório do Castro', 26.00, 16.00, 65, 45, 1000);
-//var cafetariaEsan = new Espaco('Cafetaria da ESAN', 24.00, 14.00, 70, 35, 1000);
-//var ieeta = new Espaco('IEETA', 25.00, 20.00, 60, 40, 1000);
-// var espacos = [refSantiago, refCrasto, cafetariaEsan];
-
-
-
-//userAtual.espacos = [refSantiago, refCrasto, cafetariaEsan];
 
 
 //--------------- FUNCOES
@@ -56,7 +41,6 @@ function setupUserLogged(){
 function setupEspacoAtual() {
 
     var espacoNome = window.localStorage.getItem("espacoAtual");
-    console.log("e -> " + espacoNome);
     return userAtual.getEspacoPorNome(espacoNome);
 
 }
@@ -65,12 +49,6 @@ function setupEspacoAtual() {
 function showEspacosUserMenu() {
 
     var espacosDropdown = "";
-
-    console.log("userAtual name -> ", userAtual.name);
-    console.log("userAtual espacos -> ", userAtual.espacos);
-
-    console.log("espacoAtual name -> ", espacoAtual.name);
-
 
     for (var i = 0; i < userAtual.espacos.length; i++){
 
@@ -87,7 +65,6 @@ function showEspacosUserMenu() {
 
     $("#espacosDropdown").html(espacosDropdown);
 
-
 }
 
 
@@ -95,12 +72,19 @@ function showUserMenu(){
     showEspacosUserMenu();
 
     var linhaHistorico = document.getElementById("paginaHistorico");
+    var linhaReports = document.getElementById("paginaReports");
+    var linhaReviews = document.getElementById("paginaReviews");
     linhaHistorico.style.display = "block";
+    linhaReports.style.display = "block";
+    linhaReviews.style.display = "block";
 
     if(!userAtual.admin){
         linhaHistorico.style.display = "none";
+        linhaReports.style.display = "none";
+        linhaReviews.children[0].href = "reviews_regular.html"; // mudar para a página de comentários do trabalhador
     }
 }
+
 
 function showUserProfileNamePhoto(){
     var nomes = userAtual.name.split(" ");
@@ -126,15 +110,6 @@ function setHref(valor) {
 
 }
 
-function setFirstActive() {
-
-    var firstLi = $("#espacosDropdown li:first")[0];
-
-    var a = firstLi.children[0]; // buscar a tag <a>
-
-    a.className = "active";
-
-}
 
 
 function resetLiActive() {
@@ -183,6 +158,8 @@ function changeEspacoAtual(liValue){
 
     window.localStorage.setItem("espacoAtual", liValue);
 
+    espacoAtual = userAtual.getEspacoPorNome(liValue);
+
     var listaLi = $("#espacosDropdown li");
 
     for (var i=0; i<listaLi.length; i++){
@@ -203,8 +180,6 @@ function changeEspacoAtual(liValue){
 
 
     if(!checkActive()){
-        console.log("algumtemActive -> ", algumTemActive);
-        // TODO: recarregar a página
         var li = $("#espacosDropdown li:first");
 
         var a = li.children[0]; // buscar a tag <a>
@@ -212,6 +187,10 @@ function changeEspacoAtual(liValue){
         a.className = "active";
     }
 
-    // TODO: mudar o espaco atual (nome -> classe)
+    if(checkActive()){ // atualizar quando estamos na própria página
+        $("#breadCrumbEspaco")[0].innerText = espacoAtual.name;
+        $("#headerEspaco")[0].textContent = espacoAtual.name;
+    }
+
 
 }

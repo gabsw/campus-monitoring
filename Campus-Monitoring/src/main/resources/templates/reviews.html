@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CM-UA | Comentários</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <link href="css/datepicker3.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+
+    <!--Custom Font-->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+    <script src="js/respond.min.js"></script>
+    <![endif]-->
+    <!-- <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="js/classes.js"></script>
+    <script src="js/globals.js"></script>
+    <script src="js/reviews.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sidebar-collapse"><span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span></button>
+            <a class="navbar-brand" href="#"><span>Campus Monitoring</span> @ UA</a>
+            <ul class="nav navbar-top-links navbar-right">
+                <li class="dropdown"><a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                    <em class="fa fa-envelope"></em><span class="label label-danger">15</span>
+                </a>
+                </li>
+                <li class="dropdown"><a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                    <em class="fa fa-bell"></em><span class="label label-info">5</span>
+                </a>
+                </li>
+            </ul>
+        </div>
+    </div><!-- /.container-fluid -->
+</nav>
+<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+    <div class="profile-sidebar">
+        <div class="profile-userpic">
+            <img src="pictures/avatar.png" class="img-responsive" alt="">
+        </div>
+        <div class="profile-usertitle">
+            <div class="profile-usertitle-name" id="nomeUser">Jorge Ribeiro</div>
+            <div class="profile-usertitle-status"><span class="indicator label-success"></span>Online</div>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="divider"></div>
+    <form role="search">
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Search">
+        </div>
+    </form>
+    <ul class="nav menu">
+        <li class="parent "><a data-toggle="collapse" href="#espacosDropdown">
+            <em class="fa fa-building">&nbsp;</em> Espaços <span data-toggle="collapse" href="#sub-item-1" class="icon pull-right"><em class="fa fa-plus"></em></span>
+        </a>
+            <ul class="children collapse" id="espacosDropdown">
+                <li><a class="" href="board_santiago_admin.html">
+                    <span class="fa fa-dashboard">&nbsp;</span> Refeitório de Santiago
+                </a></li>
+                <li><a class="" href="#">
+                    <span class="fa fa-dashboard">&nbsp;</span> Refeitório do Crasto
+                </a></li>
+                <li><a class="" href="#">
+                    <span class="fa fa-dashboard">&nbsp;</span> Refeitório da ESTGA
+                </a></li>
+                <li><a class="" href="#">
+                    <span class="fa fa-dashboard">&nbsp;</span> Snack-Bar / Self-service
+                </a></li>
+                <li><a class="" href="login.html">
+                    <span class="fa fa-dashboard">&nbsp;</span> Cafetaria da ESAN
+                </a></li>
+            </ul>
+        </li>
+        <li class="active" id="paginaReviews"><a href="reviews.html"><em class="fa fa-comments">&nbsp;</em> Comentários</a></li>
+        <li id="paginaHistorico"><a href="historico.html"><em class="fa fa-history">&nbsp;</em> Histórico de Registos</a></li>
+        <li class="" id="paginaReports"><a href="reports.html"><em class="fa fa-file-text"></em> Estatísticas de Desempenho</a></li>
+        <li><a href="#"><em class="fa fa-bell">&nbsp;</em> Os meus alertas</a></li>
+        <li class=""><a href="#"><em class="fa fa-user">&nbsp;</em> Perfil</a></li>
+        <li><a href="login.html"><em class="fa fa-power-off">&nbsp;</em> Sair</a></li>
+    </ul>
+</div><!--/.sidebar-->
+
+<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+    <div class="row">
+        <ol class="breadcrumb">
+            <li><a href="#">
+                <em class="fa fa-home"></em>
+            </a></li>
+            <li class="active">Comentários</li>
+        </ol>
+    </div><!--/.row-->
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Comentários</h1>
+        </div>
+    </div><!--/.row-->
+
+
+    <div class="row">
+
+        <div class="col-md-4">
+            <div class="login-panel panel panel-default">
+                <div class="panel-heading">Espaços </div>
+                <div class="panel-body">
+                    <form role="form">
+                        <fieldset>
+                            <div class="form-group">
+                                <label>Selecione o espaço sobre o qual pretende ler cometários:</label>
+                                <select class="form-control" id="selectEspaco">
+                                    <option value="Refeitório de Santiago">Refeitório de Santiago</option>
+                                    <option value="Refeitório do Crasto">Refeitório do Crasto</option>
+                                    <option value="Refeitório da ESTGA">Refeitório da ESTGA</option>
+                                    <option value="Snack-Bar / Self-Service">Snack-Bar / Self-Service</option>
+                                    <option value="Cafetaria da ESAN">Cafetaria da ESAN</option>
+                                </select>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div><!-- /.col-->
+
+
+
+
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="panel panel-default chat">
+                <div class="panel-heading">
+                    <div id="nomeEspacoTabela" class="pull-left">Comentários</div>
+                    <span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
+                <div class="panel-body">
+                    <ul id="listaComentarios">
+                        <li class="left clearfix"><span class="chat-img pull-left">
+								<img src="http://placehold.it/60/30a5ff/fff" alt="User Avatar" class="img-circle" />
+								</span>
+                            <div class="chat-body clearfix">
+                                <div class="header"><strong class="primary-font">John Doe</strong> <small class="text-muted">32 mins ago</small></div>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ante turpis, rutrum ut ullamcorper sed, dapibus ac nunc.</p>
+                            </div>
+                        </li>
+                        <li class="left clearfix"><span class="chat-img pull-left">
+								<img src="http://placehold.it/60/30a5ff/fff" alt="User Avatar" class="img-circle" />
+								</span>
+                            <div class="chat-body clearfix">
+                                <div class="header"><strong class="primary-font">John Doe</strong> <small class="text-muted">32 mins ago</small></div>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ante turpis, rutrum ut ullamcorper sed, dapibus ac nunc.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+
+
+
+        </div><!-- /.panel-->
+    </div>
+</div><!--/.row-->
+
+
+
+
+</div>	<!--/.main-->
+
+
+
+
+
+<!--<script src="js/jquery-1.11.1.min.js"></script>-->
+<script src="js/bootstrap.min.js"></script>
+<script src="js/chart.min.js"></script>
+<script src="js/chart-data.js"></script>
+<script src="js/easypiechart.js"></script>
+<script src="js/easypiechart-data.js"></script>
+<script src="js/bootstrap-datepicker.js"></script>
+<script src="js/custom.js"></script>
+<script>
+    window.onload = function () {
+        var chart1 = document.getElementById("line-chart").getContext("2d");
+        window.myLine = new Chart(chart1).Line(lineChartData, {
+            responsive: true,
+            scaleLineColor: "rgba(0,0,0,.2)",
+            scaleGridLineColor: "rgba(0,0,0,.05)",
+            scaleFontColor: "#c5c7cc"
+        });
+    };
+</script>
+
+</body>
+</html>

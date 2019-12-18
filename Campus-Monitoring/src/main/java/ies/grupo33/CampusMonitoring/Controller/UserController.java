@@ -1,15 +1,16 @@
 package ies.grupo33.CampusMonitoring.Controller;
 
+import ies.grupo33.CampusMonitoring.DTO.UserDto;
+import ies.grupo33.CampusMonitoring.Exception.LoginFailedException;
+import ies.grupo33.CampusMonitoring.Exception.UserNotFoundException;
 import ies.grupo33.CampusMonitoring.Model.User;
 import ies.grupo33.CampusMonitoring.Services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("users")
 public class UserController {
@@ -33,6 +34,11 @@ public class UserController {
     @GetMapping("/local-name/{localName}/regular")
     public List<User> getRegularUsersByLocal(@PathVariable String localName) {
         return userServices.getRegularUsersByLocal(localName);
+    }
+    
+    @GetMapping("/authentication/{username}/{password}")
+    public UserDto authenticateUser(@PathVariable String username, @PathVariable String password) throws LoginFailedException, UserNotFoundException {
+    	return userServices.loginUser(username, password);
     }
 
 

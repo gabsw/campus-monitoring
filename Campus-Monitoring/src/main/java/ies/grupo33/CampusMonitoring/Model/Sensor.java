@@ -4,14 +4,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.Objects;
 
 @Entity
 @Table(name = "SENSOR" , schema = "campus_monitoring")
 public class Sensor {
 	@Id
 	@Column(name = "id", nullable = false)
-	private long id;
+	private Long id;
 	@Column(name = "local_name", nullable = false)
 	private String localName;
 	@Column(name = "hardware", nullable = false)
@@ -21,17 +20,17 @@ public class Sensor {
 	
 	}
 
-	public Sensor(long id, String localName, String hardware) {
+	public Sensor(Long id, String localName, String hardware) {
 		this.id = id;
 		this.localName = localName;
 		this.hardware = hardware;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	

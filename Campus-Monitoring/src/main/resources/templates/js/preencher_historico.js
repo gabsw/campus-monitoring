@@ -1,158 +1,13 @@
-//console.log("INICIO");
-
-var hostURL = 'http://deti-engsoft-12.ua.pt';
-var hostURLLocal = 'http://localhost:8080';
-
 var dataAtual;
 var mesAtual;
 var anoAtual;
 var dadosMes = {};
 
 
-function getMethod(){
-    var f = 0;
-
-
-    if (f === 1) {
-        $.getJSON('http://127.0.0.1:8080/local/', function(data) {
-
-            console.log("ENTREI");
-
-            var tabela = "";
-            for (var i = 0; i < data.length; i++) {
-
-                var elemento = data[i];
-                // style="display:none;"
-                var linha = `<tr id="${i+1}" >
-                        <th scope="row">${elemento.name}</th>
-                        <td>${elemento.max_temp_limit}</td>
-                        <td>${elemento.min_temp_limit}</td>
-                        <td>${elemento.max_hum_limit}</td>
-                        <td>${elemento.min_hum_limit}</td>
-                        <td>${elemento.max_temp_limit}</td>
-                        <td>${elemento.max_temp_limit}</td>
-                        <td>${elemento.min_hum_limit}</td>
-                        <td>${elemento.max_temp_limit}</td>
-                        <td>${elemento.min_hum_limit}</td>
-                    </tr>`
-
-                //console.log("Linha ->" + linha);
-                tabela = tabela.concat(linha);
-            }
-
-
-            $("#corpoTabela").html(tabela);
-        });
-    }
-
-    else if (f === 2){
-        $.getJSON('http://jsonplaceholder.typicode.com/users', function(data) {
-
-            var tabela = "";
-            for (var i = 0; i < data.length; i++) {
-
-                var elemento = data[i];
-                // style="display:none;"
-                var linha = `<tr id="${i+1}" >
-                        <th scope="row">${elemento.id}</th>
-                        <td>${elemento.name}</td>
-                        <td>${elemento.username}</td>
-                        <td>${elemento.email}</td>
-                        <td>${elemento.address['street']}</td>
-                        <td>${elemento.address['zipcode']}</td>
-                        <td>${elemento.address['city']}</td>
-                        <td>${elemento.phone}</td>
-                        <td>${elemento.website}</td>
-                        <td>${elemento.company['name']}</td>
-                    </tr>`
-
-                //console.log("Linha ->" + linha);
-                tabela = tabela.concat(linha);
-            }
-
-
-            $("#corpoTabela").html(tabela);
-        });
-    }
-    else if(f==3) {
-        $.ajax({
-            url: "http://jsonplaceholder.typicode.com/users"
-        }).then(function(data) {
-            var tabela = "";
-            for (var i = 0; i < data.length; i++) {
-
-                var elemento = data[i];
-                // style="display:none;"
-                var linha = `<tr id="${i+1}" >
-                        <th scope="row">${elemento.id}</th>
-                        <td>${elemento.name}</td>
-                        <td>${elemento.username}</td>
-                        <td>${elemento.email}</td>
-                        <td>${elemento.address['street']}</td>
-                        <td>${elemento.address['zipcode']}</td>
-                        <td>${elemento.address['city']}</td>
-                        <td>${elemento.phone}</td>
-                        <td>${elemento.website}</td>
-                        <td>${elemento.company['name']}</td>
-                    </tr>`
-
-                //console.log("Linha ->" + linha);
-                tabela = tabela.concat(linha);
-            }
-
-
-            $("#corpoTabela").html(tabela);
-        });
-    }
-
-    else if(f===4){
-        $.ajax({
-            url: "http://localhost:8080/local/"
-
-        }).then(function(data) {
-            console.log("ENTREI");
-
-            var tabela = "";
-            for (var i = 0; i < data.length; i++) {
-
-                var elemento = data[i];
-                // style="display:none;"
-                var linha = `<tr id="${i+1}" >
-                        <th scope="row">${elemento.name}</th>
-                        <td>${elemento.max_temp_limit}</td>
-                        <td>${elemento.min_temp_limit}</td>
-                        <td>${elemento.max_hum_limit}</td>
-                        <td>${elemento.min_hum_limit}</td>
-                        <td>${elemento.max_temp_limit}</td>
-                        <td>${elemento.max_temp_limit}</td>
-                        <td>${elemento.min_hum_limit}</td>
-                        <td>${elemento.max_temp_limit}</td>
-                        <td>${elemento.min_hum_limit}</td>
-                    </tr>`
-
-                //console.log("Linha ->" + linha);
-                tabela = tabela.concat(linha);
-            }
-
-
-            $("#corpoTabela").html(tabela);
-        });
-    }
-}
-
-
-/*function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}*/
-
-
 function getLastDayOfMonth(data) {
     // argumento: data (classe)
-    //console.log("data var -> " + data);
     var dateWithLastDay = new Date(data.getFullYear(), data.getMonth()+1, 0);
-    //console.log("dateWithLastDay -> ", dateWithLastDay);
     var lastDayOfMonth = dateWithLastDay.toDateString().split(" ")[2];
-    //console.log("ultimo dia deste mês -> " + lastDayOfMonth);
 
     return lastDayOfMonth;
 }
@@ -198,7 +53,6 @@ function getMonthName(numeroMes) {
             nome = "Dezembro";
             break;
         default:
-            console.log("resultado NomeMes inválido!");
             break;
 
     }
@@ -239,35 +93,31 @@ function showDadosCantina(espaco, data){
     $("#nomeEspacoTabela").text(titulo);
 
     var espacoEncoded = encodeURIComponent(espaco);
-    //console.log("espaco encoded -> ", espacoEncoded);
-
 
     var uri = hostURL + "/weather-stats/"+espacoEncoded+"?start_date="+startDate+"&end_date="+endDate;
-    console.log("uri -> ", uri);
-
 
     $.ajax({
         url: uri,
-        async: false
+        async: false,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader ("Authorization", "Basic " + btoa(userAtual.username + ":" + userAtual.password));
+        }
 
     }).then(function(data) {
-        console.log("ENTREI no alterar espaco");
 
         dadosMes = {};
+
+        if(data.length === 0){
+            alert("Não existem dados para o espaço selecionado.");
+        }
 
         var tabela = "";
         for (var i = 0; i < data.length; i++) {
 
-
             var elemento = data[i];
-
-
             var elementoDate = elemento.date;
-
             var diaChave = elementoDate.split("-")[2];
 
-            //console.log("doc -> ", elemento);
-            // style="display:none;"
             var diai = i+1;
 
             dadosMes['dia'+diaChave] = [elemento.date, elemento.tempMax, elemento.tempMin, elemento.tempAvg, elemento.humMax,
@@ -276,9 +126,6 @@ function showDadosCantina(espaco, data){
                 elemento.co2Max,
                 elemento.co2Min,
                 elemento.co2Avg];
-
-            //console.log("dadosMes dict -> ", dadosMes);
-
 
             var linha = `<tr id="${'dia'+diai}" >
                         <th scope="row">${elemento.date}</th>
@@ -291,12 +138,10 @@ function showDadosCantina(espaco, data){
                         <td>${elemento.co2Max}</td>
                         <td>${elemento.co2Min}</td>
                         <td>${elemento.co2Avg}</td>
-                    </tr>`
+                    </tr>`;
 
-            //console.log("Linha ->" + linha);
             tabela = tabela.concat(linha);
         }
-
 
         $("#corpoTabela").html(tabela);
         console.log("dicionario: ", dadosMes);
@@ -306,7 +151,6 @@ function showDadosCantina(espaco, data){
 
 
 function showDadosByData(espaco, data){
-    console.log("data arg by data -> ", data);
     // argumento: data (classe)
     var dataDecomposta = decomporData(data);
     var mes = dataDecomposta[1];
@@ -325,30 +169,28 @@ function showDadosByData(espaco, data){
     $("#nomeEspacoTabela").text(titulo);
 
     var espacoEncoded = encodeURIComponent(espaco);
-    //console.log("espaco encoded -> ", espacoEncoded);
-
 
     var uri = hostURL + "/weather-stats/"+espacoEncoded+"?start_date="+startDate+"&end_date="+endDate;
-    console.log("uri -> ", uri)
-
 
 
     $.ajax({
         url: uri,
-        async: false
+        async: false,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader ("Authorization", "Basic " + btoa(userAtual.username + ":" + userAtual.password));
+        }
 
     }).then(function(data) {
-        console.log("ENTREI no showByData");
 
         dadosMes = {};
 
+        if(data.length === 0){
+            alert("Não existem dados para o espaço selecionado.");
+        }
 
         for (var i = 0; i < data.length; i++) {
-
             var elemento = data[i];
-
             var elementoDate = elemento.date;
-
             var diaChave = elementoDate.split("-")[2];
 
             dadosMes['dia'+diaChave] = [elemento.date, elemento.tempMax, elemento.tempMin, elemento.tempAvg, elemento.humMax,
@@ -357,13 +199,7 @@ function showDadosByData(espaco, data){
                 elemento.co2Max,
                 elemento.co2Min,
                 elemento.co2Avg];
-
         }
-
-
-
-        console.log("dicionario local depois de encher -> ", dadosMes);
-
 
     });
 
@@ -373,19 +209,11 @@ function showDadosByData(espaco, data){
 
 
 function verMesTodo(){
-
     var i = 0;
-
     var tabela = "";
 
-    console.log("ver mes todo dadosMes -> ", dadosMes);
-
     for (var dia in dadosMes) {
-
-        console.log("dia dadosMes -> ", dia);
-
         var diai = i+1;
-
 
         var linha = `<tr id="${'dia'+diai}" >
                         <th scope="row">${dadosMes[dia][0]}</th>
@@ -400,7 +228,6 @@ function verMesTodo(){
                         <td>${dadosMes[dia][9]}</td>
                     </tr>`
 
-        //console.log("Linha ->" + linha);
         tabela = tabela.concat(linha);
 
         i++;
@@ -415,24 +242,14 @@ function listarEspacosUser(){
 
     var espacosSelect = "";
 
-    console.log("userAtual name -> ", userAtual.name);
-    console.log("userAtual espacos -> ", userAtual.espacos);
-
-
-
     for (var i = 0; i < userAtual.espacos.length; i++){
-
         var espaco = userAtual.espacos[i];
-
         var opcaoEspaco = `<option value="${espaco.name}">${espaco.name}</option>`
 
         espacosSelect = espacosSelect.concat(opcaoEspaco);
-
     }
 
-
     $("#selectEspaco").html(espacosSelect);
-
 }
 
 $(document).ready(function(){
@@ -446,11 +263,8 @@ $(document).ready(function(){
 
 
     var espacoSelected = $( "#selectEspaco option:selected" ).text();
-    console.log("Espaço inicial -> " + espacoSelected);
 
-    var dataInicial = new Date(); // comeca com a data do dia
-
-    console.log("Data atual -> ", dataInicial.toDateString());
+    var dataInicial = new Date(); // comeca com a data do momento
 
     // mostrar os dados do espaco inicialmente selecionado
     showDadosCantina(espacoSelected, dataInicial);
@@ -458,57 +272,32 @@ $(document).ready(function(){
     mesAtual = decomporData(new Date())[1];
     anoAtual = decomporData(new Date())[3];
 
-
-
-    console.log("mesAtual (inicial) -> " + mesAtual);
-    console.log("anoAtual (inicial) -> " + anoAtual);
-
     $("#selectEspaco").change( function(){
         espacoSelected = $(this).children("option:selected").text();
         // atualizar datas
         dataAtual = dataInicial;
         mesAtual = decomporData(dataInicial)[1];
         anoAtual = decomporData(dataInicial)[3];
-        console.log("Selecionaste -> " + espacoSelected);
-        $('#inputCalendario').val(""); // reset do valor visível do calendário
+        $('#inputCalendario').val("").datepicker("update"); // reset do valor visível do calendário
         showDadosCantina(espacoSelected, dataInicial);
-        //await sleep(1500);
     });
 
 
 
     $('#calendario').on('changeDate', function(event) {
-        console.log("nova Data -> " + event.format());
         var data = new Date(event.format());
 
-
-        console.log("data -> ", data);
-        console.log("length da data -> " + data.toDateString().length);
-
         if(data.toDateString().length !== 15){
-            console.log("A DATA É A MESMA!");
             return;
         }
 
         var novoMes = decomporData(data)[1];
         var novoAno = decomporData(data)[3];
 
-        console.log("mesAtual (inicial) -> " + mesAtual);
-        console.log("anoAtual (inicial) -> " + anoAtual);
-
-        console.log("novoMes -> " + novoMes);
-        console.log("novoAno -> " + novoAno);
-
-
         if((mesAtual!==novoMes) || (anoAtual!==novoAno)){
-            console.log("ENTREI NO IF");
             showDadosByData(espacoSelected, data);
-            //await sleep(1500);
-            console.log("novo dadosMes -> ", dadosMes);
             mesAtual = novoMes;
             anoAtual = novoAno;
-
-            console.log("mes atual -> ", mesAtual);
         }
 
         var dia = decomporData(data)[0];
@@ -517,14 +306,9 @@ $(document).ready(function(){
         }
         var diaSelecionado = "dia"+dia;
 
-        console.log("diaSelecionado -> ", diaSelecionado);
-
         var tabela = "";
 
         var dadosDoDia = dadosMes[diaSelecionado];
-
-        console.log("dadosDoDia -> ", dadosDoDia);
-
 
         if(dadosDoDia == null || dadosDoDia.length<9){
             alert("Não há dados para a data selecionada!")
@@ -541,17 +325,14 @@ $(document).ready(function(){
                         <td>${dadosDoDia[7]}</td>
                         <td>${dadosDoDia[8]}</td>
                         <td>${dadosDoDia[9]}</td>
-                    </tr>`
+                    </tr>`;
 
-            //console.log("Linha ->" + linha);
             tabela = tabela.concat(linha);
         }
 
         $("#corpoTabela").html(tabela);
 
         dataAtual = data;
-
-
 
     });
 

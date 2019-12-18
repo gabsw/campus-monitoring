@@ -1,5 +1,7 @@
-var randomScalingFactor = function(){ return Math.round(Math.random()*1000)};
-	
+var randomScalingFactor = function(){ return Math.round(Math.random()*100)};
+
+
+
 	var lineChartDataTemp = {
 		labels : ["January","February","March","April","May","June","July", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"],
 		datasets : [
@@ -15,7 +17,7 @@ var randomScalingFactor = function(){ return Math.round(Math.random()*1000)};
 			}
 		]
 
-	}
+	};
 
 var lineChartDataHum = {
 	labels : ["January","February","March","April","May","June","July", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"],
@@ -32,7 +34,7 @@ var lineChartDataHum = {
 		}
 	]
 
-}
+};
 
 var lineChartDataCO2 = {
 	labels : ["January","February","March","April","May","June","July", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"],
@@ -49,7 +51,7 @@ var lineChartDataCO2 = {
 		}
 	]
 
-}
+};
 		
 	var barChartData = {
 		labels : ["January","February","March","April","May","June","July"],

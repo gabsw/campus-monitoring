@@ -19,7 +19,7 @@ CREATE TABLE campus_monitoring.SENSOR(
 	local_name    	VARCHAR(100) 		NOT NULL,
 	hardware    	VARCHAR(500) 		NOT NULL,
 	PRIMARY KEY (id),
-	FOREIGN KEY (local_name) REFERENCES campus_monitoring.LOCAL(name)
+	FOREIGN KEY (local_name) REFERENCES campus_monitoring.LOCAL(name) ON UPDATE CASCADE
 );
 
 CREATE TABLE campus_monitoring.WEATHER_READING(
@@ -36,6 +36,7 @@ CREATE TABLE campus_monitoring.USERS(
 	username		    	VARCHAR(30) 		NOT NULL,
 	name		    		VARCHAR(100) 		NOT NULL,
 	email		    		VARCHAR(256) 		NOT NULL,
+	passwd				VARCHAR(30)		NOT NULL,
 	admin				BOOLEAN			NOT NULL,
 	PRIMARY KEY(username)
 );
@@ -44,8 +45,8 @@ CREATE TABLE campus_monitoring.USERS_LOCAL(
 	username		    	VARCHAR(30) 		NOT NULL,
 	local_name		    	VARCHAR(100) 		NOT NULL,
 	PRIMARY KEY(username, local_name),
-	FOREIGN KEY(username) REFERENCES campus_monitoring.USERS(username),
-	FOREIGN KEY(local_name) REFERENCES campus_monitoring.LOCAL(name)
+	FOREIGN KEY(username) REFERENCES campus_monitoring.USERS(username) ON UPDATE CASCADE,
+	FOREIGN KEY(local_name) REFERENCES campus_monitoring.LOCAL(name) ON UPDATE CASCADE
 );
 
 CREATE TABLE campus_monitoring.UNIVERSAL_ALARM(
@@ -58,7 +59,7 @@ CREATE TABLE campus_monitoring.UNIVERSAL_ALARM(
 	ongoing_status		BOOLEAN		NOT NULL,
 	notification_sent	BOOLEAN		NOT NULL,
 	PRIMARY KEY (start_date_time, local_name, violation_parameter),
-	FOREIGN KEY (local_name) REFERENCES campus_monitoring.LOCAL(name)
+	FOREIGN KEY (local_name) REFERENCES campus_monitoring.LOCAL(name) ON UPDATE CASCADE
 );
 
 CREATE TABLE campus_monitoring.REVIEW(
@@ -69,6 +70,6 @@ CREATE TABLE campus_monitoring.REVIEW(
 	rating			INT		NOT NULL	CHECK(rating >= 1 and rating <= 5),
 	content			VARCHAR(1000)	NOT NULL,
 	PRIMARY KEY(id),
-	FOREIGN KEY(username) REFERENCES campus_monitoring.USERS(username),
-	FOREIGN KEY(local_name) REFERENCES campus_monitoring.LOCAL(name)
+	FOREIGN KEY(username) REFERENCES campus_monitoring.USERS(username) ON UPDATE CASCADE,
+	FOREIGN KEY(local_name) REFERENCES campus_monitoring.LOCAL(name) ON UPDATE CASCADE
 );
