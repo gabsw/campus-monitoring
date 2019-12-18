@@ -1,29 +1,27 @@
 package ies.grupo33.CampusMonitoring.Services;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
-import ies.grupo33.CampusMonitoring.Exception.WeatherReadingNotFoundException;
+import ies.grupo33.CampusMonitoring.DTO.WeatherReadingDto;
+import ies.grupo33.CampusMonitoring.Exception.*;
+import ies.grupo33.CampusMonitoring.Model.Sensor;
+import ies.grupo33.CampusMonitoring.Model.User;
+import ies.grupo33.CampusMonitoring.Model.WeatherReading;
 import ies.grupo33.CampusMonitoring.Repository.LocalRepository;
+import ies.grupo33.CampusMonitoring.Repository.WeatherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import ies.grupo33.CampusMonitoring.DTO.WeatherReadingDto;
-import ies.grupo33.CampusMonitoring.Exception.LocalNotFoundException;
-import ies.grupo33.CampusMonitoring.Exception.SensorNotFoundException;
-import ies.grupo33.CampusMonitoring.Model.Sensor;
-import ies.grupo33.CampusMonitoring.Model.WeatherReading;
-
-import ies.grupo33.CampusMonitoring.Repository.WeatherRepository;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class WeatherServices {
 
-
+	
 	@Autowired
 	private WeatherRepository weatherRepository;
 
@@ -32,148 +30,167 @@ public class WeatherServices {
 	
 	@Autowired
 	private SensorServices sensorServices;
+
+	@Autowired
+	private UserServices userServices;
 	
-	
-	
-	public Page<WeatherReading> getWeatherReadings(Pageable pageable){
-		return weatherRepository.findAll(pageable);
-	}
-	
+	// Services related to Local
 
-	public WeatherReadingDto getMostRecentWeatherReadingByLocal(String local)
-			throws LocalNotFoundException, WeatherReadingNotFoundException {
-		if (local ==null) {
-			throw new IllegalArgumentException("Local is not defined.");
+		public WeatherReadingDto getMostRecentWeatherReadingByLocal(String local, String username)
+				throws ForbiddenUserException, LocalNotFoundException, UserNotFoundException, LoginRequiredException,
+				WeatherReadingNotFoundException {
+			if (local ==null) {
+				throw new IllegalArgumentException("Local is not defined.");
+			}
+
+			User currentUser = userServices.findUserByUsername(username);
+
+			userServices.checkIfUserIsAtLocal(currentUser.getUsername(), local);
+
+			Optional<WeatherReading> wr = weatherRepository.findByLocalNameOrderByWeatherReadingPKDateTimeDescFirst(local);
+
+			if (wr.isPresent()) {
+				WeatherReading weatherReading = wr.get();
+				return new WeatherReadingDto(weatherReading.getWeatherReadingPK().getSensorId(), weatherReading.getWeatherReadingPK().getDateTime(), local, weatherReading.getTemperature(),
+						weatherReading.getHumidity(), weatherReading.getCo2());
+			} else {
+				throw new WeatherReadingNotFoundException("Weather Readings not found for " + local);
+			}
 		}
 
-		if (!localRepository.findById(local).isPresent()) {
-			throw new LocalNotFoundException("Local not found " + local);
-		}
+		public List<WeatherReadingDto> getWeatherReadingsByLocal(String local, String username)
+				throws ForbiddenUserException, LocalNotFoundException, UserNotFoundException, LoginRequiredException {
+			if (local ==null) {
+				throw new IllegalArgumentException("Local is not defined.");
+			}
 
-		Optional<WeatherReading> wr = weatherRepository.findByLocalNameOrderByWeatherReadingPKDateTimeDescFirst(local);
+			User currentUser = userServices.findUserByUsername(username);
 
-		if (wr.isPresent()) {
-			WeatherReading weatherReading = wr.get();
-			return new WeatherReadingDto(weatherReading.getWeatherReadingPK().getSensorId(), weatherReading.getWeatherReadingPK().getDateTime(), local, weatherReading.getTemperature(),
-					weatherReading.getHumidity(), weatherReading.getCo2());
-		} else {
-			throw new WeatherReadingNotFoundException("Weather Readings not found for " + local);
-		}
-	}
+			userServices.checkIfUserIsAtLocal(currentUser.getUsername(), local);
 
+			List<WeatherReading> l = weatherRepository.findByLocalNameOrderByWeatherReadingPKDateTimeAsc(local);
 
-	public WeatherReadingDto getMostRecentWeatherReadingBySensorId(Long sensorId)
-			throws SensorNotFoundException, WeatherReadingNotFoundException{
+			List<WeatherReadingDto> rl = new ArrayList<>();
+			for(WeatherReading wr:l) {
+				rl.add(new WeatherReadingDto(wr.getWeatherReadingPK().getSensorId(), wr.getWeatherReadingPK().getDateTime(), local, wr.getTemperature(),
+						wr.getHumidity(), wr.getCo2()));
+			}
 
-		Optional<WeatherReading> wr = weatherRepository.findFirstByWeatherReadingPKSensorIdOrderByWeatherReadingPKDateTimeDesc(sensorId);
-
-		Sensor s = sensorServices.getSensor(sensorId);
-
-		if (wr.isPresent()) {
-			WeatherReading weatherReading = wr.get();
-
-			return new WeatherReadingDto(weatherReading.getWeatherReadingPK().getSensorId(), weatherReading.getWeatherReadingPK().getDateTime(), s.getLocalName(), weatherReading.getTemperature(),
-					weatherReading.getHumidity(), weatherReading.getCo2());
-		} else {
-			throw new WeatherReadingNotFoundException("Weather Readings not found for " + sensorId);
-		}
-	}
-
-
-	public List<WeatherReadingDto> getWeatherReadingsByLocal(String local) throws LocalNotFoundException{
-		if (local ==null) {
-			throw new IllegalArgumentException("Local is not defined.");
-		}
-
-		if (!localRepository.findById(local).isPresent()) {
-			throw new LocalNotFoundException("Local not found " + local);
-		}
-		List<WeatherReading> l = weatherRepository.findByLocalNameOrderByWeatherReadingPKDateTimeAsc(local);
-
-		List<WeatherReadingDto> rl = new ArrayList<>();
-		for(WeatherReading wr:l) {
-			rl.add(new WeatherReadingDto(wr.getWeatherReadingPK().getSensorId(), wr.getWeatherReadingPK().getDateTime(), local, wr.getTemperature(),
-					wr.getHumidity(), wr.getCo2()));
-		}
-		return rl;
-		
-	}
-	
-	
-	public List<WeatherReadingDto> getWeatherReadingBySensor(Long sensorId, Pageable pageable) throws SensorNotFoundException {
-		
-		Page<WeatherReading> l= weatherRepository.findByWeatherReadingPKSensorIdOrderByWeatherReadingPKDateTimeAsc(sensorId, pageable);
-		
-		List<WeatherReadingDto> rl = new ArrayList<>();
-		Sensor s = sensorServices.getSensor(sensorId);
-		if(l.getSize()==0 && s!=null) {
 			return rl;
-		}
-		for(WeatherReading wr:l) {
-			rl.add(new WeatherReadingDto(wr.getWeatherReadingPK().getSensorId(), wr.getWeatherReadingPK().getDateTime(), s.getLocalName(), wr.getTemperature(),
-					wr.getHumidity(), wr.getCo2()));
-		}
-		return rl;
-	}
 
-	public List<WeatherReadingDto> getWeatherReadingBySensorAndDate(Long sensorId, LocalDateTime dateInit, LocalDateTime dateFin, Pageable pageable) throws SensorNotFoundException {
-		Page<WeatherReading> l;
-
-		if (dateInit ==null || dateFin==null) {
-			throw new IllegalArgumentException("Date interval is not defined.");
 		}
-		
-		l = weatherRepository.findByWeatherReadingPKSensorIdAndWeatherReadingPKDateTimeBetweenOrderByWeatherReadingPKDateTimeAsc(sensorId, dateInit, dateFin, pageable);
-		
-		List<WeatherReadingDto> rl = new ArrayList<>();
-		Sensor s = sensorServices.getSensor(sensorId);
-		if(l.getSize()==0 && s!=null) {
+
+		public List<WeatherReadingDto> getWeatherReadingByLocalAndDate(String local, LocalDateTime dateInit, LocalDateTime dateFin, String username)
+				throws ForbiddenUserException, LocalNotFoundException, UserNotFoundException, LoginRequiredException {
+
+			List<WeatherReading> l;
+			if (dateInit ==null || dateFin==null) {
+				throw new IllegalArgumentException("Date interval is not defined.");
+			}
+			if (local == null) {
+				throw new IllegalArgumentException("Local is not defined.");
+			}
+
+			User currentUser = userServices.findUserByUsername(username);
+
+			userServices.checkIfUserIsAtLocal(currentUser.getUsername(), local);
+
+			l = weatherRepository.findByLocalNameAndWeatherReadingPKDateTimeBetweenOrderByWeatherReadingPKDateTimeAsc(local, dateInit, dateFin);
+
+			List<WeatherReadingDto> rl = new ArrayList<>();
+			for(WeatherReading wr:l) {
+				rl.add(new WeatherReadingDto(wr.getWeatherReadingPK().getSensorId(), wr.getWeatherReadingPK().getDateTime(), local, wr.getTemperature(),
+						wr.getHumidity(), wr.getCo2()));
+			}
+
 			return rl;
 		}
 
-		for(WeatherReading wr:l) {
-			rl.add(new WeatherReadingDto(wr.getWeatherReadingPK().getSensorId(), wr.getWeatherReadingPK().getDateTime(), s.getLocalName(), wr.getTemperature(),
-					wr.getHumidity(), wr.getCo2()));
-		}
-		return rl;
-	
-	}
-	
 
-	public List<WeatherReadingDto> getWeatherReadingByLocalAndDate(String local, LocalDateTime dateInit, LocalDateTime dateFin) {
-		List<WeatherReading> l;
-		if (dateInit ==null || dateFin==null) {
-			throw new IllegalArgumentException("Date interval is not defined.");
-		}
-		if (local == null) {
-			throw new IllegalArgumentException("Local is not defined.");
-		}
+		public List<WeatherReadingDto> getWeatherReadingByLocalLimit(String local, int limit, String username)
+				throws ForbiddenUserException, LocalNotFoundException, UserNotFoundException, LoginRequiredException {
+			if (local == null) {
+				throw new IllegalArgumentException("Local is not defined.");
+			}
 
-		l = weatherRepository.findByLocalNameAndWeatherReadingPKDateTimeBetweenOrderByWeatherReadingPKDateTimeAsc(local, dateInit, dateFin);
+			User currentUser = userServices.findUserByUsername(username);
 
-		List<WeatherReadingDto> rl = new ArrayList<>();
-		for(WeatherReading wr:l) {
-			rl.add(new WeatherReadingDto(wr.getWeatherReadingPK().getSensorId(), wr.getWeatherReadingPK().getDateTime(), local, wr.getTemperature(),
-					wr.getHumidity(), wr.getCo2()));
-		}
-		return rl;
-	}
+			userServices.checkIfUserIsAtLocal(currentUser.getUsername(), local);
 
+			List<WeatherReading> l = weatherRepository.findByLocalNameLimit(local, limit);
 
-	public List<WeatherReadingDto> getWeatherReadingByLocalLimit(String local, int limit) {
-		if (local == null) {
-			throw new IllegalArgumentException("Local is not defined.");
+			List<WeatherReadingDto> rl = new ArrayList<>();
+			for(WeatherReading wr:l) {
+				rl.add(new WeatherReadingDto(wr.getWeatherReadingPK().getSensorId(), wr.getWeatherReadingPK().getDateTime(), local, wr.getTemperature(),
+						wr.getHumidity(), wr.getCo2()));
+			}
+
+			return rl;
+
 		}
 
-		List<WeatherReading> l = weatherRepository.findByLocalNameLimit(local, limit);
 
-		List<WeatherReadingDto> rl = new ArrayList<>();
-		for(WeatherReading wr:l) {
-			rl.add(new WeatherReadingDto(wr.getWeatherReadingPK().getSensorId(), wr.getWeatherReadingPK().getDateTime(), local, wr.getTemperature(),
-					wr.getHumidity(), wr.getCo2()));
+
+
+		// Services relating to Sensor
+
+		public WeatherReadingDto getMostRecentWeatherReadingBySensorId(Long sensorId, String username)
+				throws SensorNotFoundException, WeatherReadingNotFoundException, UserNotFoundException, LoginRequiredException, ForbiddenUserException{
+
+			Optional<WeatherReading> wr = weatherRepository.findFirstByWeatherReadingPKSensorIdOrderByWeatherReadingPKDateTimeDesc(sensorId);
+
+			Sensor s = sensorServices.getSensor(sensorId, username);
+
+			if (wr.isPresent()) {
+				WeatherReading weatherReading = wr.get();
+
+				return new WeatherReadingDto(weatherReading.getWeatherReadingPK().getSensorId(), weatherReading.getWeatherReadingPK().getDateTime(), s.getLocalName(), weatherReading.getTemperature(),
+						weatherReading.getHumidity(), weatherReading.getCo2());
+			} else {
+				throw new WeatherReadingNotFoundException("Weather Readings not found for " + sensorId);
+			}
 		}
-		return rl;
+
+
+		public List<WeatherReadingDto> getWeatherReadingBySensor(Long sensorId, Pageable pageable, String username) throws SensorNotFoundException, UserNotFoundException, LoginRequiredException, ForbiddenUserException {
+			
+			Page<WeatherReading> l= weatherRepository.findByWeatherReadingPKSensorIdOrderByWeatherReadingPKDateTimeAsc(sensorId, pageable);
+			
+			List<WeatherReadingDto> rl = new ArrayList<>();
+			Sensor s = sensorServices.getSensor(sensorId, username);
+			if(l.getSize()==0 && s!=null) {
+				return rl;
+			}
+			for(WeatherReading wr:l) {
+				rl.add(new WeatherReadingDto(wr.getWeatherReadingPK().getSensorId(), wr.getWeatherReadingPK().getDateTime(), s.getLocalName(), wr.getTemperature(),
+						wr.getHumidity(), wr.getCo2()));
+			}
+
+			return rl;
+		}
+
+		public List<WeatherReadingDto> getWeatherReadingBySensorAndDate(Long sensorId, LocalDateTime dateInit, LocalDateTime dateFin, Pageable pageable, String username) throws SensorNotFoundException, UserNotFoundException, LoginRequiredException, ForbiddenUserException {
+			Page<WeatherReading> l;
+
+			if (dateInit ==null || dateFin==null) {
+				throw new IllegalArgumentException("Date interval is not defined.");
+			}
+			
+			l = weatherRepository.findByWeatherReadingPKSensorIdAndWeatherReadingPKDateTimeBetweenOrderByWeatherReadingPKDateTimeAsc(sensorId, dateInit, dateFin, pageable);
+			
+			List<WeatherReadingDto> rl = new ArrayList<>();
+			Sensor s = sensorServices.getSensor(sensorId, username);
+			if(l.getSize()==0 && s!=null) {
+				return rl;
+			}
+
+			for(WeatherReading wr:l) {
+				rl.add(new WeatherReadingDto(wr.getWeatherReadingPK().getSensorId(), wr.getWeatherReadingPK().getDateTime(), s.getLocalName(), wr.getTemperature(),
+						wr.getHumidity(), wr.getCo2()));
+			}
+
+			return rl;
 		
-	}
+		}
 
 }

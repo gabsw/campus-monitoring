@@ -1,0 +1,57 @@
+{
+	"variables": [],
+	"info": {
+		"name": "IES-Login",
+		"_postman_id": "b45f305f-e66a-a4e0-c509-17f8fa49afa6",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"let auth_token = postman.getResponseHeader(\"x-auth-token\");",
+							"postman.setEnvironmentVariable(\"auth_token\", auth_token);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "{{url}}/login/",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic am9hb19tYXJxdWVzOnB3",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": "Login de utilizador"
+			},
+			"response": []
+		},
+		{
+			"name": "User info",
+			"request": {
+				"url": "{{url}}/user-info",
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-auth-token",
+						"value": "{{auth_token}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

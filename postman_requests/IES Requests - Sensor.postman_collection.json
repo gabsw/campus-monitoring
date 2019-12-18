@@ -8,101 +8,77 @@
 	},
 	"item": [
 		{
-			"name": "get all sensors",
+			"name": "get latest reading for sensor",
 			"request": {
-				"url": "localhost:8080/weather-reading/latest/id/1",
+				"url": "{{url}}/sensor/1/weather-readings/latest",
 				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
+				"header": [
+					{
+						"key": "x-auth-token",
+						"value": "{{auth_token}}",
+						"description": ""
+					}
+				],
+				"body": {},
 				"description": ""
 			},
 			"response": []
 		},
 		{
-			"name": "get latest reading from sensor",
-			"request": {
-				"url": "localhost:8080/weather-reading/latest/local/Cafetaria da ESAN",
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
-				"description": ""
-			},
-			"response": []
-		},
-		{
-			"name": "get sensor readings by dates",
+			"name": "get sensor readings",
 			"request": {
 				"url": {
-					"raw": "localhost:8080/weather-reading/local/Refeit%C3%B3rio%20de%20Santiago?start_date=2019-11-27T17:04:16.495931&end_date=2019-11-27T17:04:19.507699",
+					"raw": "{{url}}/sensor/1/weather-readings?start_date=2019-11-27T12:00:00.000&end_date=2019-12-30T12:00:00.000",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8080",
 					"path": [
-						"weather-reading",
-						"local",
-						"Refeit%C3%B3rio%20de%20Santiago"
+						"sensor",
+						"1",
+						"weather-readings"
 					],
 					"query": [
 						{
 							"key": "start_date",
-							"value": "2019-11-27T17:04:16.495931"
+							"value": "2019-11-27T12:00:00.000",
+							"equals": true,
+							"description": ""
 						},
 						{
 							"key": "end_date",
-							"value": "2019-11-27T17:04:19.507699"
+							"value": "2019-12-30T12:00:00.000",
+							"equals": true,
+							"description": ""
 						}
 					],
 					"variable": []
 				},
 				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
+				"header": [
+					{
+						"key": "x-auth-token",
+						"value": "{{auth_token}}",
+						"description": ""
+					}
+				],
+				"body": {},
 				"description": "Devolve as 'readings' de uma localização (neste caso Refeitório do Santiago) que foram retiradas num intervalo de tempo específicado pelos argumentos start_date e end_date."
 			},
 			"response": []
 		},
 		{
-			"name": "get all sensor readings",
+			"name": "get all sensors",
 			"request": {
-				"url": {
-					"raw": "localhost:8080/weather-reading/local/Refeit%C3%B3rio%20de%20Santiago?start_date=2019-11-27T17:04:16.495931&end_date=2019-11-27T17:04:19.507699",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"weather-reading",
-						"local",
-						"Refeit%C3%B3rio%20de%20Santiago"
-					],
-					"query": [
-						{
-							"key": "start_date",
-							"value": "2019-11-27T17:04:16.495931"
-						},
-						{
-							"key": "end_date",
-							"value": "2019-11-27T17:04:19.507699"
-						}
-					],
-					"variable": []
-				},
+				"url": "{{url}}/sensor/",
 				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
+				"header": [
+					{
+						"key": "x-auth-token",
+						"value": "{{auth_token}}",
+						"description": ""
+					}
+				],
+				"body": {},
 				"description": "Devolve as 'readings' de uma localização (neste caso Refeitório do Santiago) que foram retiradas num intervalo de tempo específicado pelos argumentos start_date e end_date."
 			},
 			"response": []

@@ -1,8 +1,6 @@
 package ies.grupo33.CampusMonitoring.Services;
 
-import ies.grupo33.CampusMonitoring.Exception.MismatchedReviewException;
-import ies.grupo33.CampusMonitoring.Exception.ReviewNotFoundException;
-import ies.grupo33.CampusMonitoring.Exception.UserCannotReviewException;
+import ies.grupo33.CampusMonitoring.Exception.*;
 import ies.grupo33.CampusMonitoring.Model.Review;
 import ies.grupo33.CampusMonitoring.Model.User;
 import ies.grupo33.CampusMonitoring.Repository.ReviewRepository;
@@ -11,10 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-
+@Transactional
 @Service
 public class ReviewServices {
 
@@ -24,23 +23,32 @@ public class ReviewServices {
     @Autowired
     private UserRepository userRepository;
 
-    public Page<Review> getReviewByLocal(String localName, Pageable pageable) {
+    @Autowired
+    private UserServices userServices;
+
+    public Page<Review> getReviewByLocal(String localName, Pageable pageable, String username)
+            throws ForbiddenUserException, LocalNotFoundException, UserNotFoundException, LoginRequiredException {
         if (localName == null) {
             throw new IllegalArgumentException("Local name is not defined.");
         } else {
+            userServices.checkIfUserIsAtLocal(username, localName);
             return reviewRepository.findByLocalName(localName, pageable);
         }
     }
 
-    public Page<Review> getReviewByUser(String username, Pageable pageable) {
+    public Page<Review> getReviewByUser(String username, Pageable pageable)
+            throws  UserNotFoundException, LoginRequiredException {
         if (username == null) {
             throw new IllegalArgumentException("Username is not defined.");
-        } else {
-            return reviewRepository.findByUsername(username, pageable);
         }
+
+        return reviewRepository.findByUsername(username, pageable);
+
     }
 
-    public void addReviewToLocal(String localName, Review review) throws UserCannotReviewException, MismatchedReviewException {
+    public Review addReviewToLocal(String localName, Review review, String username)
+            throws ForbiddenUserException, LocalNotFoundException, UserNotFoundException, LoginRequiredException,
+            MismatchedReviewException {
         if (review.getId() != null) {
             throw new IllegalArgumentException("Cannot add a review that already has an id.");
         }
@@ -49,43 +57,27 @@ public class ReviewServices {
             throw new MismatchedReviewException("The review is not for the specified local.");
         }
 
-        if (checkIfRegularUserIsAtLocal(review.getLocalName(), review.getUsername())) {
-            reviewRepository.save(review);
-        } else {
-            throw new UserCannotReviewException("User does not have permission to review local.");
+        User currentUser = userServices.findUserByUsername(username);
+
+        if (!currentUser.getUsername().equals(review.getUsername())) {
+            throw new MismatchedReviewException("The reviewer does not match current user.");
         }
 
+        userServices.checkIfUserIsAtLocal(currentUser.getUsername(), localName);
+
+        userServices.checkIfUserIsRegular(currentUser);
+
+        return reviewRepository.save(review);
     }
 
-    private boolean checkIfRegularUserIsAtLocal(String localName, String username) throws UserCannotReviewException {
 
-        if (username == null) {
-            throw new IllegalArgumentException("Username is not defined.");
-        }
-
-        Optional<User> user = userRepository.findByLocalsNameAndUsername(localName, username);
-
-        if (!user.isPresent()) {
-            throw new UserCannotReviewException("User does not have permission to review local.");
-        }
-
-        User reviewer = user.get();
-
-        if (reviewer.isAdmin()) {
-            throw new UserCannotReviewException("Admin does not have permission to review local.");
-        }
-        return true;
-    }
-
-    public void updateReview(Long reviewId, Review newReview) throws ReviewNotFoundException, UserCannotReviewException {
+    public Review updateReview(Long reviewId, Review newReview, String username)
+            throws ReviewNotFoundException, UserCannotReviewException, ForbiddenUserException, LocalNotFoundException,
+            UserNotFoundException, LoginRequiredException {
         Optional<Review> oldReviewOpt = reviewRepository.findById(reviewId);
 
         if (!oldReviewOpt.isPresent()) {
             throw new ReviewNotFoundException("Review not found for given id " + reviewId);
-        }
-
-        if (!checkIfRegularUserIsAtLocal(newReview.getLocalName(), newReview.getUsername())) {
-            throw new UserCannotReviewException("User does not have permission to review local.");
         }
 
         Review oldReview = oldReviewOpt.get();
@@ -94,14 +86,22 @@ public class ReviewServices {
             throw new UserCannotReviewException("User is not the original reviewer.");
         }
 
+        User currentUser = userServices.findUserByUsername(username);
+
+        userServices.checkIfUserIsAtLocal(currentUser.getUsername(), newReview.getLocalName());
+
+        userServices.checkIfUserIsRegular(currentUser);
+
         oldReview.setContent(newReview.getContent());
         oldReview.setDateTime(newReview.getDateTime());
         oldReview.setRating(newReview.getRating());
 
-        reviewRepository.save(oldReview);
+        return reviewRepository.save(oldReview);
     }
 
-    public void deleteReview(Long reviewId) throws ReviewNotFoundException, UserCannotReviewException {
+    public void deleteReview(Long reviewId, String username)
+    throws  UserNotFoundException, LoginRequiredException, ReviewNotFoundException,
+            ForbiddenUserException, LocalNotFoundException {
         Optional<Review> review = reviewRepository.findById(reviewId);
 
         if (!review.isPresent()) {
@@ -110,19 +110,28 @@ public class ReviewServices {
 
         Review reviewToDelete = review.get();
 
-        if (!checkIfRegularUserIsAtLocal(reviewToDelete.getLocalName(), reviewToDelete.getUsername())) {
-            throw new UserCannotReviewException("User does not have permission to review local.");
+        User currentUser = userServices.findUserByUsername(username);
+
+        if (!currentUser.getUsername().equals(reviewToDelete.getUsername())) {
+            throw new ForbiddenUserException("The reviewer does not match current user.");
         }
+
+        userServices.checkIfUserIsAtLocal(currentUser.getUsername(), reviewToDelete.getLocalName());
+
+        userServices.checkIfUserIsRegular(currentUser);
 
         reviewRepository.delete(reviewToDelete);
     }
 
-    public Review getReviewById(Long id) throws ReviewNotFoundException {
+    public Review getReviewById(Long id, String username)
+            throws UserNotFoundException, LoginRequiredException, ReviewNotFoundException {
 
         Optional<Review> review = reviewRepository.findById(id);
         if (!review.isPresent()) {
             throw new ReviewNotFoundException("Review not found for given id " + id);
         }
+
+        User currentUser = userServices.findUserByUsername(username);
 
         return review.get();
     }

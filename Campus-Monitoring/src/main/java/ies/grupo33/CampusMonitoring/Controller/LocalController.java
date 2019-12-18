@@ -2,21 +2,21 @@ package ies.grupo33.CampusMonitoring.Controller;
 
 import ies.grupo33.CampusMonitoring.DTO.ReportDTO;
 import ies.grupo33.CampusMonitoring.DTO.WeatherReadingDto;
-import ies.grupo33.CampusMonitoring.Exception.LocalNotFoundException;
-import ies.grupo33.CampusMonitoring.Exception.MismatchedReviewException;
-import ies.grupo33.CampusMonitoring.Exception.UserCannotReviewException;
-import ies.grupo33.CampusMonitoring.Exception.WeatherReadingNotFoundException;
+import ies.grupo33.CampusMonitoring.Exception.*;
 import ies.grupo33.CampusMonitoring.Model.Local;
 import ies.grupo33.CampusMonitoring.Model.Review;
 import ies.grupo33.CampusMonitoring.Representations.UniversalAlarmsRepresentation;
-
 import ies.grupo33.CampusMonitoring.Services.*;
+import ies.grupo33.CampusMonitoring.security.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -41,19 +41,27 @@ public class LocalController {
     private RepresentationAdapterService representationAdapterService;
 
     @GetMapping("/")
-    public List<Local> getLocals() {
+    public List<Local> getLocals(HttpServletRequest request) throws LoginRequiredException {
+        SecurityUtils.getUserIdentity(request.getSession());
         return localServices.getAllLocals();
     }
 
     // end points dealing with reviews
     @GetMapping("/{localName}/reviews")
-    public Page<Review> getLocalReviews(@PathVariable String localName, Pageable pageable) {
-        return reviewServices.getReviewByLocal(localName, pageable);
+    public Page<Review> getLocalReviews(@PathVariable String localName, Pageable pageable, HttpServletRequest request)
+            throws ForbiddenUserException, LocalNotFoundException, UserNotFoundException, LoginRequiredException {
+        String username = SecurityUtils.getUserIdentity(request.getSession());
+
+        return reviewServices.getReviewByLocal(localName, pageable, username);
     }
 
     @PostMapping("/{localName}/reviews")
-    public void addReviewToLocal(@PathVariable String localName, @Valid @RequestBody Review review) throws UserCannotReviewException, MismatchedReviewException {
-        reviewServices.addReviewToLocal(localName, review);
+    public ResponseEntity<Review> addReviewToLocal(@PathVariable String localName, @Valid @RequestBody Review review, HttpServletRequest request)
+            throws ForbiddenUserException, LocalNotFoundException, UserNotFoundException, LoginRequiredException,
+            MismatchedReviewException {
+        String username = SecurityUtils.getUserIdentity(request.getSession());
+        Review persistedReview = reviewServices.addReviewToLocal(localName, review, username);
+        return new ResponseEntity<>(persistedReview, HttpStatus.CREATED);
     }
 
     // end points for reports
@@ -64,8 +72,10 @@ public class LocalController {
                                        LocalDate startDate,
                                @RequestParam(name = "end_date")
                                @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-                                       LocalDate endDate) {
-        return reportServices.buildReport(localName, startDate, endDate);
+                                       LocalDate endDate, HttpServletRequest request)
+            throws ForbiddenUserException, LocalNotFoundException, UserNotFoundException, LoginRequiredException {
+        String username = SecurityUtils.getUserIdentity(request.getSession());
+        return reportServices.buildReport(localName, startDate, endDate, username);
     }
 
     // end points for alarms
@@ -77,12 +87,14 @@ public class LocalController {
                                                                   @RequestParam(name = "end_date", required = false)
                                                    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
                                                            LocalDate endDate,
-                                                                  Pageable pageable) {
+                                                                  Pageable pageable, HttpServletRequest request)
+            throws ForbiddenUserException, LocalNotFoundException, UserNotFoundException, LoginRequiredException {
+        String username = SecurityUtils.getUserIdentity(request.getSession());
 
         if (startDate == null || endDate == null) {
-            return universalAlarmServices.getUniversalAlarm(localName, pageable).map(UniversalAlarmsRepresentation::new);
+            return universalAlarmServices.getUniversalAlarm(localName, pageable, username).map(UniversalAlarmsRepresentation::new);
         } else {
-            return universalAlarmServices.getUniversalAlarm(localName, startDate, endDate, pageable).map(UniversalAlarmsRepresentation::new);
+            return universalAlarmServices.getUniversalAlarm(localName, startDate, endDate, pageable, username).map(UniversalAlarmsRepresentation::new);
         }
 
     }
@@ -95,12 +107,13 @@ public class LocalController {
                                                        @RequestParam(name = "end_date", required = false)
                                                        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
                                                                LocalDate endDate,
-                                                       Pageable pageable) {
-
+                                                       Pageable pageable, HttpServletRequest request)
+            throws ForbiddenUserException, LocalNotFoundException, UserNotFoundException, LoginRequiredException {
+        String username = SecurityUtils.getUserIdentity(request.getSession());
         if (startDate == null || endDate == null) {
-            return universalAlarmServices.getOpenUniversalAlarm(localName, pageable).map(UniversalAlarmsRepresentation::new);
+            return universalAlarmServices.getOpenUniversalAlarm(localName, pageable, username).map(UniversalAlarmsRepresentation::new);
         } else {
-            return universalAlarmServices.getOpenUniversalAlarm(localName, startDate, endDate, pageable).map(UniversalAlarmsRepresentation::new);
+            return universalAlarmServices.getOpenUniversalAlarm(localName, startDate, endDate, pageable, username).map(UniversalAlarmsRepresentation::new);
         }
     }
 
@@ -112,37 +125,40 @@ public class LocalController {
                                                          @RequestParam(name = "end_date", required = false)
                                                          @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
                                                                  LocalDate endDate,
-                                                         Pageable pageable) {
-
+                                                         Pageable pageable, HttpServletRequest request)
+            throws ForbiddenUserException, LocalNotFoundException, UserNotFoundException, LoginRequiredException {
+        String username = SecurityUtils.getUserIdentity(request.getSession());
         if (startDate == null || endDate == null) {
-            return universalAlarmServices.getClosedUniversalAlarm(localName, pageable).map(UniversalAlarmsRepresentation::new);
+            return universalAlarmServices.getClosedUniversalAlarm(localName, pageable, username).map(UniversalAlarmsRepresentation::new);
         } else {
-            return universalAlarmServices.getClosedUniversalAlarm(localName, startDate, endDate, pageable).map(UniversalAlarmsRepresentation::new);
+            return universalAlarmServices.getClosedUniversalAlarm(localName, startDate, endDate, pageable, username).map(UniversalAlarmsRepresentation::new);
         }
     }
 
     // end points for weather readings
     @GetMapping("/{localName}/weather-readings/latest")
-    public List<WeatherReadingDto> getLatestWeatherReadingByLocal(@PathVariable String localName, @RequestParam(name="limit", required=false) Integer limit)
-            throws LocalNotFoundException, WeatherReadingNotFoundException {
-
+    public List<WeatherReadingDto> getLatestWeatherReadingByLocal(@PathVariable String localName, @RequestParam(name="limit", required=false) Integer limit, HttpServletRequest request)
+            throws ForbiddenUserException, LocalNotFoundException, UserNotFoundException, LoginRequiredException, WeatherReadingNotFoundException {
+        String username = SecurityUtils.getUserIdentity(request.getSession());
         if (limit == null) {
-            return Collections.singletonList(weatherServices.getMostRecentWeatherReadingByLocal(localName));
+            return Collections.singletonList(weatherServices.getMostRecentWeatherReadingByLocal(localName, username));
         }
 
-        return weatherServices.getWeatherReadingByLocalLimit(localName, limit);
+        return weatherServices.getWeatherReadingByLocalLimit(localName, limit, username);
 
     }
 
     @GetMapping("/{localName}/weather-readings")
     public List<WeatherReadingDto> getWeatherReadingByLocal(@PathVariable String localName,
                                                             @RequestParam(name="start_date", required=false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
-                                                            @RequestParam(name="end_date", required=false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) throws LocalNotFoundException {
+                                                            @RequestParam(name="end_date", required=false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate, HttpServletRequest request)
+            throws ForbiddenUserException, LocalNotFoundException, UserNotFoundException, LoginRequiredException {
+        String username = SecurityUtils.getUserIdentity(request.getSession());
         if (startDate==null ||endDate==null) {
-            return weatherServices.getWeatherReadingsByLocal(localName);
+            return weatherServices.getWeatherReadingsByLocal(localName, username);
         }
         else {
-            return weatherServices.getWeatherReadingByLocalAndDate(localName, startDate, endDate);
+            return weatherServices.getWeatherReadingByLocalAndDate(localName, startDate, endDate, username);
         }
     }
 }
