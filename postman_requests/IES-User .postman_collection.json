@@ -1,120 +1,28 @@
 {
+	"variables": [],
 	"info": {
-		"_postman_id": "164c20ae-b9c3-488e-8f8b-7cef9e29ea8f",
 		"name": "IES-User ",
+		"_postman_id": "c0f915a3-27e8-baa5-95c2-2300dfba25b0",
 		"description": "Pedidos á API relacionados com o objeto deutilizador.",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "localhost:8080/users/authentication/pedro_bastos/password1",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:8080/users/authentication/pedro_bastos/password1",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"users",
-						"authentication",
-						"pedro_bastos",
-						"password1"
-					]
-				},
-				"description": "Pedido que pede a autenticação do utilizador através do seu username e da sua password(password)."
-			},
-			"response": []
-		},
-		{
 			"name": "localhost:8080/users/local-name/Cafetaria da ESAN",
 			"request": {
+				"url": "localhost:8080/users/joao_marques/locals",
 				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:8080/users/local-name/Cafetaria da ESAN",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"users",
-						"local-name",
-						"Cafetaria da ESAN"
-					]
-				},
+				"header": [
+					{
+						"key": "x-auth-token",
+						"value": "{{auth_token}}",
+						"description": ""
+					}
+				],
+				"body": {},
 				"description": "Pedido realizado para obter os utilizadores de um determinado local (neste caso a Cafetaria da ESAN)"
 			},
 			"response": []
-		},
-		{
-			"name": "localhost:8080/users/local-name/Cafetaria da ESAN/admin",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:8080/users/local-name/Cafetaria da ESAN/admin",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"users",
-						"local-name",
-						"Cafetaria da ESAN",
-						"admin"
-					]
-				},
-				"description": "Pedido que devolve o(s) utilizador(es) que são 'admin' de um determinado local (neste caso Cafetaria da ESAN)"
-			},
-			"response": []
-		},
-		{
-			"name": "localhost:8080/users/local-name/Cafetaria da ESAN/regular",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:8080/users/local-name/Cafetaria da ESAN/regular",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"users",
-						"local-name",
-						"Cafetaria da ESAN",
-						"regular"
-					]
-				},
-				"description": "Pedido que devolve os utilizadores normais associados a um determinado local (neste caso a Cafetaria da ESAN)"
-			},
-			"response": []
 		}
-	],
-	"event": [
-		{
-			"listen": "prerequest",
-			"script": {
-				"id": "9d55ea63-2e1b-4e05-9adb-3b8762cf9c49",
-				"type": "text/javascript",
-				"exec": [
-					""
-				]
-			}
-		},
-		{
-			"listen": "test",
-			"script": {
-				"id": "61f74182-33b7-4ae0-be45-cfe6b306c26c",
-				"type": "text/javascript",
-				"exec": [
-					""
-				]
-			}
-		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }

@@ -32,7 +32,7 @@ public class SensorController {
         return sensorServices.getSensors(username);
     }
 
-    @GetMapping("/id/{id}/weather-readings/latest")
+    @GetMapping("/{id}/weather-readings/latest")
     public WeatherReadingDto getLatestWeatherReadingBySensorId(@PathVariable Long id,
                                                                HttpServletRequest request)
             throws SensorNotFoundException, WeatherReadingNotFoundException, LoginRequiredException, UserNotFoundException, ForbiddenUserException {
@@ -40,7 +40,7 @@ public class SensorController {
         return weatherServices.getMostRecentWeatherReadingBySensorId(id, username);
     }
 
-    @GetMapping("/id/{id}/weather-readings")
+    @GetMapping("/{id}/weather-readings")
     public List<WeatherReadingDto> getWeatherReadingBySensorId(@PathVariable Long id,
                                                                @RequestParam(name = "start_date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
                                                                @RequestParam(name = "end_date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate,

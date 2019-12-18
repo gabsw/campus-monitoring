@@ -7,10 +7,13 @@ import ies.grupo33.CampusMonitoring.Repository.LocalRepository;
 import ies.grupo33.CampusMonitoring.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+@Transactional
 @Service
 public class LocalServices {
 
@@ -27,15 +30,12 @@ public class LocalServices {
         return localRepository.findAll();
     }
 
-    public List<Local> getLocalsByUser(String username) throws UserNotFoundException {
+    public Collection<Local> getLocalsByUser(String username) throws UserNotFoundException {
         Optional<User> opt_user = userRepository.findById(username);
         if (!opt_user.isPresent()) {
             throw new UserNotFoundException("User not found " + username);
         }
 
-        return localRepository.findByUsers(username);
-
+        return opt_user.get().getLocals();
     }
-
-
 }

@@ -10,9 +10,15 @@
 		{
 			"name": "get user reviews",
 			"request": {
-				"url": "http://localhost:8080/review/username/maria_cardoso",
+				"url": "{{url}}/review/username/maria_cardoso",
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "x-auth-token",
+						"value": "{{auth_token}}",
+						"description": ""
+					}
+				],
 				"body": {},
 				"description": ""
 			},
@@ -21,12 +27,17 @@
 		{
 			"name": "get reviews by review id",
 			"request": {
-				"url": "http://localhost:8080/review/1",
+				"url": "{{url}}/review/1",
 				"method": "PUT",
 				"header": [
 					{
 						"key": "Content-Type",
 						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "x-auth-token",
+						"value": "{{auth_token}}",
 						"description": ""
 					}
 				],
@@ -41,12 +52,17 @@
 		{
 			"name": "get reviews by review id",
 			"request": {
-				"url": "http://localhost:8080/review/1",
+				"url": "{{url}}/review/1",
 				"method": "GET",
 				"header": [
 					{
 						"key": "Content-Type",
 						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "x-auth-token",
+						"value": "{{auth_token}}",
 						"description": ""
 					}
 				],
@@ -61,12 +77,17 @@
 		{
 			"name": "delete reviews by review id",
 			"request": {
-				"url": "http://localhost:8080/review/1",
+				"url": "{{url}}/review/1",
 				"method": "DELETE",
 				"header": [
 					{
 						"key": "Content-Type",
 						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "x-auth-token",
+						"value": "{{auth_token}}",
 						"description": ""
 					}
 				],

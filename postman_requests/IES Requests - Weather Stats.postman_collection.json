@@ -1,37 +1,49 @@
 {
+	"variables": [],
 	"info": {
-		"_postman_id": "cf3a364b-9d32-487e-8af0-2f21f8eb7946",
 		"name": "IES Requests - Weather Stats",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"_postman_id": "0928bbcf-d63f-fa73-1636-fe475510f40d",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "List weather stats by local and date range",
 			"request": {
-				"method": "GET",
-				"header": [],
 				"url": {
-					"raw": "deti-engsoft-12.ua.pt/weather-stats/Cafetaria da ESAN?start_date=2019-11-24&end_date=2019-11-30",
+					"raw": "{{url}}/weather-stats/IEETA?start_date=2019-11-24&end_date=2019-12-30",
 					"host": [
-						"deti-engsoft-12",
-						"ua",
-						"pt"
+						"{{url}}"
 					],
 					"path": [
 						"weather-stats",
-						"Cafetaria da ESAN"
+						"IEETA"
 					],
 					"query": [
 						{
 							"key": "start_date",
-							"value": "2019-11-24"
+							"value": "2019-11-24",
+							"equals": true,
+							"description": ""
 						},
 						{
 							"key": "end_date",
-							"value": "2019-11-30"
+							"value": "2019-12-30",
+							"equals": true,
+							"description": ""
 						}
-					]
+					],
+					"variable": []
 				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-auth-token",
+						"value": "{{auth_token}}",
+						"description": ""
+					}
+				],
+				"body": {},
 				"description": "Devolve o 'reading' mais recente de um sensor especificando o seu id(neste caso 1)."
 			},
 			"response": []
@@ -39,46 +51,19 @@
 		{
 			"name": "List weather stats by local",
 			"request": {
+				"url": "{{url}}/weather-stats/IEETA",
 				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "deti-engsoft-12.ua.pt/weather-stats/Cafetaria da ESAN",
-					"host": [
-						"deti-engsoft-12",
-						"ua",
-						"pt"
-					],
-					"path": [
-						"weather-stats",
-						"Cafetaria da ESAN"
-					]
-				},
+				"header": [
+					{
+						"key": "x-auth-token",
+						"value": "{{auth_token}}",
+						"description": ""
+					}
+				],
+				"body": {},
 				"description": "Devolve o 'reading' mais recente de um sensor especificando o seu id(neste caso 1)."
 			},
 			"response": []
 		}
-	],
-	"event": [
-		{
-			"listen": "prerequest",
-			"script": {
-				"id": "ebc94238-2ad3-4178-ac74-b7372da68b9c",
-				"type": "text/javascript",
-				"exec": [
-					""
-				]
-			}
-		},
-		{
-			"listen": "test",
-			"script": {
-				"id": "ab0f0aff-b46e-432b-b42c-43be83725b46",
-				"type": "text/javascript",
-				"exec": [
-					""
-				]
-			}
-		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }
