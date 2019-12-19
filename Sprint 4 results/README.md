@@ -9,6 +9,16 @@
 
 1. Frontend is not being served by Spring Boot or any alternative web server.
 
+## Testing frontend
+
+To test frontend functionality, follow these steps:
+1. In branch `frontend`, go to `Campus-Monitoring/src/main/resources/templates`
+2. Open `index.html`
+3. Login as one of the administrators (eg: username: `pedro_bastos`) or as a regular collaborator (eg: username: `joana_martins`)
+**NOTE:** use `password` as password to all users
+
+**NOTE:** once the frontend files are making API Requests to the backend in the VM provided for the project, make sure you are connected to University of Aveiro network (in person or through VPN) to access the VM
+
 
 ## Example requests
 
