@@ -164,7 +164,7 @@ function getUserReviewsByLocal(localname) {
             }
 
             var linha = `<li class="left clearfix"><span class="chat-img pull-left">
-								<img src="../pictures/avatar_60.png" alt="User Avatar" class="img-circle" />
+								<img src="pictures/avatar_60.png" alt="User Avatar" class="img-circle" />
 								</span>
                             <div class="chat-body clearfix">     
                                 <div class="pull-left">
